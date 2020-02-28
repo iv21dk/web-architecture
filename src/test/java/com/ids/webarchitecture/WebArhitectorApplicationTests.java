@@ -1,4 +1,4 @@
-package com.ids.webarhitector;
+package com.ids.webarchitecture;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

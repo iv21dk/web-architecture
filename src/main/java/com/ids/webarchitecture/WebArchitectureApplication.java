@@ -1,13 +1,13 @@
-package com.ids.webarhitector;
+package com.ids.webarchitecture;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class WebArhitectorApplication {
+public class WebArchitectureApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(WebArhitectorApplication.class, args);
+		SpringApplication.run(WebArchitectureApplication.class, args);
 	}
 
 }
