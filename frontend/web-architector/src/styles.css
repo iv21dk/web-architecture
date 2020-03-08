@@ -1,0 +1,50 @@
+
+html{
+  font-family: "Roboto", sans-serif;
+  margin: 0.25rem;
+}
+
+.node-box{
+  margin: 0rem 0.5rem 0.5rem 0rem;
+  padding: 0.5rem;
+  border: 1px solid dimgray;
+  box-shadow: 0 0 0.2rem grey;
+  border-radius: 0.2rem;
+  width: 14rem;
+  height: 8rem;
+  display: inline-block;
+}
+
+.nodes{
+
+}
+
+.command-panel{
+  margin: 0 0 0.4rem 0;
+}
+
+.node-command-panel{
+  margin: 3rem 0 0 0;
+}
+
+button.command-panel-button{
+  margin: 0 0.25rem 0.25rem 0;
+}
+
+button.save-button{
+  float: right;
+
+}
+
+input {
+  margin: 0.2rem 0.4rem;
+  padding: 0.1rem 0.3rem;
+}
+
+input.host{
+  width: 10.2rem;
+}
+
+input.port{
+  width: 3.8rem;
+}
