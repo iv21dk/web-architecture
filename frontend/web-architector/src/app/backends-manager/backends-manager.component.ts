@@ -1,12 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {NodeStatus} from "../java-server/java-server.component";
-
-export interface IJavaServer {
-  host: string;
-  port: number;
-  created: boolean;
-  status: NodeStatus;
-}
+import {IJavaServer, NodeStatus} from "../java-server/java-server.component";
 
 @Component({
   selector: 'app-backends-manager',
@@ -27,13 +20,7 @@ export class BackendsManagerComponent implements OnInit {
 
   createServer() {
     let server: IJavaServer;
-    server = new class implements IJavaServer {
-      created: boolean;
-      host: string;
-      port: number;
-      status: NodeStatus;
-    }
-    server.created = false;
+    server = {host:undefined, port: undefined, created:false, status:undefined}
     this.javaServers.push(server);
   }
 

@@ -1,9 +1,15 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {IJavaServer} from "../backends-manager/backends-manager.component";
 
 export enum NodeStatus {
   STOPPED ='Stopped',
   STARTED ='Started'
+}
+
+export interface IJavaServer {
+  host: string;
+  port: number;
+  created: boolean;
+  status: NodeStatus;
 }
 
 @Component({
@@ -18,13 +24,7 @@ export class JavaServerComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    //this.created = false;
   }
-
-  // host: string;
-  // port: number;
-  // status: NodeStatus;
-  // created: boolean;
 
   createJavaServer(javaServer: IJavaServer) {
     javaServer.created = true;
