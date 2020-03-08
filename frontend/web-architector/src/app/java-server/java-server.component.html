@@ -1,0 +1,16 @@
+<div class="node-box" *ngIf="javaServer.created">
+  <div>Name: {{javaServer.host}}:{{javaServer.port}}</div>
+  <div>Status: {{javaServer.status}}</div>
+
+</div>
+<div class="node-box" *ngIf="!javaServer.created">
+  <div>
+    <label>Host<input type="text" [(ngModel)]="javaServer.host" class="host"></label>
+  </div>
+  <div>
+    <label>Port<input type="number" [(ngModel)]="javaServer.port" class="port"></label>
+  </div>
+  <div class="node-command-panel">
+    <button class="save-button" (click)="createJavaServer(javaServer)">Save</button>
+  </div>
+</div>

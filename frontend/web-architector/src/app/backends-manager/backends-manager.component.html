@@ -1,0 +1,13 @@
+<h3>Backends</h3>
+<div class="command-panel">
+  <button class="command-panel-button" (click)="createServer()">Create</button>
+  <button class="command-panel-button">Start</button>
+  <button class="command-panel-button">Stop</button>
+  <button class="command-panel-button">Remove</button>
+</div>
+<div class="nodes">
+  <app-java-server
+    *ngFor="let iterServer of javaServers"
+    [javaServer]="iterServer">
+  </app-java-server>
+</div>

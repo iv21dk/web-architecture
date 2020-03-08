@@ -1,0 +1,12 @@
+
+<div>
+  <label>What is your name? <input type="text" [(ngModel)]="user"></label>
+</div>
+<div>
+  <label>How old are you? <input type="number" [(ngModel)]="age" [ngStyle]="{
+    color: age > 30 ? 'red' :  'black'}">
+  </label>
+</div>
+
+<h2>Hello {{user}}</h2>
+
