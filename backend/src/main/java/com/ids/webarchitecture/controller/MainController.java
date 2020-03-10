@@ -1,4 +1,4 @@
-package com.ids.webarchitecture.controllers;
+package com.ids.webarchitecture.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 

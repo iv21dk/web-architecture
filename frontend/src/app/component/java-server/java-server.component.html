@@ -1,0 +1,19 @@
+<div class="node-box"
+     [class.selected]="isSelected()"
+     (click)="onClick()">
+  <div *ngIf="created">
+    <div>Name: {{backendModel.host}}:{{backendModel.port}}</div>
+    <div>Status: {{backendModel.status}}</div>
+  </div>
+  <div *ngIf="!created">
+    <div>
+      <label>Host<input type="text" [(ngModel)]="backendModel.host" class="host"></label>
+    </div>
+    <div>
+      <label>Port<input type="number" [(ngModel)]="backendModel.port" class="port"></label>
+    </div>
+    <div class="node-command-panel">
+      <button class="save-button" (click)="createJavaServer()">Save</button>
+    </div>
+  </div>
+</div>
