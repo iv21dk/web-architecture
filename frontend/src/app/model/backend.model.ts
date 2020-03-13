@@ -7,9 +7,11 @@ export class BackendModel {
   status: NodeStatus;
 
   constructor(dto: BackendDto) {
-    //TODO: use mapper
-    this.host = dto.host;
-    this.port = dto.port;
-    this.status = dto.status;
+    if (dto !== undefined) {
+      //TODO: use mapper
+      this.host = dto.host;
+      this.port = dto.port;
+      this.status = dto.status;
+    }
   }
 }

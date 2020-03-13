@@ -16,21 +16,22 @@ export class BackendService {
   }
 
   selectedBackend: BackendModel;
-  backends: BackendModel[];
+  private backends: BackendModel[];
 
   getBackends(): BackendModel[] {
     return this.backends;
   }
 
   getBackendsFromServer() {
-    let res: any;
-    res = this.http.get<BackendDto[]>('http://localhost:8080/api/backends')
+    this.http.get<BackendDto[]>('http://localhost:8080/api/backends')
       .pipe(map(backends => backends.map(dto => new BackendModel(dto))))
       .subscribe(
-        items => {
-          this.backends = [];
-          items.forEach(item => this.backends.push(item));
-        },
+        // items => {
+        //   this.backends = items;
+        //   // this.backends = [];
+        //   // items.forEach(item => this.backends.push(item));
+        // },
+        items => this.backends = items,
         error => console.log(error) //TODO: handle error
       );
   }

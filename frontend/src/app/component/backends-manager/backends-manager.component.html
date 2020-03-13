@@ -1,9 +1,9 @@
 <h3>Backends ({{getBackends().length}})</h3>
 <div class="command-panel">
   <button class="command-panel-button" (click)="createServer()">Create</button>
-  <button [disabled]="isSelectedStartedBackend()" class="command-panel-button" (click)="startServer()">Start</button>
-  <button [disabled]="isSelectedStoppedBackend()" class="command-panel-button" (click)="stopServer()">Stop</button>
-  <button [disabled]="isSelectedStartedBackend()" class="command-panel-button" (click)="removeServer()">Remove</button>
+  <button class="command-panel-button" [disabled]="isSelectedStartedBackend()" (click)="startServer()">Start</button>
+  <button class="command-panel-button" [disabled]="isSelectedStoppedBackend()" (click)="stopServer()">Stop</button>
+  <button class="command-panel-button" [disabled]="isSelectedStartedBackend()" (click)="removeServer()">Remove</button>
 </div>
 <div class="nodes">
   <app-java-server
