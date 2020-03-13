@@ -20,12 +20,6 @@ export class BackendService {
 
   getBackends(): BackendModel[] {
     return this.backends;
-    // if (this.backends === undefined) {
-    //   this.getBackendsFromServer();
-    //   return [];
-    // } else {
-    //   return this.backends;
-    // }
   }
 
   getBackendsFromServer() {
@@ -33,20 +27,12 @@ export class BackendService {
     res = this.http.get<BackendDto[]>('http://localhost:8080/api/backends')
       .pipe(map(backends => backends.map(dto => new BackendModel(dto))))
       .subscribe(
-        res => {
+        items => {
           this.backends = [];
-          this.backends.push(res);
-          console.log(this.backends); //TODO: remove
+          items.forEach(item => this.backends.push(item));
         },
         error => console.log(error) //TODO: handle error
       );
-
-    // let result: BackendModel[];
-    // result = [];
-    // result.push(
-    //   {host: 'localhost', port: 8080, status: NodeStatus.STOPPED},
-    //   {host: '129.165.12.345', port: 8081, status: NodeStatus.STARTED});
-    // return result;
   }
 
   createServer() {
@@ -61,12 +47,12 @@ export class BackendService {
     backend.status = NodeStatus.STOPPED;
   }
 
-  isSelectredBackend(backend: BackendModel): boolean {
+  isSelectedBackend(backend: BackendModel): boolean {
     return this.selectedBackend === backend;
   }
 
   selectDeselectBackend(backend: BackendModel) {
-    if (this.isSelectredBackend(backend)) {
+    if (this.isSelectedBackend(backend)) {
       this.selectedBackend = undefined;
     } else {
       this.selectedBackend = backend;
@@ -75,7 +61,7 @@ export class BackendService {
 
   isSelectedStoppedBackend(): boolean {
     return (this.selectedBackend !== undefined
-      && this.selectedBackend.status === NodeStatus.STOPPED);
+      && this.selectedBackend.status.valueOf() === NodeStatus.STOPPED.valueOf());
   }
 
   isSelectedStartedBackend(): boolean {

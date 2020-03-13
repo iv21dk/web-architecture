@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {NodeStatus} from '../java-server/java-server.component';
 import {BackendService} from '../../service/backend.service';
 import {BackendModel} from '../../model/backend.model';
 

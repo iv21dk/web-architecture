@@ -2,10 +2,11 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {BackendModel} from '../../model/backend.model';
 import {BackendsManagerComponent} from "../backends-manager/backends-manager.component";
 import {BackendService} from "../../service/backend.service";
+import {strict} from "assert";
 
 export enum NodeStatus {
-  STOPPED = 'Stopped',
-  STARTED = 'Started'
+  STOPPED = 'STOPPED',
+  STARTED = 'STARTED'
 }
 
 // export interface IJavaServer {
@@ -59,19 +60,12 @@ export class JavaServerComponent implements OnInit {
   }
 
   onClick() {
-    // if (this.selected === true) {
-    //   this.selected = false;
-    //   this.deselectEvent.emit(this.backendModel);
-    // } else if (this.created === true) {
-    //   this.selected = true;
-    //   this.selectEvent.emit(this.backendModel);
-    // }
     if (this.created) {
       this.backendService.selectDeselectBackend(this.backendModel);
     }
   }
 
   isSelected(): boolean {
-    return this.backendService.isSelectredBackend(this.backendModel);
+    return this.backendService.isSelectedBackend(this.backendModel);
   }
 }
