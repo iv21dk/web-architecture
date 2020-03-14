@@ -16,6 +16,7 @@ import { BackendService } from './service/backend.service';
 import { DataTemplatesComponent } from './component/data-templates/data-templates.component';
 import {DataTemplateService} from "./service/data-template.service";
 import { ModalDialogComponent } from './modal-dialog/modal-dialog.component';
+//import {ModalDialogModule} from "./modal-dialog/modal-dialog.module";
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { ModalDialogComponent } from './modal-dialog/modal-dialog.component';
     BrowserModule,
     FormsModule,
     HttpClientModule
+    //ModalDialogModule
     //BrowserAnimationsModule,
     //MatInputModule,
     //MatTableModule,

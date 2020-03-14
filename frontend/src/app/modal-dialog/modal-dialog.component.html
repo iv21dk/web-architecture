@@ -1,6 +1,6 @@
-<jw-modal id="data-template">
-  <h3>Data template</h3>
-  <label>Name<input [(ngModel)]="dataTemplate.name"></label>
-  <button (click)="closeModal('data-template', fals);">Discard</button>
-  <button (click)="closeModal('data-template', true);">Save</button>
-</jw-modal>
+<div class="jw-modal">
+  <div class="jw-modal-body">
+    <ng-content></ng-content>
+  </div>
+</div>
+<div class="jw-modal-background"></div>

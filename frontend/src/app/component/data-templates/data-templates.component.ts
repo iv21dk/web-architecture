@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {DataTemplateModel} from "../../model/data-template.model";
 import {DataTemplateService} from "../../service/data-template.service";
+import {ModalDialogService} from "../../modal-dialog/modal-dialog.service";
 
 @Component({
   selector: 'app-data-templates',
@@ -9,7 +10,7 @@ import {DataTemplateService} from "../../service/data-template.service";
 })
 export class DataTemplatesComponent implements OnInit {
 
-  constructor(private templateService: DataTemplateService) { }
+  constructor(private templateService: DataTemplateService, private modalDialogService: ModalDialogService) { }
 
   ngOnInit(): void {
   }
@@ -19,10 +20,14 @@ export class DataTemplatesComponent implements OnInit {
   }
 
   create() {
-
+    this.modalDialogService.open("custom-modal-1");
   }
 
   update() {
+
+  }
+
+  closeModal(id: string) {
 
   }
 }
