@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {BackendModel} from '../../model/backend.model';
-import {BackendsManagerComponent} from "../backends-manager/backends-manager.component";
 import {BackendService} from "../../service/backend.service";
 import {strict} from "assert";
 
