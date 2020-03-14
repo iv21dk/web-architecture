@@ -4,8 +4,23 @@
   <button class="command-panel-button" (click)="update()">Update</button>
 </div>
 <div>
-  <table>
-
+  <table class="data-source">
+    <thead>
+      <tr>
+        <th>№</th>
+        <th>Author</th>
+        <th>Name</th>
+        <th>Text</th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of getTemplates(); let i = index">
+      <td>{{i+1}}</td>
+      <td>{{item.author.name}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.text}}</td>
+    </tr>
+    </tbody>
 
   </table>
 

@@ -14,6 +14,7 @@ import { BackendsManagerComponent } from './component/backends-manager/backends-
 import { JavaServerComponent } from './component/java-server/java-server.component';
 import { BackendService } from './service/backend.service';
 import { DataTemplatesComponent } from './component/data-templates/data-templates.component';
+import {DataTemplateService} from "./service/data-template.service";
 
 
 @NgModule({
@@ -34,7 +35,7 @@ import { DataTemplatesComponent } from './component/data-templates/data-template
     //MatSortModule,
     //MatProgressSpinnerModule
   ],
-  providers: [BackendService],
+  providers: [BackendService, DataTemplateService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

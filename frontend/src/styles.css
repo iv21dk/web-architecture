@@ -62,3 +62,13 @@ input.host{
 input.port{
   width: 3.8rem;
 }
+
+table.data-source {
+  border: solid black 0.07rem;
+  width: 100%;
+}
+
+thead {
+  border: solid black 0.07rem;
+}
+
