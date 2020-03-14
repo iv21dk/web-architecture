@@ -1,0 +1,1 @@
+java -jar backend/target/web-architecture-1.0.0-SNAPSHOT.jar

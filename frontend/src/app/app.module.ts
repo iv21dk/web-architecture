@@ -15,6 +15,7 @@ import { JavaServerComponent } from './component/java-server/java-server.compone
 import { BackendService } from './service/backend.service';
 import { DataTemplatesComponent } from './component/data-templates/data-templates.component';
 import {DataTemplateService} from "./service/data-template.service";
+import { ModalDialogComponent } from './modal-dialog/modal-dialog.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import {DataTemplateService} from "./service/data-template.service";
     AppComponent,
     BackendsManagerComponent,
     JavaServerComponent,
-    DataTemplatesComponent
+    DataTemplatesComponent,
+    ModalDialogComponent
   ],
   imports: [
     BrowserModule,
