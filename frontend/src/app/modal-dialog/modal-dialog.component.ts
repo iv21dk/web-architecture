@@ -1,5 +1,5 @@
 import {Component, ElementRef, Input, OnDestroy, OnInit} from '@angular/core';
-import {ModalDialogService} from "./modal-dialog.service";
+import {ModalDialogService} from './modal-dialog.service';
 
 @Component({
   selector: 'app-modal-dialog',
@@ -27,13 +27,14 @@ export class ModalDialogComponent implements OnInit, OnDestroy {
 
     // close modal on background click
     this.element.addEventListener('click', el => {
-      if (el.target.className === 'jw-modal') {
+      if (el.target.className === 'modal-dialog') {
         this.close();
       }
     });
 
     // add self (this modal instance) to the modal service so it's accessible from controllers
     this.modalService.add(this);
+    this.element.style.display = 'none';
   }
 
   // remove self from modal service when component is destroyed
@@ -45,12 +46,12 @@ export class ModalDialogComponent implements OnInit, OnDestroy {
   // open modal
   open(): void {
     this.element.style.display = 'block';
-    document.body.classList.add('jw-modal-open');
+    document.body.classList.add('modal-dialog-open');
   }
 
   // close modal
   close(): void {
     this.element.style.display = 'none';
-    document.body.classList.remove('jw-modal-open');
+    document.body.classList.remove('modal-dialog-open');
   }
 }

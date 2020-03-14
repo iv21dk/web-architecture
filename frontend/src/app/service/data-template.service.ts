@@ -9,10 +9,14 @@ import {AuthorModel} from "../model/author.model";
 export class DataTemplateService {
 
   constructor(private http: HttpClient) {
-    this.templates = [];
     let a: AuthorModel;
     a = new AuthorModel();
     a.name = "author 1";
+
+    let a2: AuthorModel;
+    a2 = new AuthorModel();
+    a2.name = "author 2";
+
     let t: DataTemplateModel;
     t = new DataTemplateModel();
     t.text = "ddjkghjdf";
@@ -26,12 +30,18 @@ export class DataTemplateService {
     t2.author = a;
 
     this.templates.push(t, t2);
+    this.authors.push(a, a2);
   }
 
-  private templates: DataTemplateModel[];
+  private templates: DataTemplateModel[] = [];
+  private authors: AuthorModel[] = [];
 
   getTemplates(): DataTemplateModel[] {
     return this.templates;
+  }
+
+  getAuthors(): AuthorModel[] {
+    return this.authors;
   }
 
   getTemplatesFromServer() {
