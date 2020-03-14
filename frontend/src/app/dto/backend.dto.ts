@@ -1,4 +1,4 @@
-import {NodeStatus} from "../component/java-server/java-server.component";
+import {NodeStatus} from "../backend/backend.component";
 
 export class BackendDto {
   host: string;

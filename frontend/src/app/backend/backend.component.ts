@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {BackendModel} from '../../model/backend.model';
-import {BackendService} from "../../service/backend.service";
+import {BackendModel} from './backend.model';
+import {BackendService} from "../backends-manager/backend.service";
 import {strict} from "assert";
 
 export enum NodeStatus {
@@ -18,10 +18,10 @@ export enum NodeStatus {
 
 @Component({
   selector: 'app-java-server',
-  templateUrl: './java-server.component.html',
-  styleUrls: ['./java-server.component.css']
+  templateUrl: './backend.component.html',
+  styleUrls: ['./backend.component.css']
 })
-export class JavaServerComponent implements OnInit {
+export class BackendComponent implements OnInit {
 
   @Input() backendModel: BackendModel;
 

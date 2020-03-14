@@ -1,7 +1,7 @@
-import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
-import {DataTemplateModel} from "../model/data-template.model";
-import {AuthorModel} from "../model/author.model";
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {DataTemplateModel} from "../data-template/data-template.model";
+import {AuthorModel} from "../data-template/author.model";
 
 @Injectable({
   providedIn: 'root'
@@ -11,22 +11,23 @@ export class DataTemplateService {
   constructor(private http: HttpClient) {
     let a: AuthorModel;
     a = new AuthorModel();
-    a.name = "author 1";
+    a.name = "Пушкин А.С.";
 
     let a2: AuthorModel;
     a2 = new AuthorModel();
-    a2.name = "author 2";
+    a2.name = "Лермонтов М.Ю.";
 
     let t: DataTemplateModel;
     t = new DataTemplateModel();
-    t.text = "ddjkghjdf";
-    t.name = "name 1";
+    t.name = "Золотая рыбка";
+    t.text = "Жыли были дед да баба ...";
     t.author = a;
 
     let t2: DataTemplateModel;
     t2 = new DataTemplateModel();
-    t2.text = "ddjkghj sdfsdf sd fsdfsd df";
-    t2.name = "name 2";
+    t2.name = "Евгений Онегин";
+    t2.text = "Мой дядя самых честных правил...";
+
     t2.author = a;
 
     this.templates.push(t, t2);
@@ -51,5 +52,9 @@ export class DataTemplateService {
         items => this.templates = items,
         error => console.log(error) //TODO: handle error
       );
+  }
+
+  getDataTemplateDialogId(): string {
+    return 'data-template';
   }
 }

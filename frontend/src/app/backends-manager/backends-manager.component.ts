@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {BackendService} from '../../service/backend.service';
-import {BackendModel} from '../../model/backend.model';
+import {BackendService} from './backend.service';
+import {BackendModel} from '../backend/backend.model';
 
 @Component({
   selector: 'app-backends-manager',

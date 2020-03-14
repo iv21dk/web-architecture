@@ -10,21 +10,21 @@ import { HttpClientModule } from '@angular/common/http';
 //import { MatTableModule } from "@angular/material";
 
 import { AppComponent } from './app.component';
-import { BackendsManagerComponent } from './component/backends-manager/backends-manager.component';
-import { JavaServerComponent } from './component/java-server/java-server.component';
-import { BackendService } from './service/backend.service';
-import { DataTemplatesComponent } from './component/data-templates/data-templates.component';
-import {DataTemplateService} from "./service/data-template.service";
-//import { ModalDialogComponent } from './modal-dialog/modal-dialog.component';
-import {ModalDialogModule} from "./modal-dialog/modal-dialog.module";
-
+import { BackendsManagerComponent } from './backends-manager/backends-manager.component';
+import { BackendComponent } from './backend/backend.component';
+import { BackendService } from './backends-manager/backend.service';
+import { DataTemplatesComponent } from './data-templates/data-templates.component';
+import {DataTemplateService} from './data-templates/data-template.service';;
+import {ModalDialogModule} from './modal-dialog/modal-dialog.module';
+import { DataTemplateComponent } from './data-template/data-template.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     BackendsManagerComponent,
-    JavaServerComponent,
-    DataTemplatesComponent
+    BackendComponent,
+    DataTemplatesComponent,
+    DataTemplateComponent
     //ModalDialogComponent
   ],
   imports: [
