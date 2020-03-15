@@ -4,10 +4,10 @@ import com.ids.webarchitecture.dto.DataTemplateDto;
 import com.ids.webarchitecture.dto.ProductAuthorDto;
 import com.ids.webarchitecture.service.DataTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,8 +23,9 @@ public class DataTemplateController {
     }
 
     @PostMapping("/api/data-templates")
-    public void createDataTemplate(@RequestBody DataTemplateDto dataTemplateDto) {
-        dataTemplateService.createDataTemplate(dataTemplateDto);
+    @ResponseStatus(HttpStatus.CREATED)
+    public DataTemplateDto createDataTemplate(@RequestBody DataTemplateDto dataTemplateDto) {
+        return dataTemplateService.createDataTemplateAndConvert(dataTemplateDto);
     }
 
     @GetMapping("/api/data-templates/authors")

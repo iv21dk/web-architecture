@@ -14,4 +14,8 @@ public class Named extends Identifiable {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Named() {
+        super();
+    }
 }

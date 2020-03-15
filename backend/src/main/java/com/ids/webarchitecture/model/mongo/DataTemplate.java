@@ -2,11 +2,15 @@ package com.ids.webarchitecture.model.mongo;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document("data_template")
+@Document(collection = "data_template")
 public class DataTemplate extends Named {
 
     public DataTemplate(String id) {
         super(id);
+    }
+
+    public DataTemplate() {
+        super();
     }
 
     private ProductAuthor author;

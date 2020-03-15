@@ -11,6 +11,9 @@ public class Identifiable {
         this.id = id;
     }
 
+    public Identifiable() {
+    }
+
     public String getId() {
         return id;
     }

@@ -61,6 +61,7 @@ export class DataTemplateService {
       .subscribe(
         res => {
           this.getTemplatesFromServer();
+          this.getAuthorsFromServer();
         },
         error => console.log(error) //TODO: handle error
       );

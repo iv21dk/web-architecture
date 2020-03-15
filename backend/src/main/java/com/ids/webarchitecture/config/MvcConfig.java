@@ -14,19 +14,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 public class MvcConfig implements WebMvcConfigurer {
 
-//    @Override
-//    public void addViewControllers(ViewControllerRegistry registry) {
-////        registry.addViewController("/home").setViewName("index.html");
-////        registry.addViewController("/").setViewName("index.html");
-////        registry.addViewController("/architecture").setViewName("architecture.html");
-////        registry.addViewController("/login").setViewName("login.html");
-//    }
-
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
-        .allowedOrigins("*") //TODO: move to properties
-        .allowedMethods("GET", "POST", "PUT", "DELETE");
+                .allowedOrigins("*") //TODO: move to properties
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+//                .allowedHeaders("Content-Type", "X-Requested-With", "accept", "Origin", "Access-Control-Request-Method",
+//                        "Access-Control-Request-Headers")
+//                .exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials")
+                .allowCredentials(true).maxAge(3600);
     }
 
 //    @Bean
