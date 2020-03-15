@@ -3,6 +3,7 @@ import {DataTemplateService} from '../data-templates/data-template.service';
 import {ModalDialogService} from '../modal-dialog/modal-dialog.service';
 import {AuthorModel} from './author.model';
 import {DataTemplateModel} from './data-template.model';
+import {isEmpty} from "rxjs/operators";
 
 @Component({
   selector: 'app-data-template',
@@ -14,7 +15,7 @@ export class DataTemplateComponent implements OnInit {
   constructor(private templateService: DataTemplateService, private modalDialogService: ModalDialogService) { }
 
   @Input() editTemplate: DataTemplateModel = new DataTemplateModel();
-  authorId: string;
+  @Input() authorId: string;
   authorName: string;
 
   ngOnInit(): void {
@@ -33,14 +34,12 @@ export class DataTemplateComponent implements OnInit {
 
   closeModal(save: boolean) {
     if (save === true) {
+      this.editTemplate.author = new AuthorModel();
       if (this.authorId === 'new') {
-        this.editTemplate.author = new AuthorModel();
         this.editTemplate.author.name = this.authorName;
       } else {
-        this.editTemplate.author = new AuthorModel();
         this.editTemplate.author.id = this.authorId;
       }
-
       if (this.editTemplate.id === undefined || this.editTemplate.id === '') {
         this.templateService.createTemplate(this.editTemplate);
       } else {

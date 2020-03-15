@@ -64,8 +64,20 @@ input.port{
 }
 
 table.data-source {
-  border: solid black 0.07rem;
+  border: solid grey 0.07rem;
   width: 100%;
+}
+
+.data-source-row {
+  height: 1.1rem;
+  overflow: hidden;
+  margin: 0.3rem 0.2rem;
+}
+
+tr.data-source-row:hover {
+  background-color: azure;
+  border: solid green 0.07rem;
+  cursor: pointer;
 }
 
 thead {

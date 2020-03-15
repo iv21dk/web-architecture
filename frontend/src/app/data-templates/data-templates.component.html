@@ -10,22 +10,22 @@
         <th>Author</th>
         <th>Name</th>
         <th>Text</th>
-        <th></th>
       </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let item of getTemplates(); let i = index">
+    <tr class="data-source-row" *ngFor="let item of getTemplates(); let i = index" (dblclick)="update(item)">
       <td>{{i+1}}</td>
-      <td>{{item.author === null ? '' : item.author.name}}</td>
-      <td>{{item.name}}</td>
-      <td>{{item.text}}</td>
-      <!--<td><button (click)="update(item)"></button></td>-->
-      <td><a (click)="update(item)">change</a></td>
+      <td class="template-author-name">
+        <div class="data-source-row">{{item.author === null ? '' : item.author.name}}</div>
+      </td>
+      <td class="template-name"><div class="data-source-row">{{item.name}}</div></td>
+      <td class="template-text"><div class="data-source-row">{{item.text}}</div></td>
+      <!--<td><a (click)="update(item)">change</a></td>-->
     </tr>
     </tbody>
   </table>
 </div>
 
 <app-modal-dialog id="data-template">
-  <app-data-template [editTemplate]="editTemplate"></app-data-template>
+  <app-data-template [editTemplate]="editTemplate" [authorId]="editAuthorId"></app-data-template>
 </app-modal-dialog>

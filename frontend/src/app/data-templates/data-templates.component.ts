@@ -13,6 +13,7 @@ export class DataTemplatesComponent implements OnInit {
   constructor(private templateService: DataTemplateService, private modalDialogService: ModalDialogService) { }
 
   editTemplate: DataTemplateModel;
+  editAuthorId: string;
 
   ngOnInit(): void {
   }
@@ -23,11 +24,17 @@ export class DataTemplatesComponent implements OnInit {
 
   create() {
     this.editTemplate = new DataTemplateModel();
+    this.editAuthorId = undefined;
     this.modalDialogService.open(this.templateService.getDataTemplateDialogId());
   }
 
   update(dataTemplate: DataTemplateModel) {
     this.editTemplate = dataTemplate;
+    if (this.editTemplate.author !== undefined && this.editTemplate.author !== null) {
+      this.editAuthorId = dataTemplate.author.id;
+    } else {
+      this.editAuthorId = undefined;
+    }
     this.modalDialogService.open(this.templateService.getDataTemplateDialogId());
   }
 
