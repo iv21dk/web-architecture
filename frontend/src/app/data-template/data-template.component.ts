@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {DataTemplateService} from "../data-templates/data-template.service";
-import {ModalDialogService} from "../modal-dialog/modal-dialog.service";
-import {AuthorModel} from "./author.model";
-import {DataTemplateModel} from "./data-template.model";
+import {DataTemplateService} from '../data-templates/data-template.service';
+import {ModalDialogService} from '../modal-dialog/modal-dialog.service';
+import {AuthorModel} from './author.model';
+import {DataTemplateModel} from './data-template.model';
 
 @Component({
   selector: 'app-data-template',
@@ -18,12 +18,13 @@ export class DataTemplateComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  getAuthors(): AuthorModel[]{
+  getAuthors(): AuthorModel[] {
     return this.templateService.getAuthors();
   }
 
   closeModal(save: boolean) {
     if (save === true) {
+      this.templateService.createTemplate(this.editTemplate);
       this.editTemplate = new DataTemplateModel();
     }
     this.modalDialogService.close(this.templateService.getDataTemplateDialogId());
