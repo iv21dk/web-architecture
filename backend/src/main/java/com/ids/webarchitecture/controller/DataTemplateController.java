@@ -28,6 +28,12 @@ public class DataTemplateController {
         return dataTemplateService.createDataTemplateAndConvert(dataTemplateDto);
     }
 
+    @PutMapping("/api/data-templates/{template-id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void createDataTemplate(@PathVariable("template-id") String templateId, @RequestBody DataTemplateDto dataTemplateDto) {
+        dataTemplateService.updateDataTemplate(templateId, dataTemplateDto);
+    }
+
     @GetMapping("/api/data-templates/authors")
     public List<ProductAuthorDto> getAllAuthors() {
         return dataTemplateService.getAllAuthors();

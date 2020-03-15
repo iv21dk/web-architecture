@@ -50,6 +50,9 @@ public class DataTemplateService {
 
     public DataTemplate createDataTemplate(DataTemplateDto dataTemplateDto) {
         validate(dataTemplateDto);
+        if (dataTemplateDto.getAuthor() != null) {
+            validate(dataTemplateDto.getAuthor());
+        }
         DataTemplate dataTemplate = dataTemplateDtoToBo(dataTemplateDto);
         dataTemplate.setId(null);
         resolveProductAuthor(dataTemplate);
@@ -74,15 +77,34 @@ public class DataTemplateService {
 
     private void validate(DataTemplateDto dataTemplateDto) {
         if (dataTemplateDto.getName() == null || dataTemplateDto.getName().isBlank()) {
-            throw new RequestParameterException("Field 'name' should be defined");
+            throw new RequestParameterException("Field 'name' of the template should be defined");
         }
         if (dataTemplateDto.getText() == null || dataTemplateDto.getText().isBlank()) {
-            throw new RequestParameterException("Field 'text' should be defined");
+            throw new RequestParameterException("Field 'text' of the template should be defined");
+        }
+    }
+
+    private void validate(ProductAuthorDto productAuthorDto) {
+        if ((productAuthorDto.getId() == null || productAuthorDto.getId().isBlank())
+                && (productAuthorDto.getName() == null || productAuthorDto.getName().isBlank())) {
+            throw new RequestParameterException("Field 'name' of the author should be defined");
         }
     }
 
     public List<ProductAuthorDto> getAllAuthors() {
         return productAuthorMongoRepository.findAll().stream()
                 .map(i->productAuthorBoToDto(i)).collect(Collectors.toList());
+    }
+
+    public void updateDataTemplate(String templateId, DataTemplateDto dataTemplateDto) {
+        validate(dataTemplateDto);
+        if (dataTemplateDto.getAuthor() != null) {
+            validate(dataTemplateDto.getAuthor());
+        }
+        checkFound(dataTemplateMongoRepository.findById(templateId));
+        DataTemplate dataTemplate = dataTemplateDtoToBo(dataTemplateDto);
+        dataTemplate.setId(templateId);
+        resolveProductAuthor(dataTemplate);
+        dataTemplateMongoRepository.save(dataTemplate);
     }
 }

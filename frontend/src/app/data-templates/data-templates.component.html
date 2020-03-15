@@ -1,7 +1,6 @@
 <h3>Data templates</h3>
 <div class="command-panel">
   <button class="command-panel-button" (click)="create()">Create</button>
-  <button class="command-panel-button" (click)="update()">Update</button>
 </div>
 <div>
   <table class="data-source">
@@ -11,6 +10,7 @@
         <th>Author</th>
         <th>Name</th>
         <th>Text</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -19,13 +19,13 @@
       <td>{{item.author === null ? '' : item.author.name}}</td>
       <td>{{item.name}}</td>
       <td>{{item.text}}</td>
+      <!--<td><button (click)="update(item)"></button></td>-->
+      <td><a (click)="update(item)">change</a></td>
     </tr>
     </tbody>
-
   </table>
-
 </div>
 
 <app-modal-dialog id="data-template">
-  <app-data-template></app-data-template>
+  <app-data-template [editTemplate]="editTemplate"></app-data-template>
 </app-modal-dialog>
