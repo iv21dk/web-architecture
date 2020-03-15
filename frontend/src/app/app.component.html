@@ -1,4 +1,20 @@
-<h2>Web architecture</h2>
-<app-backends-manager></app-backends-manager>
-<app-data-templates></app-data-templates>
+<div class="top-menu">
+  <div class="logo">Web architecture</div>
+  <div class="top-menu-item"
+       [class.selected]="isSelected('TESTS')"
+       (click)="selectSection('TESTS')">Tests</div>
+  <div class="top-menu-item"
+       [class.selected]="isSelected('REPORTS')"
+       (click)="selectSection('REPORTS')"
+  >Reports</div>
+  <div class="top-menu-item"
+       [class.selected]="isSelected('DATA_TEMPLATE')"
+       (click)="selectSection('DATA_TEMPLATE')">Data templates</div>
+
+</div>
+<div class="middle-content">
+  <app-backends-manager *ngIf="isSelected('TESTS')"></app-backends-manager>
+  <app-data-templates *ngIf="isSelected('DATA_TEMPLATE')"></app-data-templates>
+</div>
+
 

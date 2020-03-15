@@ -1,4 +1,3 @@
-<h3>Data templates</h3>
 <div class="command-panel">
   <button class="command-panel-button" (click)="create()">Create</button>
 </div>
@@ -10,6 +9,7 @@
         <th>Author</th>
         <th>Name</th>
         <th>Text</th>
+        <th>Length</th>
       </tr>
     </thead>
     <tbody>
@@ -20,7 +20,7 @@
       </td>
       <td class="template-name"><div class="data-source-row">{{item.name}}</div></td>
       <td class="template-text"><div class="data-source-row">{{item.text}}</div></td>
-      <!--<td><a (click)="update(item)">change</a></td>-->
+      <td>{{item.text === null ? 0 : item.text.length}}</td>
     </tr>
     </tbody>
   </table>

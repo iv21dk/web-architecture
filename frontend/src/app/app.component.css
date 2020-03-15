@@ -1,0 +1,43 @@
+.top-menu {
+  height: 2.28rem;
+  background-color: black;
+  padding: 0 0.7rem;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  height: 2rem;
+  width: 17rem;
+  display: table-cell;
+  vertical-align: middle;
+  color: white;
+}
+
+.top-menu-item {
+  height: 2rem;
+  width: 8rem;
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  color: darkgray;
+  border-bottom: black solid 0.14rem;
+  border-top: black solid 0.14rem;
+}
+
+.top-menu-item:hover {
+  border-bottom: darkgray solid 0.14rem;
+  cursor: pointer;
+}
+
+.top-menu-item.selected {
+  background-color: darkgrey;
+  color: black;
+  border-bottom: darkgrey solid 0.14rem;
+  border-top: darkgrey solid 0.14rem;
+  text-shadow: black 0.07rem 0.07rem 0.2rem
+}
+
+.middle-content {
+  margin: 1rem;
+}

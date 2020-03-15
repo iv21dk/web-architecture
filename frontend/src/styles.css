@@ -1,7 +1,10 @@
 
 html{
   font-family: "Roboto", sans-serif;
-  margin: 0.25rem;
+}
+
+body {
+  margin: 0;
 }
 
 .node-box{
@@ -83,4 +86,5 @@ tr.data-source-row:hover {
 thead {
   border: solid black 0.07rem;
 }
+
 
