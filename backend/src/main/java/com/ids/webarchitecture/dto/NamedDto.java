@@ -1,7 +1,5 @@
 package com.ids.webarchitecture.dto;
 
-import com.ids.webarchitecture.model.mongo.Identifiable;
-
 public class NamedDto extends IdentifiableDto {
     private String name;
 

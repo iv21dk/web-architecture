@@ -1,6 +1,6 @@
 package com.ids.webarchitecture.utils;
 
-import com.ids.webarchitecture.excption.NotFoundException;
+import com.ids.webarchitecture.exception.NotFoundException;
 
 import java.util.Optional;
 

@@ -3,15 +3,14 @@ package com.ids.webarchitecture.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ids.webarchitecture.dto.DataTemplateDto;
 import com.ids.webarchitecture.dto.ProductAuthorDto;
-import com.ids.webarchitecture.excption.RequestParameterException;
-import com.ids.webarchitecture.model.mongo.DataTemplate;
-import com.ids.webarchitecture.model.mongo.ProductAuthor;
+import com.ids.webarchitecture.exception.RequestParameterException;
+import com.ids.webarchitecture.model.mongo.DataTemplateMongo;
+import com.ids.webarchitecture.model.mongo.ProductAuthorTemplateMongo;
 import com.ids.webarchitecture.repository.mongo.DataTemplateMongoRepository;
 import com.ids.webarchitecture.repository.mongo.ProductAuthorMongoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,37 +31,37 @@ public class DataTemplateService {
                 .map(i->dataTemplateBoToDto(i)).collect(Collectors.toList());
     }
 
-    private DataTemplateDto dataTemplateBoToDto(DataTemplate dataTemplate) {
+    private DataTemplateDto dataTemplateBoToDto(DataTemplateMongo dataTemplate) {
         return mapper.convertValue(dataTemplate, DataTemplateDto.class);
     }
 
-    private DataTemplate dataTemplateDtoToBo(DataTemplateDto dataTemplateDto) {
-        return mapper.convertValue(dataTemplateDto, DataTemplate.class);
+    private DataTemplateMongo dataTemplateDtoToBo(DataTemplateDto dataTemplateDto) {
+        return mapper.convertValue(dataTemplateDto, DataTemplateMongo.class);
     }
 
-    private ProductAuthorDto productAuthorBoToDto(ProductAuthor productAuthor) {
+    private ProductAuthorDto productAuthorBoToDto(ProductAuthorTemplateMongo productAuthor) {
         return mapper.convertValue(productAuthor, ProductAuthorDto.class);
     }
 
-    private ProductAuthor productAuthorDtoToBo(ProductAuthorDto productAuthorDto) {
-        return mapper.convertValue(productAuthorDto, ProductAuthor.class);
+    private ProductAuthorTemplateMongo productAuthorDtoToBo(ProductAuthorDto productAuthorDto) {
+        return mapper.convertValue(productAuthorDto, ProductAuthorTemplateMongo.class);
     }
 
-    public DataTemplate createDataTemplate(DataTemplateDto dataTemplateDto) {
+    public DataTemplateMongo createDataTemplate(DataTemplateDto dataTemplateDto) {
         validate(dataTemplateDto);
         if (dataTemplateDto.getAuthor() != null) {
             validate(dataTemplateDto.getAuthor());
         }
-        DataTemplate dataTemplate = dataTemplateDtoToBo(dataTemplateDto);
+        DataTemplateMongo dataTemplate = dataTemplateDtoToBo(dataTemplateDto);
         dataTemplate.setId(null);
         resolveProductAuthor(dataTemplate);
         return dataTemplateMongoRepository.save(dataTemplate);
     }
 
-    private void resolveProductAuthor(DataTemplate dataTemplate) {
+    private void resolveProductAuthor(DataTemplateMongo dataTemplate) {
         if (dataTemplate.getAuthor() != null) {
             if (dataTemplate.getAuthor().getId() == null || dataTemplate.getAuthor().getId().isBlank()) {
-                ProductAuthor productAuthor = productAuthorMongoRepository.save(dataTemplate.getAuthor());
+                ProductAuthorTemplateMongo productAuthor = productAuthorMongoRepository.save(dataTemplate.getAuthor());
                 dataTemplate.setAuthor(productAuthor);
             } else {
                 dataTemplate.setAuthor(
@@ -102,7 +101,7 @@ public class DataTemplateService {
             validate(dataTemplateDto.getAuthor());
         }
         checkFound(dataTemplateMongoRepository.findById(templateId));
-        DataTemplate dataTemplate = dataTemplateDtoToBo(dataTemplateDto);
+        DataTemplateMongo dataTemplate = dataTemplateDtoToBo(dataTemplateDto);
         dataTemplate.setId(templateId);
         resolveProductAuthor(dataTemplate);
         dataTemplateMongoRepository.save(dataTemplate);
