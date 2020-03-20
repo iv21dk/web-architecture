@@ -7,9 +7,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Document
+@Document(collection = "test")
 public class Test extends IdentifiableEntity {
     private Date startDate = new Date();
+    private Date endDate;
+    private Long initialDataCount;
     private Integer requestsCount = 0;
     private Short mongoDbClusterSize = 0;
     private Short sqlClusterSize = 0;
@@ -24,6 +26,14 @@ public class Test extends IdentifiableEntity {
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public Integer getRequestsCount() {
@@ -80,5 +90,13 @@ public class Test extends IdentifiableEntity {
 
     public void setBackends(List<BackendTestData> backends) {
         this.backends = backends;
+    }
+
+    public Long getInitialDataCount() {
+        return initialDataCount;
+    }
+
+    public void setInitialDataCount(Long initialDataCount) {
+        this.initialDataCount = initialDataCount;
     }
 }

@@ -8,6 +8,7 @@ import com.ids.webarchitecture.model.mongo.DataTemplateMongo;
 import com.ids.webarchitecture.model.mongo.ProductAuthorTemplateMongo;
 import com.ids.webarchitecture.repository.mongo.DataTemplateMongoRepository;
 import com.ids.webarchitecture.repository.mongo.ProductAuthorMongoRepository;
+import com.ids.webarchitecture.repository.mongo.ProductAuthorTemplateMongoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public class DataTemplateService {
     @Autowired
     private DataTemplateMongoRepository dataTemplateMongoRepository;
     @Autowired
-    private ProductAuthorMongoRepository productAuthorMongoRepository;
+    private ProductAuthorTemplateMongoRepository productAuthorMongoRepository;
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -49,9 +50,7 @@ public class DataTemplateService {
 
     public DataTemplateMongo createDataTemplate(DataTemplateDto dataTemplateDto) {
         validate(dataTemplateDto);
-        if (dataTemplateDto.getAuthor() != null) {
-            validate(dataTemplateDto.getAuthor());
-        }
+        validate(dataTemplateDto.getAuthor());
         DataTemplateMongo dataTemplate = dataTemplateDtoToBo(dataTemplateDto);
         dataTemplate.setId(null);
         resolveProductAuthor(dataTemplate);
@@ -59,14 +58,12 @@ public class DataTemplateService {
     }
 
     private void resolveProductAuthor(DataTemplateMongo dataTemplate) {
-        if (dataTemplate.getAuthor() != null) {
-            if (dataTemplate.getAuthor().getId() == null || dataTemplate.getAuthor().getId().isBlank()) {
-                ProductAuthorTemplateMongo productAuthor = productAuthorMongoRepository.save(dataTemplate.getAuthor());
-                dataTemplate.setAuthor(productAuthor);
-            } else {
-                dataTemplate.setAuthor(
-                        checkFound(productAuthorMongoRepository.findById(dataTemplate.getAuthor().getId())));
-            }
+        if (dataTemplate.getAuthor().getId() == null || dataTemplate.getAuthor().getId().isBlank()) {
+            ProductAuthorTemplateMongo productAuthor = productAuthorMongoRepository.save(dataTemplate.getAuthor());
+            dataTemplate.setAuthor(productAuthor);
+        } else {
+            dataTemplate.setAuthor(
+                    checkFound(productAuthorMongoRepository.findById(dataTemplate.getAuthor().getId())));
         }
     }
 
@@ -80,6 +77,9 @@ public class DataTemplateService {
         }
         if (dataTemplateDto.getText() == null || dataTemplateDto.getText().isBlank()) {
             throw new RequestParameterException("Field 'text' of the template should be defined");
+        }
+        if (dataTemplateDto.getAuthor() == null) {
+            throw new RequestParameterException("Field 'author' of the template should be defined");
         }
     }
 

@@ -74,6 +74,12 @@
 			<version>9.4-1206-jdbc42</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>2.3.5</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
