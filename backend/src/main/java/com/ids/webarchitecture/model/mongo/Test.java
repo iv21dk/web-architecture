@@ -1,6 +1,8 @@
 package com.ids.webarchitecture.model.mongo;
 
 import com.ids.webarchitecture.model.IdentifiableEntity;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
@@ -8,6 +10,8 @@ import java.util.Date;
 import java.util.List;
 
 @Document(collection = "test")
+@Getter
+@Setter
 public class Test extends IdentifiableEntity {
     private Date startDate = new Date();
     private Date endDate;
@@ -19,84 +23,4 @@ public class Test extends IdentifiableEntity {
     private TestMeasurements mongoDbMeasurements = new TestMeasurements();
     private TestMeasurements sqlMeasurements = new TestMeasurements();
     private List<BackendTestData> backends = new ArrayList<>();
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public Integer getRequestsCount() {
-        return requestsCount;
-    }
-
-    public void setRequestsCount(Integer requestsCount) {
-        this.requestsCount = requestsCount;
-    }
-
-    public Short getMongoDbClusterSize() {
-        return mongoDbClusterSize;
-    }
-
-    public void setMongoDbClusterSize(Short mongoDbClusterSize) {
-        this.mongoDbClusterSize = mongoDbClusterSize;
-    }
-
-    public Short getSqlClusterSize() {
-        return sqlClusterSize;
-    }
-
-    public void setSqlClusterSize(Short sqlClusterSize) {
-        this.sqlClusterSize = sqlClusterSize;
-    }
-
-    public Short getBackendClusterSize() {
-        return backendClusterSize;
-    }
-
-    public void setBackendClusterSize(Short backendClusterSize) {
-        this.backendClusterSize = backendClusterSize;
-    }
-
-    public TestMeasurements getMongoDbMeasurements() {
-        return mongoDbMeasurements;
-    }
-
-    public void setMongoDbMeasurements(TestMeasurements mongoDbMeasurements) {
-        this.mongoDbMeasurements = mongoDbMeasurements;
-    }
-
-    public TestMeasurements getSqlMeasurements() {
-        return sqlMeasurements;
-    }
-
-    public void setSqlMeasurements(TestMeasurements sqlMeasurements) {
-        this.sqlMeasurements = sqlMeasurements;
-    }
-
-    public List<BackendTestData> getBackends() {
-        return backends;
-    }
-
-    public void setBackends(List<BackendTestData> backends) {
-        this.backends = backends;
-    }
-
-    public Long getInitialDataCount() {
-        return initialDataCount;
-    }
-
-    public void setInitialDataCount(Long initialDataCount) {
-        this.initialDataCount = initialDataCount;
-    }
 }

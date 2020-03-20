@@ -1,27 +1,16 @@
 package com.ids.webarchitecture.model.mongo;
 
-import com.ids.webarchitecture.model.NamedEntity;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.validation.constraints.NotNull;
 
 //@Document(collection = "product")
+@Getter
+@Setter
 public class ProductMongo {
-
+    @NotNull
     private String name;
+    @NotNull
     private String text;
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

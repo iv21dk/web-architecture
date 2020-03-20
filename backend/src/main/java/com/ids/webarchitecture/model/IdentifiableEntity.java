@@ -1,11 +1,17 @@
 package com.ids.webarchitecture.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @MappedSuperclass
+@Getter
+@Setter
+@NoArgsConstructor
 public abstract class IdentifiableEntity {
 
     @Id
@@ -18,14 +24,4 @@ public abstract class IdentifiableEntity {
         this.id = id;
     }
 
-    public IdentifiableEntity() {
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 }
