@@ -20,7 +20,7 @@ public class Test extends IdentifiableEntity {
     private Short mongoDbClusterSize = 0;
     private Short sqlClusterSize = 0;
     private Short backendClusterSize = 0;
-    private TestMeasurements mongoDbMeasurements = new TestMeasurements();
-    private TestMeasurements sqlMeasurements = new TestMeasurements();
+    private TestMeasurements mongoDbMeasurements;
+    private TestMeasurements sqlMeasurements;
     private List<BackendTestData> backends = new ArrayList<>();
 }

@@ -1,6 +1,11 @@
 package com.ids.webarchitecture.service;
 
-public class TempTestMeasurements {
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class DataActionMeasurements {
     private Integer createTimeMs;
     private Integer findByIndexedFieldTimeMs;
     private Integer findByNoIndexedFieldTimeMs;

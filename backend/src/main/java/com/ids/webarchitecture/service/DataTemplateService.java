@@ -7,7 +7,6 @@ import com.ids.webarchitecture.exception.RequestParameterException;
 import com.ids.webarchitecture.model.mongo.DataTemplateMongo;
 import com.ids.webarchitecture.model.mongo.ProductAuthorTemplateMongo;
 import com.ids.webarchitecture.repository.mongo.DataTemplateMongoRepository;
-import com.ids.webarchitecture.repository.mongo.ProductAuthorMongoRepository;
 import com.ids.webarchitecture.repository.mongo.ProductAuthorTemplateMongoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,10 +19,12 @@ import static com.ids.webarchitecture.utils.ServiceUtils.checkFound;
 @Service
 public class DataTemplateService {
 
+    public static final int MIN_TEMPLATE_TEXT_LENGTH = 100;
+
     @Autowired
     private DataTemplateMongoRepository dataTemplateMongoRepository;
     @Autowired
-    private ProductAuthorTemplateMongoRepository productAuthorMongoRepository;
+    private ProductAuthorTemplateMongoRepository authorTemplateMongoRepository;
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -59,11 +60,11 @@ public class DataTemplateService {
 
     private void resolveProductAuthor(DataTemplateMongo dataTemplate) {
         if (dataTemplate.getAuthor().getId() == null || dataTemplate.getAuthor().getId().isBlank()) {
-            ProductAuthorTemplateMongo productAuthor = productAuthorMongoRepository.save(dataTemplate.getAuthor());
+            ProductAuthorTemplateMongo productAuthor = authorTemplateMongoRepository.save(dataTemplate.getAuthor());
             dataTemplate.setAuthor(productAuthor);
         } else {
             dataTemplate.setAuthor(
-                    checkFound(productAuthorMongoRepository.findById(dataTemplate.getAuthor().getId())));
+                    checkFound(authorTemplateMongoRepository.findById(dataTemplate.getAuthor().getId())));
         }
     }
 
@@ -78,6 +79,10 @@ public class DataTemplateService {
         if (dataTemplateDto.getText() == null || dataTemplateDto.getText().isBlank()) {
             throw new RequestParameterException("Field 'text' of the template should be defined");
         }
+        if (dataTemplateDto.getText().length() < MIN_TEMPLATE_TEXT_LENGTH) {
+            throw new RequestParameterException("Text of the template should have minimum length: "
+                    + MIN_TEMPLATE_TEXT_LENGTH);
+        }
         if (dataTemplateDto.getAuthor() == null) {
             throw new RequestParameterException("Field 'author' of the template should be defined");
         }
@@ -91,7 +96,7 @@ public class DataTemplateService {
     }
 
     public List<ProductAuthorDto> getAllAuthors() {
-        return productAuthorMongoRepository.findAll().stream()
+        return authorTemplateMongoRepository.findAll().stream()
                 .map(i->productAuthorBoToDto(i)).collect(Collectors.toList());
     }
 
