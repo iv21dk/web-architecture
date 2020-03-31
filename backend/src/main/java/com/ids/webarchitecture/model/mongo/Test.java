@@ -15,11 +15,12 @@ import java.util.List;
 public class Test extends IdentifiableEntity {
     private Date startDate = new Date();
     private Date endDate;
-    private Long initialDataCount;
     private Integer requestsCount = 0;
     private Short mongoDbClusterSize = 0;
     private Short sqlClusterSize = 0;
     private Short backendClusterSize = 0;
+    private Long mongoInitialDataCount;
+    private Long sqlInitialDataCount;
     private TestMeasurements mongoDbMeasurements;
     private TestMeasurements sqlMeasurements;
     private List<BackendTestData> backends = new ArrayList<>();

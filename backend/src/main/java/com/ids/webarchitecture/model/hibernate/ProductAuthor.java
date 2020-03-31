@@ -11,10 +11,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "PRODUCT_AUTHOR"
-//        indexes =
-//            {@Index(columnList = "author_template_id", name = "idx_product_author_template_id")}
-            )
+@Table(name = "PRODUCT_AUTHOR", indexes = {
+        @Index(columnList = "author_template_id", name = "idx_product_author_template_id")})
 @Getter
 @Setter
 public class ProductAuthor extends NamedEntity {

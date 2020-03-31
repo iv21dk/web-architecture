@@ -13,7 +13,8 @@ import java.util.List;
 public class TestDto extends IdentifiableDto {
     private Date startDate;
     private Date endDate;
-    private Long initialDataCount;
+    private Long mongoInitialDataCount;
+    private Long sqlInitialDataCount;
     private Integer requestsCount;
     private Short mongoDbClusterSize;
     private Short sqlClusterSize;
