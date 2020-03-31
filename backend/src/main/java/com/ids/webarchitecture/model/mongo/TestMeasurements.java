@@ -10,6 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 public class TestMeasurements {
+
     private Integer avgCreateTimeMs;
     private Integer avgFindByIndexedFieldTimeMs;
     private Integer avgFindByNoIndexedFieldTimeMs;
@@ -30,7 +31,23 @@ public class TestMeasurements {
         deleteTimeMs.add(measurements.getDeleteTimeMs());
     }
 
-    public void calculateAvgVAlues() {
-        //TODO: Need to implement
+    public void calculateAvgValues() {
+        avgCreateTimeMs = calculateAvgValue(this.createTimeMs);
+        avgFindByIndexedFieldTimeMs = calculateAvgValue(this.findByIndexedFieldTimeMs);
+        avgFindByNoIndexedFieldTimeMs = calculateAvgValue(this.findByNoIndexedFieldTimeMs);
+        avgUpdateTimeMs = calculateAvgValue(this.updateTimeMs);
+        avgDeleteTimeMs = calculateAvgValue(this.deleteTimeMs);
+    }
+
+    private Integer calculateAvgValue(List<Integer> measurements) {
+        int fullTime = 0;
+        int measurementsCount = 0;
+        for (Integer measurement : measurements) {
+            if (measurement != null) {
+                fullTime += measurement;
+                measurementsCount++;
+            }
+        }
+        return measurementsCount == 0 ? 0 : fullTime / measurementsCount;
     }
 }

@@ -26,4 +26,10 @@ public class TestController {
         testService.putTestData(testId, dataTemplateId);
     }
 
+    @PutMapping("/api/tests/{test-id}/close")
+    @ResponseStatus(HttpStatus.OK)
+    public void closeTest(@PathVariable("test-id") String testId) {
+        testService.closeTest(testId);
+    }
+
 }

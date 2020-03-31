@@ -9,6 +9,8 @@ import com.ids.webarchitecture.repository.mongo.LockedTestMongoRepository;
 import com.ids.webarchitecture.repository.mongo.ProductAuthorMongoRepository;
 import com.ids.webarchitecture.repository.mongo.TestRepository;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,8 @@ import static com.ids.webarchitecture.utils.ServiceUtils.checkFound;
 @Service
 public class TestService {
 
+    Logger log = LoggerFactory.getLogger(TestService.class);
+
     @Autowired
     private TestRepository testRepository;
     @Autowired
@@ -30,7 +34,7 @@ public class TestService {
     @Autowired
     private ProductAuthorMongoRepository productAuthorMongoRepository;
     @Autowired
-    private LockedTestMongoRepository lockedTestRepository;
+    private TestLockService testLockService;
 
     private ModelMapper mapper = new ModelMapper();
 
@@ -40,8 +44,7 @@ public class TestService {
 
     @Transactional
     public TestDto createTest() {
-        //TODO: lock collection from other processes/threads/servers
-        if (locked()) {
+        if (testLockService.locked()) {
             throw new LockedException("Test service already locked");
         }
 
@@ -56,20 +59,8 @@ public class TestService {
         test.setInitialDataCount(productAuthorMongoRepository.count());
         test = testRepository.save(test);
 
-        lock(test.getId());
+        testLockService.lock(test.getId());
         return testBoToDto(test);
-    }
-
-    private boolean locked() {
-        return !lockedTestRepository.findAll().isEmpty();
-    }
-
-    private boolean lockedByTest(String testId) {
-        return lockedTestRepository.findOneByTestId(testId) != null;
-    }
-
-    private void lock(String testId) {
-        lockedTestRepository.save(new LockedTest(testId));
     }
 
     private TestDto testBoToDto(Test test) {
@@ -78,7 +69,7 @@ public class TestService {
 
     @Transactional
     public void putTestData(String testId, String dataTemplateId) {
-        if (!lockedByTest(testId)) {
+        if (!testLockService.lockedByTest(testId)) {
             throw new LockedException("Test service is not locked or locked by another test");
         }
         DataTemplateMongo dataTemplate = checkFound(dataTemplateMongoRepository.findById(dataTemplateId));
@@ -95,14 +86,14 @@ public class TestService {
     }
 
     private DataActionMeasurements putTestDataMongo(DataTemplateMongo dataTemplate) {
-        DataActionMeasurements mongoMeasurements = new DataActionMeasurements();
+        DataActionMeasurements measurements = new DataActionMeasurements();
 
         int createElapsedTime = executeMeasured(() -> {
             createAuthorAndProductMongo(dataTemplate);
             createAuthorAndProductMongo(dataTemplate);
             return null;
         });
-        mongoMeasurements.setCreateTimeMs((Integer) (createElapsedTime / 2));
+        measurements.setCreateTimeMs((Integer) (createElapsedTime / 2));
 
         List<ProductAuthorMongo> authors = productAuthorMongoRepository.findAll();
         String subtext = getRandomChunckFromText(dataTemplate.getText());
@@ -117,28 +108,75 @@ public class TestService {
             updateProductText(authorId3, subtext);
             return null;
         });
-        mongoMeasurements.setUpdateTimeMs((Integer)(updateElapsedTime / 3));
+        measurements.setUpdateTimeMs((Integer)(updateElapsedTime / 3));
 
-        mongoMeasurements.setFindByNoIndexedFieldTimeMs(
+        measurements.setFindByNoIndexedFieldTimeMs(
                 executeMeasured(() -> {
                     productAuthorMongoRepository.findByProductsTextLike(subtext);
                     return null;
                 }));
 
-        mongoMeasurements.setFindByIndexedFieldTimeMs(
+        measurements.setFindByIndexedFieldTimeMs(
                 executeMeasured(() -> {
                     productAuthorMongoRepository.findByAuthorTemplateId(dataTemplate.getAuthor().getId());
                     return null;
                 }));
 
         String authorId4 = getRandomAuthorId(authors);
-        mongoMeasurements.setDeleteTimeMs(
+        measurements.setDeleteTimeMs(
                 executeMeasured(() -> {
                     productAuthorMongoRepository.deleteById(authorId4);
                     return null;
                 }));
 
-        return mongoMeasurements;
+        return measurements;
+    }
+
+    private DataActionMeasurements putTestDataSql(DataTemplateMongo dataTemplate) {
+        DataActionMeasurements measurements = new DataActionMeasurements();
+
+        int createElapsedTime = executeMeasured(() -> {
+            createAuthorAndProductMongo(dataTemplate);
+            createAuthorAndProductMongo(dataTemplate);
+            return null;
+        });
+        measurements.setCreateTimeMs((Integer) (createElapsedTime / 2));
+
+        List<ProductAuthorMongo> authors = productAuthorMongoRepository.findAll();
+        String subtext = getRandomChunckFromText(dataTemplate.getText());
+
+        String authorId1 = getRandomAuthorId(authors);
+        String authorId2 = getRandomAuthorId(authors);
+        String authorId3 = getRandomAuthorId(authors);
+
+        int updateElapsedTime = executeMeasured(() -> {
+            addProductToAuthorMongo(authorId1, dataTemplate);
+            addProductToAuthorMongo(authorId2, dataTemplate);
+            updateProductText(authorId3, subtext);
+            return null;
+        });
+        measurements.setUpdateTimeMs((Integer)(updateElapsedTime / 3));
+
+        measurements.setFindByNoIndexedFieldTimeMs(
+                executeMeasured(() -> {
+                    productAuthorMongoRepository.findByProductsTextLike(subtext);
+                    return null;
+                }));
+
+        measurements.setFindByIndexedFieldTimeMs(
+                executeMeasured(() -> {
+                    productAuthorMongoRepository.findByAuthorTemplateId(dataTemplate.getAuthor().getId());
+                    return null;
+                }));
+
+        String authorId4 = getRandomAuthorId(authors);
+        measurements.setDeleteTimeMs(
+                executeMeasured(() -> {
+                    productAuthorMongoRepository.deleteById(authorId4);
+                    return null;
+                }));
+
+        return measurements;
     }
 
     private String getRandomAuthorId(List<ProductAuthorMongo> authors) {
@@ -227,6 +265,25 @@ public class TestService {
         }
         test.getMongoDbMeasurements().addMeasurements(mongoMeasurements);
         test.setRequestsCount(test.getRequestsCount()+1);
+        testRepository.save(test);
+    }
+
+    public void closeTest(String testId) {
+        if (testLockService.lockedByTest(testId)) {
+            testLockService.unlock(testId);
+        }
+        Test test = checkFound(testRepository.findById(testId));
+        if (test.getMongoDbMeasurements() == null) {
+            log.warn("Mongo DB measurements is null. test id = {}", testId);
+        } else {
+            test.getMongoDbMeasurements().calculateAvgValues();
+        }
+        if (test.getSqlMeasurements() == null) {
+            log.warn("SQL DB measurements is null. test id = {}", testId);
+        } else {
+            test.getSqlMeasurements().calculateAvgValues();
+        }
+        test.setEndDate(new Date());
         testRepository.save(test);
     }
 }
