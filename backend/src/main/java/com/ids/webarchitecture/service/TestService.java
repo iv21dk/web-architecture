@@ -32,9 +32,9 @@ public class TestService {
     @Autowired
     private TestLockService testLockService;
     @Autowired
-    private TestMongoService testMongoService;
+    private MongoTestService testMongoService;
     @Autowired
-    private TestSqlService testSqlService;
+    private SqlTestService testSqlService;
 
     private ModelMapper mapper = new ModelMapper();
 
@@ -68,22 +68,28 @@ public class TestService {
         return mapper.map(test, TestDto.class);
     }
 
-    @Transactional
     public void putTestData(String testId, String dataTemplateId) {
         if (!testLockService.lockedByTest(testId)) {
             throw new LockedException("Test service is not locked or locked by another test");
         }
         DataTemplateMongo dataTemplate = checkFound(dataTemplateMongoRepository.findById(dataTemplateId));
-        if  (dataTemplate.getAuthor() == null) {
+        if (dataTemplate.getAuthor() == null) {
             throw new RequestParameterException("Incorrect data template. Field 'author' should be defined");
         }
-        if  (dataTemplate.getText() == null
+        if (dataTemplate.getText() == null
                 || dataTemplate.getText().length() < DataTemplateService.MIN_TEMPLATE_TEXT_LENGTH) {
             throw new RequestParameterException("Incorrect text of the data template");
         }
 
-        DataActionMeasurements mongoMeasurements = executeAllAndMeasure(testMongoService, dataTemplate);
-        saveTestDataPersistResult(testId, mongoMeasurements);
+        try {
+            DataActionMeasurements mongoMeasurements = executeAllAndMeasure(testMongoService, dataTemplate);
+            DataActionMeasurements sqlMeasurements = executeAllAndMeasure(testSqlService, dataTemplate);
+            saveTestDataPersistResult(testId, mongoMeasurements, sqlMeasurements);
+        } catch (Exception e) {
+            saveTestDataError(testId, e.toString());
+            throw e;
+        }
+
     }
 
     private DataActionMeasurements executeAllAndMeasure(TestActionService actionService, DataTemplateMongo dataTemplate) {
@@ -94,22 +100,26 @@ public class TestService {
             actionService.createAuthorAndProduct(dataTemplate);
             return null;
         });
-        measurements.setCreateTimeMs((Integer) (createElapsedTime / 2));
+        measurements.setCreateTimeMs(createElapsedTime / 2);
 
         String subtext = getRandomChunckFromText(dataTemplate.getText());
 
-        String authorId1 = actionService.getRandomAuthorId();
-        String authorId2 = actionService.getRandomAuthorId();
-        String authorId3 = actionService.getRandomAuthorId();
-        String authorId4 = actionService.getRandomAuthorId();
+        if (actionService.getAuthorsCount() == 0) {
+            return measurements;
+        }
+
+        Optional<String> authorId1 = actionService.getRandomAuthorId();
+        Optional<String> authorId2 = actionService.getRandomAuthorId();
+        Optional<String> authorId3 = actionService.getRandomAuthorId();
+        Optional<String> authorId4 = actionService.getRandomAuthorId();
 
         int updateElapsedTime = executeMeasured(() -> {
-            actionService.addProductToAuthor(authorId1, dataTemplate);
-            actionService.addProductToAuthor(authorId2, dataTemplate);
-            actionService.updateProductText(authorId3, subtext);
+            actionService.addProductToAuthor(authorId1.get(), dataTemplate);
+            actionService.addProductToAuthor(authorId2.get(), dataTemplate);
+            actionService.updateProductText(authorId3.get(), subtext);
             return null;
         });
-        measurements.setUpdateTimeMs((Integer)(updateElapsedTime / 3));
+        measurements.setUpdateTimeMs(updateElapsedTime / 3);
 
         measurements.setFindByNoIndexedFieldTimeMs(
                 executeMeasured(() -> {
@@ -125,7 +135,7 @@ public class TestService {
 
         measurements.setDeleteTimeMs(
                 executeMeasured(() -> {
-                    actionService.deleteById(authorId4);
+                    actionService.deleteById(authorId4.get());
                     return null;
                 }));
 
@@ -164,15 +174,27 @@ public class TestService {
         return text.substring(begin, begin + DataTemplateService.MIN_TEMPLATE_TEXT_LENGTH);
     }
 
-    private void saveTestDataPersistResult(String testId, DataActionMeasurements mongoMeasurements) {
-        //TODO: block required test from read from other thread
-        //TODO: save async on different thread
+    private void saveTestDataPersistResult(String testId, DataActionMeasurements mongoMeasurements,
+                                           DataActionMeasurements sqlMeasurements) {
+        //TODO: save async on different thread with block document from other threads/nodes
         Test test = checkFound(testRepository.findById(testId));
         if (test.getMongoDbMeasurements() == null) {
             test.setMongoDbMeasurements(new TestMeasurements());
         }
+        if (test.getSqlMeasurements() == null) {
+            test.setSqlMeasurements(new TestMeasurements());
+        }
         test.getMongoDbMeasurements().addMeasurements(mongoMeasurements);
-        test.setRequestsCount(test.getRequestsCount()+1);
+        test.getSqlMeasurements().addMeasurements(sqlMeasurements);
+        test.setRequestsCount(test.getRequestsCount() + 1);
+        testRepository.save(test);
+    }
+
+    private void saveTestDataError(String testId, String trace) {
+        //TODO: save async on different thread with block document from other threads/nodes
+        Test test = checkFound(testRepository.findById(testId));
+        test.setRequestsCount(test.getRequestsCount() + 1);
+        test.getErrors().add(trace);
         testRepository.save(test);
     }
 
@@ -194,4 +216,5 @@ public class TestService {
         test.setEndDate(new Date());
         testRepository.save(test);
     }
+
 }

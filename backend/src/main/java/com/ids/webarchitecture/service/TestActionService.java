@@ -2,12 +2,11 @@ package com.ids.webarchitecture.service;
 
 import com.ids.webarchitecture.model.mongo.DataTemplateMongo;
 
-import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 
 public interface TestActionService {
     long getAuthorsCount();
-    String getRandomAuthorId();
+    Optional<String> getRandomAuthorId();
     void createAuthorAndProduct(DataTemplateMongo dataTemplate);
     void addProductToAuthor(String authorId, DataTemplateMongo dataTemplate);
     boolean updateProductText(String authorId, String substring);

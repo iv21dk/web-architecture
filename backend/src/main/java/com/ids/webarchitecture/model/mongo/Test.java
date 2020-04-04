@@ -24,4 +24,5 @@ public class Test extends IdentifiableEntity {
     private TestMeasurements mongoDbMeasurements;
     private TestMeasurements sqlMeasurements;
     private List<BackendTestData> backends = new ArrayList<>();
+    private List<String> errors = new ArrayList();
 }

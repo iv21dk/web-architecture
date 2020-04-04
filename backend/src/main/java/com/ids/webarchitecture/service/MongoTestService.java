@@ -17,30 +17,16 @@ import java.util.stream.Collectors;
 import static com.ids.webarchitecture.utils.ServiceUtils.checkFound;
 
 @Service
-public class TestMongoService implements TestActionService {
+public class MongoTestService extends AbstractTestService {
 
     @Autowired
     private ProductAuthorMongoRepository productAuthorMongoRepository;
 
     private ModelMapper mapper = new ModelMapper();
 
-    private List<String> authorIds = new ArrayList<>();
-
     @PostConstruct
     private void init() {
         authorIds = productAuthorMongoRepository.findAll().stream().map(i -> i.getId()).collect(Collectors.toList());
-    }
-
-    @Override
-    public long getAuthorsCount() {
-        return 0;
-    }
-
-    @Override
-    public String getRandomAuthorId() {
-        Random rand = new Random();
-        int randomIndex = rand.nextInt(authorIds.size());
-        return authorIds.get(randomIndex);
     }
 
     @Override
@@ -90,16 +76,19 @@ public class TestMongoService implements TestActionService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public void findByNoIndexedFieldLike(String substring) {
         productAuthorMongoRepository.findByProductsTextLike(substring);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public void findByIndexedField(String value) {
         productAuthorMongoRepository.findByAuthorTemplateId(value);
     }
 
     @Override
+    @Transactional
     public void deleteById(String id) {
         productAuthorMongoRepository.deleteById(id);
     }

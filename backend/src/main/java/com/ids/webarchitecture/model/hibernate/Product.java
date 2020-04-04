@@ -3,6 +3,8 @@ package com.ids.webarchitecture.model.hibernate;
 import com.ids.webarchitecture.model.NamedEntity;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,11 +14,14 @@ import javax.validation.constraints.NotNull;
  *
  */
 @Entity
-@Table(name = "PRODUCT")
+@Table(name = "product", indexes = {
+        @Index(columnList = "author_id", name = "idx_product_author_id")})
 @Getter
 @Setter
 public class Product extends NamedEntity {
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, optional = false)
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn (name="author_id")
     @NotNull
     private ProductAuthor author;
 
