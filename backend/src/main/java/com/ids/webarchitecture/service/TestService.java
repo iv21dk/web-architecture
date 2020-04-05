@@ -22,7 +22,6 @@ import static com.ids.webarchitecture.utils.ServiceUtils.checkFound;
 
 @Service
 public class TestService {
-
     Logger log = LoggerFactory.getLogger(TestService.class);
 
     @Autowired
@@ -104,7 +103,7 @@ public class TestService {
 
         String subtext = getRandomChunckFromText(dataTemplate.getText());
 
-        if (actionService.getAuthorsCount() == 0) {
+        if (actionService.getReadedAuthorsCount() == 0) {
             return measurements;
         }
 

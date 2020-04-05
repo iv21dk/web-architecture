@@ -1,11 +1,14 @@
 package com.ids.webarchitecture.service;
 
+import com.ids.webarchitecture.model.IdentifiableEntity;
 import com.ids.webarchitecture.model.mongo.DataTemplateMongo;
 import com.ids.webarchitecture.model.mongo.ProductAuthorMongo;
 import com.ids.webarchitecture.model.mongo.ProductAuthorTemplateMongo;
 import com.ids.webarchitecture.model.mongo.ProductMongo;
 import com.ids.webarchitecture.repository.mongo.ProductAuthorMongoRepository;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,16 +21,17 @@ import static com.ids.webarchitecture.utils.ServiceUtils.checkFound;
 
 @Service
 public class MongoTestService extends AbstractTestService {
+    Logger log = LoggerFactory.getLogger(MongoTestService.class);
 
     @Autowired
     private ProductAuthorMongoRepository productAuthorMongoRepository;
 
     private ModelMapper mapper = new ModelMapper();
 
-    @PostConstruct
-    private void init() {
-        authorIds = productAuthorMongoRepository.findAll().stream().map(i -> i.getId()).collect(Collectors.toList());
-    }
+//    @PostConstruct
+//    private void init() {
+//        //authorIds =
+//    }
 
     @Override
     @Transactional
@@ -93,4 +97,19 @@ public class MongoTestService extends AbstractTestService {
         productAuthorMongoRepository.deleteById(id);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    protected List<String> getAuthorIds() {
+        long startMs = System.currentTimeMillis();
+        List<String> authorIds = productAuthorMongoRepository.findAll()
+                .stream().map(IdentifiableEntity::getId).collect(Collectors.toList());
+        long endMs = System.currentTimeMillis();
+        log.info("Read all author ids in {} ms. Count {}.", endMs - startMs, authorIds.size());
+        return authorIds;
+    }
+
+    @Override
+    protected long getAuthorsCount() {
+        return productAuthorMongoRepository.count();
+    }
 }

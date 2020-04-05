@@ -19,28 +19,7 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addMapping("/api/**")
                 .allowedOrigins("*") //TODO: move to properties
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
-//                .allowedHeaders("Content-Type", "X-Requested-With", "accept", "Origin", "Access-Control-Request-Method",
-//                        "Access-Control-Request-Headers")
-//                .exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials")
                 .allowCredentials(true).maxAge(3600);
     }
-
-//    @Bean
-//    public CorsFilter corsFilter() {
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        CorsConfiguration config = new CorsConfiguration();
-//        config.setAllowCredentials(true);
-//        config.addAllowedOrigin("*"); //TODO: move to properties
-//        config.addAllowedHeader("*");
-//        //config.addAllowedMethod("OPTIONS");
-//        config.addAllowedMethod("GET");
-//        config.addAllowedMethod("POST");
-//        config.addAllowedMethod("PUT");
-//        config.addAllowedMethod("DELETE");
-//        config.setAllowCredentials(false);
-//        config.setMaxAge(3600L);
-//        source.registerCorsConfiguration("/**", config);
-//        return new CorsFilter(source);
-//    }
 
 }

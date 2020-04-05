@@ -21,7 +21,6 @@ import javax.validation.constraints.NotNull;
 public class Product extends NamedEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn (name="author_id")
     @NotNull
     private ProductAuthor author;
 

@@ -5,7 +5,7 @@ import com.ids.webarchitecture.model.mongo.DataTemplateMongo;
 import java.util.Optional;
 
 public interface TestActionService {
-    long getAuthorsCount();
+    int getReadedAuthorsCount();
     Optional<String> getRandomAuthorId();
     void createAuthorAndProduct(DataTemplateMongo dataTemplate);
     void addProductToAuthor(String authorId, DataTemplateMongo dataTemplate);

@@ -1,5 +1,6 @@
 package com.ids.webarchitecture.service;
 
+import com.ids.webarchitecture.model.IdentifiableEntity;
 import com.ids.webarchitecture.model.hibernate.Product;
 import com.ids.webarchitecture.model.hibernate.ProductAuthor;
 import com.ids.webarchitecture.model.mongo.DataTemplateMongo;
@@ -7,6 +8,8 @@ import com.ids.webarchitecture.model.mongo.ProductAuthorTemplateMongo;
 import com.ids.webarchitecture.repository.ProductAuthorRepository;
 import com.ids.webarchitecture.repository.ProductRepository;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +22,7 @@ import static com.ids.webarchitecture.utils.ServiceUtils.checkFound;
 
 @Service
 public class SqlTestService extends AbstractTestService {
+    Logger log = LoggerFactory.getLogger(SqlTestService.class);
 
     @Autowired
     private ProductAuthorRepository productAuthorRepository;
@@ -27,10 +31,10 @@ public class SqlTestService extends AbstractTestService {
 
     private ModelMapper mapper = new ModelMapper();
 
-    @PostConstruct
-    private void init() {
-        authorIds = productAuthorRepository.findAll().stream().map(i -> i.getId()).collect(Collectors.toList());
-    }
+//    @PostConstruct
+//    private void init() {
+//
+//    }
 
     @Override
     @Transactional
@@ -93,5 +97,21 @@ public class SqlTestService extends AbstractTestService {
     @Transactional
     public void deleteById(String id) {
         productAuthorRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    protected List<String> getAuthorIds() {
+        long startMs = System.currentTimeMillis();
+        List<String> authorIds = productAuthorRepository.findAll()
+                .stream().map(IdentifiableEntity::getId).collect(Collectors.toList());
+        long endMs = System.currentTimeMillis();
+        log.info("Read all author ids in {} ms. Count {}.", endMs - startMs, authorIds.size());
+        return authorIds;
+    }
+
+    @Override
+    protected long getAuthorsCount() {
+        return productAuthorRepository.count();
     }
 }
