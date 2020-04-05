@@ -23,7 +23,7 @@ export class BackendService {
   }
 
   getBackendsFromServer() {
-    this.http.get<BackendDto[]>('http://localhost:8080/api/backends')
+    this.http.get<BackendDto[]>('/api/backends')
       .pipe(map(backends => backends.map(dto => new BackendModel(dto))))
       .subscribe(
         items => this.backends = items,

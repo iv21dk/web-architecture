@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import { FormsModule} from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 //import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 // import { MatInputModule, MatPaginatorModule, MatProgressSpinnerModule,
@@ -17,6 +17,12 @@ import { DataTemplatesComponent } from './data-templates/data-templates.componen
 import {DataTemplateService} from './data-templates/data-template.service';;
 import {ModalDialogModule} from './modal-dialog/modal-dialog.module';
 import { DataTemplateComponent } from './data-template/data-template.component';
+import {ApiInterceptor} from "./interceptors/api-interceptor.service";
+import {AppConfig} from "./app.config";
+
+export function initializeApp(appConfig: AppConfig) {
+  return () => appConfig.load();
+}
 
 @NgModule({
   declarations: [
@@ -39,7 +45,22 @@ import { DataTemplateComponent } from './data-template/data-template.component';
     //MatSortModule,
     //MatProgressSpinnerModule
   ],
-  providers: [BackendService, DataTemplateService],
+  providers: [
+    BackendService,
+    DataTemplateService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ApiInterceptor,
+      multi: true
+    },
+    AppConfig,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeApp,
+      deps: [AppConfig],
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

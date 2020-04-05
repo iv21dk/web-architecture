@@ -25,7 +25,7 @@ export class DataTemplateService {
   }
 
   getTemplatesFromServer() {
-    this.http.get<DataTemplateModel[]>('http://localhost:8080/api/data-templates')
+    this.http.get<DataTemplateModel[]>('/api/data-templates')
       .subscribe(
         items => this.templates = items,
         error => console.log(error) //TODO: handle error
@@ -33,7 +33,7 @@ export class DataTemplateService {
   }
 
   createTemplate(template: DataTemplateModel) {
-    this.http.post('http://localhost:8080/api/data-templates', template)
+    this.http.post('/api/data-templates', template)
       .subscribe(
         res => {
           this.getTemplatesFromServer();
@@ -44,7 +44,7 @@ export class DataTemplateService {
   }
 
   updateTemplate(template: DataTemplateModel) {
-    this.http.put('http://localhost:8080/api/data-templates/' + template.id, template)
+    this.http.put('/api/data-templates/' + template.id, template)
       .subscribe(
         res => {
           this.getTemplatesFromServer();
@@ -55,7 +55,7 @@ export class DataTemplateService {
   }
 
   getAuthorsFromServer() {
-    this.http.get<AuthorModel[]>('http://localhost:8080/api/data-templates/authors')
+    this.http.get<AuthorModel[]>('/api/data-templates/authors')
       .subscribe(
         items => this.authors = items,
         error => console.log(error) //TODO: handle error
