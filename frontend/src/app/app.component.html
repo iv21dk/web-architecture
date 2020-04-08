@@ -10,10 +10,9 @@
   <div class="top-menu-item"
        [class.selected]="isSelected('DATA_TEMPLATE')"
        (click)="selectSection('DATA_TEMPLATE')">Data templates</div>
-
 </div>
 <div class="middle-content">
-  <app-backends-manager *ngIf="isSelected('TESTS')"></app-backends-manager>
+  <app-tests *ngIf="isSelected('TESTS')"></app-tests>
   <app-data-templates *ngIf="isSelected('DATA_TEMPLATE')"></app-data-templates>
 </div>
 

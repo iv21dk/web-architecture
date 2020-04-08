@@ -19,6 +19,7 @@ import {ModalDialogModule} from './modal-dialog/modal-dialog.module';
 import { DataTemplateComponent } from './data-template/data-template.component';
 import {ApiInterceptor} from "./interceptors/api-interceptor.service";
 import {AppConfig} from "./app.config";
+import { TestsComponent } from './tests/tests.component';
 
 export function initializeApp(appConfig: AppConfig) {
   return () => appConfig.load();
@@ -30,7 +31,8 @@ export function initializeApp(appConfig: AppConfig) {
     BackendsManagerComponent,
     BackendComponent,
     DataTemplatesComponent,
-    DataTemplateComponent
+    DataTemplateComponent,
+    TestsComponent
     //ModalDialogComponent
   ],
   imports: [
