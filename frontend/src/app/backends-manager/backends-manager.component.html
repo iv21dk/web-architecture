@@ -6,11 +6,11 @@
   <button class="command-panel-button" [disabled]="isSelectedStartedBackend()" (click)="removeServer()">Remove</button>
 </div>
 <div class="nodes">
-  <app-java-server
+  <app-backend
     *ngFor="let iterBackend of getBackends()"
     [backendModel]="iterBackend"
   >
-  </app-java-server>
+  </app-backend>
 
   <!--
 (selectEvent)="onSelectJavaServer($event)"

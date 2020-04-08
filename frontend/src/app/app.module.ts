@@ -1,25 +1,18 @@
 import { BrowserModule } from '@angular/platform-browser';
-import {APP_INITIALIZER, NgModule} from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FormsModule} from '@angular/forms';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-//import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-
-// import { MatInputModule, MatPaginatorModule, MatProgressSpinnerModule,
-//   MatSortModule, MatTableModule } from "@angular/material";
-
-//import { MatTableModule } from "@angular/material";
-
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
-import { BackendsManagerComponent } from './backends-manager/backends-manager.component';
-import { BackendComponent } from './backend/backend.component';
 import { BackendService } from './backends-manager/backend.service';
 import { DataTemplatesComponent } from './data-templates/data-templates.component';
-import {DataTemplateService} from './data-templates/data-template.service';;
-import {ModalDialogModule} from './modal-dialog/modal-dialog.module';
+import { DataTemplateService } from './data-templates/data-template.service';;
+import { ModalDialogModule } from './modal-dialog/modal-dialog.module';
 import { DataTemplateComponent } from './data-template/data-template.component';
-import {ApiInterceptor} from "./interceptors/api-interceptor.service";
-import {AppConfig} from "./app.config";
+import { ApiInterceptor } from "./interceptors/api-interceptor.service";
+import { AppConfig } from "./app.config";
+import { BackendsManagerComponent } from './backends-manager/backends-manager.component';
 import { TestsComponent } from './tests/tests.component';
+import { BackendComponent } from './backend/backend.component';
 
 export function initializeApp(appConfig: AppConfig) {
   return () => appConfig.load();
@@ -32,14 +25,15 @@ export function initializeApp(appConfig: AppConfig) {
     BackendComponent,
     DataTemplatesComponent,
     DataTemplateComponent,
-    TestsComponent
     //ModalDialogComponent
+    TestsComponent  
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    ModalDialogModule
+    ModalDialogModule,
+    //TestsModule
     //BrowserAnimationsModule,
     //MatInputModule,
     //MatTableModule,

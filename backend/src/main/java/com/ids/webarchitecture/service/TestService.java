@@ -14,8 +14,8 @@ import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
 import static com.ids.webarchitecture.utils.ServiceUtils.checkFound;
@@ -23,6 +23,8 @@ import static com.ids.webarchitecture.utils.ServiceUtils.checkFound;
 @Service
 public class TestService {
     Logger log = LoggerFactory.getLogger(TestService.class);
+
+    private static final int TEST_DURATION_MS = 30 * 1000;
 
     @Autowired
     private TestRepository testRepository;
@@ -37,9 +39,9 @@ public class TestService {
 
     private ModelMapper mapper = new ModelMapper();
 
-    @PostConstruct
-    private void init() {
-    }
+    // tests measurements where key is testId, value is list of measurements
+    private Map <String, List<Pair<DataActionMeasurements, DataActionMeasurements>>> testMeasurements = new ConcurrentHashMap<>();
+    private Map <String, List<String>> testErrors = new ConcurrentHashMap<>();
 
     @Transactional
     public TestDto createTest() {
@@ -59,6 +61,8 @@ public class TestService {
         test.setSqlInitialDataCount(testSqlService.getAuthorsCount());
         test = testRepository.save(test);
 
+        log.info("Started test #{}", test.getId());
+
         testLockService.lock(test.getId());
         return testBoToDto(test);
     }
@@ -71,21 +75,28 @@ public class TestService {
         if (!testLockService.lockedByTest(testId)) {
             throw new LockedException("Test service is not locked or locked by another test");
         }
+        Test test = checkFound(testRepository.findById(testId));
+        if (isTestExpired(test)) {
+            closeTest(test);
+            throw new LockedException("Test is expired");
+        }
         DataTemplateMongo dataTemplate = checkFound(dataTemplateMongoRepository.findById(dataTemplateId));
         if (dataTemplate.getAuthor() == null) {
             throw new RequestParameterException("Incorrect data template. Field 'author' should be defined");
         }
         if (dataTemplate.getText() == null
                 || dataTemplate.getText().length() < DataTemplateService.MIN_TEMPLATE_TEXT_LENGTH) {
-            throw new RequestParameterException("Incorrect text of the data template");
+            throw new RequestParameterException(
+                    "Incorrect text of the data template. Min text length should be "
+                            + DataTemplateService.MIN_TEMPLATE_TEXT_LENGTH);
         }
 
         try {
             DataActionMeasurements mongoMeasurements = executeAllAndMeasure(testMongoService, dataTemplate);
             DataActionMeasurements sqlMeasurements = executeAllAndMeasure(testSqlService, dataTemplate);
-            saveTestDataPersistResult(testId, mongoMeasurements, sqlMeasurements);
+            putTestMeasurements(testId, mongoMeasurements, sqlMeasurements);
         } catch (Exception e) {
-            saveTestDataError(testId, e.toString());
+            putTestError(testId, e.toString());
             throw e;
         }
 
@@ -173,35 +184,78 @@ public class TestService {
         return text.substring(begin, begin + DataTemplateService.MIN_TEMPLATE_TEXT_LENGTH);
     }
 
-    private void saveTestDataPersistResult(String testId, DataActionMeasurements mongoMeasurements,
-                                           DataActionMeasurements sqlMeasurements) {
-        //TODO: save async on different thread with block document from other threads/nodes
-        Test test = checkFound(testRepository.findById(testId));
-        if (test.getMongoDbMeasurements() == null) {
-            test.setMongoDbMeasurements(new TestMeasurements());
-        }
-        if (test.getSqlMeasurements() == null) {
-            test.setSqlMeasurements(new TestMeasurements());
-        }
-        test.getMongoDbMeasurements().addMeasurements(mongoMeasurements);
-        test.getSqlMeasurements().addMeasurements(sqlMeasurements);
-        test.setRequestsCount(test.getRequestsCount() + 1);
-        testRepository.save(test);
+    private void putTestMeasurements(String testId, DataActionMeasurements mongoMeasurements,
+                                      DataActionMeasurements sqlMeasurements) {
+        testMeasurements.putIfAbsent(testId, new ArrayList<>());
+        testMeasurements.get(testId).add(Pair.of(mongoMeasurements, sqlMeasurements));
     }
 
-    private void saveTestDataError(String testId, String trace) {
-        //TODO: save async on different thread with block document from other threads/nodes
-        Test test = checkFound(testRepository.findById(testId));
-        test.setRequestsCount(test.getRequestsCount() + 1);
-        test.getErrors().add(trace);
-        testRepository.save(test);
+    private void putTestError(String testId, String error) {
+        testErrors.putIfAbsent(testId, new ArrayList<>());
+        testErrors.get(testId).add(error);
     }
 
-    public void closeTest(String testId) {
+    private synchronized void setTestMeasurementsToTest(Test test) {
+
+        //TODO: save with block document from other threads/nodes
+
+        String testId = test.getId();
+        int requests = 0;
+        int success = 0;
+        int errors = 0;
+        if (testMeasurements.get(testId) != null) {
+            requests = testMeasurements.get(testId).size();
+            success = testMeasurements.get(testId).size();
+
+            if (test.getMongoDbMeasurements() == null) {
+                test.setMongoDbMeasurements(new TestMeasurements());
+            }
+            if (test.getSqlMeasurements() == null) {
+                test.setSqlMeasurements(new TestMeasurements());
+            }
+
+            testMeasurements.get(testId).forEach(p -> {
+                test.getMongoDbMeasurements().addMeasurements(p.getFirst());
+                test.getSqlMeasurements().addMeasurements(p.getSecond());
+            });
+
+        } else {
+            log.warn("Test measurements is missing");
+        }
+
+        if (testErrors.get(testId) != null) {
+            errors = testErrors.get(testId).size();
+            requests += testErrors.get(testId).size();
+            if (test.getErrors() == null) {
+                test.setErrors(new ArrayList<>());
+            }
+            test.getErrors().addAll(testErrors.get(testId));
+        }
+
+        test.setRequestsCount(test.getRequestsCount() + requests);
+        test.setSuccessCount(test.getSuccessCount() + success);
+        test.setFailedCount(test.getFailedCount() + errors);
+
+        testMeasurements.remove(testId);
+        testErrors.remove(testId);
+
+        log.info("Save test measurements. Test id = {}, requests = {}, success = {} errors = {}",
+                testId, requests, success, errors);
+    }
+
+    public synchronized void closeTest(String testId) {
+        closeTest(checkFound(testRepository.findById(testId)));
+    }
+
+    private synchronized void closeTest(Test test) {
+        String testId = test.getId();
         if (testLockService.lockedByTest(testId)) {
             testLockService.unlock(testId);
         }
-        Test test = checkFound(testRepository.findById(testId));
+        test.setEndDate(new Date());
+
+        setTestMeasurementsToTest(test);
+
         if (test.getMongoDbMeasurements() == null) {
             log.warn("Mongo DB measurements is null. test id = {}", testId);
         } else {
@@ -212,8 +266,20 @@ public class TestService {
         } else {
             test.getSqlMeasurements().calculateAvgValues();
         }
-        test.setEndDate(new Date());
         testRepository.save(test);
+        log.info("Stopped test #{}", testId);
     }
 
+    public TestDto getActiveTest() {
+        Optional<LockedTest> lockedTest = testLockService.getLockedTest();
+        if (lockedTest.isEmpty()) {
+            return null;
+        } else {
+            return testBoToDto(checkFound(testRepository.findById(lockedTest.get().getTestId())));
+        }
+    }
+
+    private synchronized boolean isTestExpired(Test test) {
+        return test.getStartDate().getTime() + TEST_DURATION_MS < new Date().getTime();
+    }
 }

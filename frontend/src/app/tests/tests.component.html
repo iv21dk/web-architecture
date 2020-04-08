@@ -4,3 +4,9 @@
 <div>
   <button (click)="startTest()">Start test</button>
 </div>
+<div id="current-test">
+  <div>Current test {{getCurrentTestId()}}</div>
+  <div>start time: {{getCurrentTestStartTime()}}</div>
+  <div>requests</div><div></div>
+  <button (click)="stopTest()">Stop test</button>
+</div>

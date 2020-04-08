@@ -1,12 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {BackendModel} from './backend.model';
+import {BackendModel, NodeStatus} from './backend.model';
 import {BackendService} from "../backends-manager/backend.service";
 import {strict} from "assert";
-
-export enum NodeStatus {
-  STOPPED = 'STOPPED',
-  STARTED = 'STARTED'
-}
 
 // export interface IJavaServer {
 //   host: string;
@@ -17,7 +12,7 @@ export enum NodeStatus {
 // }
 
 @Component({
-  selector: 'app-java-server',
+  selector: 'app-backend',
   templateUrl: './backend.component.html',
   styleUrls: ['./backend.component.css']
 })

@@ -1,5 +1,9 @@
-import {NodeStatus} from "./backend.component";
 import {BackendDto} from "../dto/backend.dto";
+
+export enum NodeStatus {
+  STOPPED = 'STOPPED',
+  STARTED = 'STARTED'
+}
 
 export class BackendModel {
   host: string;

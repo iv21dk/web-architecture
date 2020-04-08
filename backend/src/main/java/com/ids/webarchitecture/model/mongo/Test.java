@@ -16,6 +16,8 @@ public class Test extends IdentifiableEntity {
     private Date startDate = new Date();
     private Date endDate;
     private Integer requestsCount = 0;
+    private Integer successCount = 0;
+    private Integer failedCount = 0;
     private Short mongoDbClusterSize = 0;
     private Short sqlClusterSize = 0;
     private Short backendClusterSize = 0;

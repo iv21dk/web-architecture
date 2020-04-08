@@ -5,6 +5,8 @@ import com.ids.webarchitecture.repository.mongo.LockedTestMongoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class TestLockService {
 
@@ -15,7 +17,7 @@ public class TestLockService {
         return !lockedTestRepository.findAll().isEmpty();
     }
 
-    public boolean lockedByTest(String testId) {
+    public synchronized boolean lockedByTest(String testId) {
         return lockedTestRepository.findOneByTestId(testId) != null;
     }
 
@@ -25,6 +27,10 @@ public class TestLockService {
 
     public void unlock(String testId) {
         lockedTestRepository.deleteByTestId(testId);
+    }
+
+    public Optional<LockedTest> getLockedTest() {
+        return lockedTestRepository.findAll().stream().findFirst();
     }
 
 }

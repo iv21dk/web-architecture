@@ -18,6 +18,12 @@ public class TestController {
         return testService.createTest();
     }
 
+    @GetMapping("/api/tests/active")
+    @ResponseStatus(HttpStatus.OK)
+    public TestDto getActiveTest(){
+        return testService.getActiveTest();
+    }
+
     @PutMapping("/api/tests/{test-id}/data/{data-template-id}")
     @ResponseStatus(HttpStatus.OK)
     public void putTestData(
