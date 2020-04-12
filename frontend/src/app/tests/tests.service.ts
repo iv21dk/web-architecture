@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { TestModel } from './test.model';
+import { TestModel, TestStatus } from './test.model';
 import { DataTemplateService } from '../data-templates/data-template.service';
 import { DataTemplateModel } from '../data-template/data-template.model';
 
@@ -21,6 +21,14 @@ export class TestService {
   private testClosed: boolean = true;
   private dataTemplates: DataTemplateModel[];
   
+  getTestStatus(): TestStatus {
+    if (this.testClosed) {
+      return TestStatus.STOPPED;
+    } else {
+      return TestStatus.STARTED;
+    }
+  }
+
   getCurentTest(): TestModel {
     return this.currentTest;
   }
@@ -75,7 +83,9 @@ export class TestService {
     let randomTemplate: DataTemplateModel = this.dataTemplates[randIndex];
     this.http.put('/api/tests/' + this.currentTest.id + '/data/' + randomTemplate.id, undefined)
       .subscribe(
-        res => {},
+        res => {
+          this.currentTest.requestsCount += 1;
+        },
         error => {
           if (error.status === this.TEST_CLOSED_REQUEST_STATUS) {
             if (!this.testClosed) {
@@ -98,7 +108,7 @@ export class TestService {
     this.http.put('/api/tests/' + this.currentTest.id + '/close', undefined)
       .subscribe(
         res => {
-          this.currentTest = undefined;
+          //this.currentTest = undefined;
         },
         error => console.log(error)
       );

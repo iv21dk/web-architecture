@@ -1,12 +1,13 @@
 <app-backends-manager></app-backends-manager>
 
 <h4>Test</h4>
-<div>
+<div class="command-panel">
   <button (click)="startTest()">Start test</button>
+  <button (click)="stopTest()">Stop test</button>
 </div>
 <div id="current-test">
-  <div>Current test {{getCurrentTestId()}}</div>
-  <div>start time: {{getCurrentTestStartTime()}}</div>
-  <div>requests</div><div></div>
-  <button (click)="stopTest()">Stop test</button>
+  <div>Current test: {{getCurrentTestId()}}</div>
+  <div>Start time: {{getCurrentTestStartTime()}}</div>
+  <div>Requests: {{getCurrentTestRequestsCount()}}</div>
+  <div>Status: {{getTestStatus()}}</div>
 </div>

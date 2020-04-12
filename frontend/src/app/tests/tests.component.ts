@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TestService } from './tests.service';
-import { TestModel } from './test.model';
+import { TestModel, TestStatus } from './test.model';
 
 @Component({
   selector: 'app-tests',
@@ -23,9 +23,18 @@ export class TestsComponent implements OnInit {
     return test === undefined ? "" : test.id;
   }
 
-  getCurrentTestStartTime(): Date {
+  getCurrentTestStartTime(): String {
     let test: TestModel = this.testService.getCurentTest();
-    return test === undefined ? undefined : test.startDate;
+    return test === undefined ? undefined : (new Date(test.startDate)).toString();
+  }
+
+  getCurrentTestRequestsCount(): number {
+    let test: TestModel = this.testService.getCurentTest();
+    return test === undefined ? undefined : test.requestsCount;
+  }
+
+  getTestStatus(): TestStatus {
+    return this.testService.getTestStatus();
   }
 
   stopTest() {
