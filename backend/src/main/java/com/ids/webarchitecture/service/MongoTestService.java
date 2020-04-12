@@ -94,6 +94,7 @@ public class MongoTestService extends AbstractTestService {
     @Override
     @Transactional
     public void deleteById(String id) {
+        super.deleteById(id);
         productAuthorMongoRepository.deleteById(id);
     }
 

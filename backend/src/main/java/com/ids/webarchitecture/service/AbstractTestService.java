@@ -42,6 +42,11 @@ public abstract class AbstractTestService implements TestActionService {
         return Optional.of(authorIds.get(randomIndex));
     }
 
+    @Override
+    public void deleteById(String id) {
+        authorIds.remove(id);
+    }
+
     @Scheduled(fixedDelay = READ_AUTHORS_DELAY_MS)
     protected void readAllAuthorIdsScheduled() {
         if (testLockService.locked()) {

@@ -13,7 +13,9 @@ export class TestService {
     this.getActiveTest();
   }
 
-  private TEST_DURATION_TIMEOUT_MS: number = 60 * 1000; // Server closes the test
+  private TEST_DURATION_TIMEOUT_MS: number = 2 * 60 * 1000; // Server closes the test
+  private TEST_CLOSED_REQUEST_STATUS: number = 423;
+  private PUT_TEST_DATA_DURATION_MS: number = 100;
 
   private currentTest: TestModel;
   private testClosed: boolean = true;
@@ -38,21 +40,34 @@ export class TestService {
         res => {
           this.currentTest = res;
           this.testClosed = false;
-          this.startPutTestData();
+          console.log("Test is created. test id=" + res.id + 
+            ", curr time=" + (new Date).toString());
+          this.putTestDataRecursively(Date.now());
         },
         error => console.log(error) //TODO: handle error
       );
   }
 
+  private putTestDataRecursively(startTime: number) {
+    if (this.testClosed) {
+      return;
+    }
+    if (Date.now() - startTime > this.TEST_DURATION_TIMEOUT_MS) {
+      return;
+    }
+    setTimeout(() => {
+      this.putTestData();
+      this.putTestDataRecursively(startTime);
+    }, this.PUT_TEST_DATA_DURATION_MS);
+  }
+  
   private startPutTestData() {
      const start: number = Date.now();
      let curr: number;
      do {
-        setTimeout(() => this.putTestData(), 100);
+        setTimeout(() => this.putTestData(), this.PUT_TEST_DATA_DURATION_MS);
         curr = Date.now();
      } while (!this.testClosed && curr - start < this.TEST_DURATION_TIMEOUT_MS)
-     //this.testClosed = true;
-     //this.stopTest();
   }
 
   private putTestData() {
@@ -60,11 +75,15 @@ export class TestService {
     let randomTemplate: DataTemplateModel = this.dataTemplates[randIndex];
     this.http.put('/api/tests/' + this.currentTest.id + '/data/' + randomTemplate.id, undefined)
       .subscribe(
-        res => {
-        },
+        res => {},
         error => {
-          if (error.status === 423) {
-            this.testClosed = true;
+          if (error.status === this.TEST_CLOSED_REQUEST_STATUS) {
+            if (!this.testClosed) {
+              this.testClosed = true;
+              //console.time("Test is closed. test id=" + this.currentTest.id);
+              console.log("Test is closed. test id=" + this.currentTest.id +
+                 ", curr time=" + (new Date).toString());
+            }
           }
         }
       );
@@ -75,15 +94,14 @@ export class TestService {
       alert("Test is not started!");
       return;
     }
+    this.testClosed = true;
     this.http.put('/api/tests/' + this.currentTest.id + '/close', undefined)
       .subscribe(
         res => {
           this.currentTest = undefined;
-          this.testClosed = true;
         },
         error => console.log(error)
       );
-    //this.currentTest = undefined;
   }
 
   private getActiveTest() {

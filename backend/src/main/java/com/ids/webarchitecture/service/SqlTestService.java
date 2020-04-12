@@ -96,6 +96,7 @@ public class SqlTestService extends AbstractTestService {
     @Override
     @Transactional
     public void deleteById(String id) {
+        super.deleteById(id);
         productAuthorRepository.deleteById(id);
     }
 

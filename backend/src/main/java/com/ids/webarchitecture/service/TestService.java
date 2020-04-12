@@ -24,7 +24,7 @@ import static com.ids.webarchitecture.utils.ServiceUtils.checkFound;
 public class TestService {
     Logger log = LoggerFactory.getLogger(TestService.class);
 
-    private static final int TEST_DURATION_MS = 30 * 1000;
+    private static final int TEST_DURATION_MS = 60 * 1000;
 
     @Autowired
     private TestRepository testRepository;
@@ -61,7 +61,7 @@ public class TestService {
         test.setSqlInitialDataCount(testSqlService.getAuthorsCount());
         test = testRepository.save(test);
 
-        log.info("Started test #{}", test.getId());
+        log.info("Test is created. Test id = {}", test.getId());
 
         testLockService.lock(test.getId());
         return testBoToDto(test);
@@ -77,7 +77,7 @@ public class TestService {
         }
         Test test = checkFound(testRepository.findById(testId));
         if (isTestExpired(test)) {
-            closeTest(test);
+            closeTest(test.getId());
             throw new LockedException("Test is expired");
         }
         DataTemplateMongo dataTemplate = checkFound(dataTemplateMongoRepository.findById(dataTemplateId));
@@ -197,8 +197,6 @@ public class TestService {
 
     private synchronized void setTestMeasurementsToTest(Test test) {
 
-        //TODO: save with block document from other threads/nodes
-
         String testId = test.getId();
         int requests = 0;
         int success = 0;
@@ -244,14 +242,12 @@ public class TestService {
     }
 
     public synchronized void closeTest(String testId) {
-        closeTest(checkFound(testRepository.findById(testId)));
-    }
-
-    private synchronized void closeTest(Test test) {
-        String testId = test.getId();
+        //TODO: save with block document from other threads/nodes
+        Test test = checkFound(testRepository.findById(testId));
         if (testLockService.lockedByTest(testId)) {
             testLockService.unlock(testId);
         }
+
         test.setEndDate(new Date());
 
         setTestMeasurementsToTest(test);
@@ -267,7 +263,7 @@ public class TestService {
             test.getSqlMeasurements().calculateAvgValues();
         }
         testRepository.save(test);
-        log.info("Stopped test #{}", testId);
+        log.info("Test is stopped. Test id = {}", testId);
     }
 
     public TestDto getActiveTest() {
