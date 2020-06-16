@@ -41,4 +41,8 @@ export class TestsComponent implements OnInit {
     this.testService.stopTest();
   }
 
+  getTimer() {
+    this.testService.getTimer();
+  }
+
 }

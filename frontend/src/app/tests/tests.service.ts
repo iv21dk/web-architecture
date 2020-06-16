@@ -20,6 +20,8 @@ export class TestService {
   private currentTest: TestModel;
   private testClosed: boolean = true;
   private dataTemplates: DataTemplateModel[];
+  private timer: number = 0;
+  //private timerId;
   
   getTestStatus(): TestStatus {
     if (this.testClosed) {
@@ -50,6 +52,7 @@ export class TestService {
           this.testClosed = false;
           console.log("Test is created. test id=" + res.id + 
             ", curr time=" + (new Date).toString());
+          this.incrementTimer();
           this.putTestDataRecursively(Date.now());
         },
         error => console.log(error) //TODO: handle error
@@ -93,6 +96,7 @@ export class TestService {
               //console.time("Test is closed. test id=" + this.currentTest.id);
               console.log("Test is closed. test id=" + this.currentTest.id +
                  ", curr time=" + (new Date).toString());
+              //this.stopTimer();
             }
           }
         }
@@ -104,11 +108,11 @@ export class TestService {
       alert("Test is not started!");
       return;
     }
-    this.testClosed = true;
     this.http.put('/api/tests/' + this.currentTest.id + '/close', undefined)
       .subscribe(
         res => {
-          //this.currentTest = undefined;
+          this.testClosed = true;
+          //this.stopTimer();
         },
         error => console.log(error)
       );
@@ -126,6 +130,35 @@ export class TestService {
         },
         error => console.log(error) //TODO: handle error
       );
+  }
+
+  // private startTimer() {
+  //   this.timerId = setInterval(()=>{
+  //     this.timer++;
+  //     //console.log(this.timer);
+  //   }, 1000);
+  // }
+
+  private incrementTimer() {
+    if (this.testClosed) {
+      this.timer = 0;
+      return;
+    }
+    setTimeout(()=>{
+      this.timer++;
+      console.log(this.timer);
+      this.incrementTimer();
+    }, 1000);
+
+  }
+
+  // private stopTimer() {
+  //   clearInterval(this.timerId);
+  //   this.timer = 0;
+  // }
+
+  getTimer(): number {
+    return this.timer;
   }
 
 }
