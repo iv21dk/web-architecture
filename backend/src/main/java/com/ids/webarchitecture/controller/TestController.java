@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class TestController {
     @Autowired
@@ -16,6 +18,12 @@ public class TestController {
     @ResponseStatus(HttpStatus.CREATED)
     public TestDto createTest() {
         return testService.createTest();
+    }
+
+    @GetMapping("/api/tests")
+    @ResponseStatus(HttpStatus.OK)
+    public List<TestDto> getTests(){
+        return testService.getTests();
     }
 
     @GetMapping("/api/tests/active")

@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import static com.ids.webarchitecture.utils.ServiceUtils.checkFound;
 
@@ -277,5 +278,9 @@ public class TestService {
 
     private synchronized boolean isTestExpired(Test test) {
         return test.getStartDate().getTime() + TEST_DURATION_MS < new Date().getTime();
+    }
+
+    public List<TestDto> getTests() {
+        return testRepository.findAll().stream().map(this::testBoToDto).collect(Collectors.toList());
     }
 }
