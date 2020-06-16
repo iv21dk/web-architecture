@@ -13,6 +13,7 @@ import { AppConfig } from "./app.config";
 import { BackendsManagerComponent } from './backends-manager/backends-manager.component';
 import { TestsComponent } from './tests/tests.component';
 import { BackendComponent } from './backend/backend.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 export function initializeApp(appConfig: AppConfig) {
   return () => appConfig.load();
@@ -26,13 +27,14 @@ export function initializeApp(appConfig: AppConfig) {
     DataTemplatesComponent,
     DataTemplateComponent,
     //ModalDialogComponent
-    TestsComponent  
+    TestsComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
     ModalDialogModule,
+    NgbModule,
     //TestsModule
     //BrowserAnimationsModule,
     //MatInputModule,

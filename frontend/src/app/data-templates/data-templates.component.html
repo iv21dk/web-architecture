@@ -1,5 +1,6 @@
+
 <div class="command-panel">
-  <button class="command-panel-button" (click)="create()">Create</button>
+  <button class="command-panel-button" (click)="create(dataTemplateDialog)">Create</button>
 </div>
 <div>
   <table class="data-source">
@@ -13,7 +14,7 @@
       </tr>
     </thead>
     <tbody>
-    <tr class="data-source-row" *ngFor="let item of getTemplates(); let i = index" (dblclick)="update(item)">
+    <tr class="data-source-row" *ngFor="let item of getTemplates(); let i = index" (dblclick)="update(item, dataTemplateDialog)">
       <td>{{i+1}}</td>
       <td class="template-author-name">
         <div class="data-source-row">{{item.author === null ? '' : item.author.name}}</div>
@@ -29,3 +30,34 @@
 <app-modal-dialog id="data-template">
   <app-data-template [editTemplate]="editTemplate" [authorId]="editAuthorId"></app-data-template>
 </app-modal-dialog>
+
+<ng-template #dataTemplateDialog let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" >Data template</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" >
+    <div>
+      <label>Author
+        <select [(ngModel)]="editAuthorId">
+          <option value="new">new</option>
+          <option *ngFor="let item of getAuthors()" value="{{item.id}}">{{item.name}}</option>
+        </select>
+      </label>
+      <input *ngIf="editAuthorId==='new'" type="text" [(ngModel)]="authorName">
+    </div>
+    <div>
+      <label>Name<input type="text" [(ngModel)]="editTemplate.name"></label>
+    </div>
+    <div>Text ({{editTemplate.text != null ? editTemplate.text.length : 0}})</div>
+    <div>
+      <textarea [(ngModel)]="editTemplate.text"></textarea>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="closeModal(true)">Save</button>
+    <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+  </div>
+</ng-template>

@@ -9,3 +9,8 @@ td.template-name {
 td.template-text {
   width: 57%;
 }
+
+textarea{
+  width: 100%;
+  height: 20rem;
+}
