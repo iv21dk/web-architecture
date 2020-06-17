@@ -3,14 +3,14 @@
   <button class="command-panel-button" (click)="create()">Create</button>
 </div>
 <div>
-  <table class="data-source">
+  <table class="table table-striped">
     <thead>
       <tr>
-        <th>№</th>
-        <th>Author</th>
-        <th>Name</th>
-        <th>Text</th>
-        <th>Length</th>
+        <th scope="col">#</th>
+        <th scope="col" sortable="author" (sort)="onSort($event)">Author</th>
+        <th scope="col" sortable="name" (sort)="onSort($event)">Name</th>
+        <th scope="col">Text</th>
+        <th scope="col" sortable="length" (sort)="onSort($event)">Length</th>
       </tr>
     </thead>
     <tbody>

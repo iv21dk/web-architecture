@@ -15,6 +15,7 @@ import { TestsComponent } from './tests/tests.component';
 import { BackendComponent } from './backend/backend.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DataTemplatesModule } from './data-templates/data-templates.module';
+import { NgbdSortableHeader } from './table-sortable/sortable.directive';
 
 export function initializeApp(appConfig: AppConfig) {
   return () => appConfig.load();
@@ -25,6 +26,7 @@ export function initializeApp(appConfig: AppConfig) {
     AppComponent,
     BackendsManagerComponent,
     BackendComponent,
+    NgbdSortableHeader,
     //DataTemplatesComponent,
     //DataTemplateComponent,
     //ModalDialogComponent
