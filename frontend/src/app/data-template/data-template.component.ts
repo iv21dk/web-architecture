@@ -1,9 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, TemplateRef, ViewContainerRef, AfterContentInit, ContentChild, ViewChild} from '@angular/core';
 import {DataTemplateService} from '../data-templates/data-template.service';
-import {ModalDialogService} from '../modal-dialog/modal-dialog.service';
 import {AuthorModel} from './author.model';
 import {DataTemplateModel} from './data-template.model';
-import {isEmpty} from "rxjs/operators";
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-data-template',
@@ -12,20 +11,21 @@ import {isEmpty} from "rxjs/operators";
 })
 export class DataTemplateComponent implements OnInit {
 
-  constructor(private templateService: DataTemplateService, private modalDialogService: ModalDialogService) { }
+  constructor(private templateService: DataTemplateService, 
+    private modalService: NgbModal) { }
 
   @Input() editTemplate: DataTemplateModel = new DataTemplateModel();
-  @Input() authorId: string;
+  authorId: string;
   authorName: string;
+  
+  AUTHOR_ID_NEW: string = 'new';
 
   ngOnInit(): void {
-     if (this.editTemplate !== undefined) {
-    //   if (this.editTemplate.author !== null && this.editTemplate.author !== undefined) {
-    //     this.authorId = this.editTemplate.author.id;
-    //   }
-     } else {
-       this.editTemplate = new DataTemplateModel();
-     }
+    if (this.editTemplate.author !== undefined && this.editTemplate.author !== null) {
+      this.authorId = this.editTemplate.author.id;
+    } else {
+      this.authorId = this.AUTHOR_ID_NEW;
+    }
   }
 
   getAuthors(): AuthorModel[] {
@@ -35,7 +35,7 @@ export class DataTemplateComponent implements OnInit {
   closeModal(save: boolean) {
     if (save === true) {
       this.editTemplate.author = new AuthorModel();
-      if (this.authorId === 'new') {
+      if (this.authorId === this.AUTHOR_ID_NEW) {
         this.editTemplate.author.name = this.authorName;
       } else {
         this.editTemplate.author.id = this.authorId;
@@ -48,6 +48,6 @@ export class DataTemplateComponent implements OnInit {
 
       this.editTemplate = new DataTemplateModel();
     }
-    this.modalDialogService.close(this.templateService.getDataTemplateDialogId());
+    this.modalService.dismissAll();
   }
 }

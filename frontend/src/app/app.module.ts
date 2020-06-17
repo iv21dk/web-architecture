@@ -14,6 +14,7 @@ import { BackendsManagerComponent } from './backends-manager/backends-manager.co
 import { TestsComponent } from './tests/tests.component';
 import { BackendComponent } from './backend/backend.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DataTemplatesModule } from './data-templates/data-templates.module';
 
 export function initializeApp(appConfig: AppConfig) {
   return () => appConfig.load();
@@ -24,8 +25,8 @@ export function initializeApp(appConfig: AppConfig) {
     AppComponent,
     BackendsManagerComponent,
     BackendComponent,
-    DataTemplatesComponent,
-    DataTemplateComponent,
+    //DataTemplatesComponent,
+    //DataTemplateComponent,
     //ModalDialogComponent
     TestsComponent
   ],
@@ -35,6 +36,7 @@ export function initializeApp(appConfig: AppConfig) {
     HttpClientModule,
     ModalDialogModule,
     NgbModule,
+    DataTemplatesModule
     //TestsModule
     //BrowserAnimationsModule,
     //MatInputModule,
