@@ -25,16 +25,16 @@ export class DataTemplateService {
     return this.authors;
   }
 
-  getTemplatesFromServer() {
-    this.http.get<DataTemplateModel[]>('/api/data-templates')
+  getTemplatesFromServer(query: string) {
+    this.http.get<DataTemplateModel[]>('/api/data-templates?query=' + query)
       .subscribe(
         items => this.templates = items,
         error => console.log(error) //TODO: handle error
       );
   }
 
-  getTemplatesObservable(): Observable<DataTemplateModel[]> {
-    return this.http.get<DataTemplateModel[]>('/api/data-templates')
+  getTemplatesObservable(query: string): Observable<DataTemplateModel[]> {
+    return this.http.get<DataTemplateModel[]>('/api/data-templates?query=' + query);
   }
 
   createTemplate(template: DataTemplateModel) {

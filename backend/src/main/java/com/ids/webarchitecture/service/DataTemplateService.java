@@ -10,6 +10,7 @@ import com.ids.webarchitecture.repository.mongo.DataTemplateMongoRepository;
 import com.ids.webarchitecture.repository.mongo.ProductAuthorTemplateMongoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,9 +29,14 @@ public class DataTemplateService {
 
     private ObjectMapper mapper = new ObjectMapper();
 
-    public List<DataTemplateDto> getAllTemplates() {
-        return dataTemplateMongoRepository.findAll().stream()
-                .map(i->dataTemplateBoToDto(i)).collect(Collectors.toList());
+    public List<DataTemplateDto> getAllTemplates(String query) {
+        List<DataTemplateMongo> templates;
+        if (StringUtils.isEmpty(query)) {
+            templates = dataTemplateMongoRepository.findAll();
+        } else {
+            templates = dataTemplateMongoRepository.findAllByQuery(query);
+        }
+        return templates.stream().map(i->dataTemplateBoToDto(i)).collect(Collectors.toList());
     }
 
     private DataTemplateDto dataTemplateBoToDto(DataTemplateMongo dataTemplate) {

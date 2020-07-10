@@ -7,7 +7,7 @@ import { SortEvent, NgbdSortableHeader } from '../table-sortable/sortable.direct
 import { FormControl } from '@angular/forms';
 import { DecimalPipe } from '@angular/common';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { map, startWith, debounceTime } from 'rxjs/operators';
 
 const compare = (v1: string, v2: string) => v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 
@@ -21,29 +21,37 @@ export class DataTemplatesComponent implements OnInit {
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
 
   templates$: Observable<DataTemplateModel[]>;
-  //templates: DataTemplateModel[];
-  filter = new FormControl('');
+  filter: FormControl = new FormControl('');
+  filter$: Observable<string>;
 
   constructor(private templateService: DataTemplateService, 
-    private modalService: NgbModal,
-    pipe: DecimalPipe) { 
-      this.templates$ = this.filter.valueChanges.pipe(
-        startWith(''),
-        map(text => this.search(text, pipe))
-      );
+    private modalService: NgbModal) {
+
+      // this.templates$ = this.filter.valueChanges.pipe(
+      //   startWith(''),
+      //   map(text => this.search(text, pipe))
+      // );
     }
 
   ngOnInit(): void {
-    //this.templates = this.getTemplates();
+    //this.templates$ = ;
+    //this.templates$ = 
+    //this.templates$ = this.filter.valueChanges.pipe(
+    //  this.templateService.getTemplatesFromServer(this.filter.value));
+    this.filter.valueChanges.pipe(
+      startWith(''),
+      debounceTime(1000),
+    ).subscribe(
+      text => this.templates$ = this.templateService.getTemplatesObservable(text));
   }
 
   getTemplates(): DataTemplateModel[] {
     return this.templateService.getTemplates();
   }
 
-  getTemplatesFromServer(): Observable<DataTemplateModel[]> {
-    return this.templateService.getTemplatesObservable();
-  }
+  // getTemplatesFromServer(query: string): Observable<DataTemplateModel[]> {
+  //   return this.templateService.getTemplatesObservable(query);
+  // }
 
   create() {
     this.openDataTemplateModal(new DataTemplateModel());
