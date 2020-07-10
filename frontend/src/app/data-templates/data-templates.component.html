@@ -2,6 +2,13 @@
 <div class="command-panel">
   <button class="command-panel-button" (click)="create()">Create</button>
 </div>
+
+<form>
+  <div class="form-group form-inline">
+      Full text search: <input class="form-control ml-2" type="text" [formControl]="filter"/>
+  </div>
+</form>
+
 <div>
   <table class="table table-striped">
     <thead>
@@ -14,13 +21,23 @@
       </tr>
     </thead>
     <tbody>
-    <tr class="data-source-row" *ngFor="let item of getTemplates(); let i = index" (dblclick)="update(item)">
-      <td>{{i+1}}</td>
+    <tr class="data-source-row" *ngFor="let item of templates$ | async; index as i" (dblclick)="update(item)">
+      <td scope="row">{{ i + 1 }}</td>
       <td class="template-author-name">
-        <div class="data-source-row">{{item.author === null ? '' : item.author.name}}</div>
+        <div class="data-source-row">
+          <ngb-highlight [result]="item.author === null ? '' : item.author.name" [term]="filter.value"></ngb-highlight>
+        </div>
       </td>
-      <td class="template-name"><div class="data-source-row">{{item.name}}</div></td>
-      <td class="template-text"><div class="data-source-row">{{item.text}}</div></td>
+      <td class="template-name">
+        <div class="data-source-row">
+          <ngb-highlight [result]="item.name" [term]="filter.value"></ngb-highlight>
+        </div>
+      </td>
+      <td class="template-text"> 
+        <div class="data-source-row">
+          <ngb-highlight [result]="item.text" [term]="filter.value"></ngb-highlight>
+        </div> 
+      </td>
       <td>{{item.text === null ? 0 : item.text.length}}</td>
     </tr>
     </tbody>

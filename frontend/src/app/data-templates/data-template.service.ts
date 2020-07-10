@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {DataTemplateModel} from "../data-template/data-template.model";
 import {AuthorModel} from "../data-template/author.model";
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,10 @@ export class DataTemplateService {
         items => this.templates = items,
         error => console.log(error) //TODO: handle error
       );
+  }
+
+  getTemplatesObservable(): Observable<DataTemplateModel[]> {
+    return this.http.get<DataTemplateModel[]>('/api/data-templates')
   }
 
   createTemplate(template: DataTemplateModel) {
