@@ -16,7 +16,9 @@ import { BackendComponent } from './backend/backend.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DataTemplatesModule } from './data-templates/data-templates.module';
 import { NgbdSortableHeader } from './table-sortable/sortable.directive';
-import { DecimalPipe } from '@angular/common';
+//import { DecimalPipe } from '@angular/common';
+import { ReportsComponent } from './modules/reports/components/reports/reports.component';
+import { ReportsModule } from './modules/reports/reports.module';
 
 export function initializeApp(appConfig: AppConfig) {
   return () => appConfig.load();
@@ -39,7 +41,8 @@ export function initializeApp(appConfig: AppConfig) {
     HttpClientModule,
     ModalDialogModule,
     NgbModule,
-    DataTemplatesModule
+    DataTemplatesModule,
+    ReportsModule
     //TestsModule
     //BrowserAnimationsModule,
     //MatInputModule,
@@ -51,7 +54,7 @@ export function initializeApp(appConfig: AppConfig) {
   providers: [
     BackendService,
     DataTemplateService,
-    DecimalPipe,
+    //DecimalPipe,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ApiInterceptor,

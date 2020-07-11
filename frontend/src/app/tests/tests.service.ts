@@ -37,7 +37,7 @@ export class TestService {
 
   startTest() {
   
-    this.dataTemplateService.getTemplatesFromServer();
+    //this.dataTemplateService.getTemplatesFromServer();
     this.dataTemplates = this.dataTemplateService.getTemplates();
 
     if(this.dataTemplates.length === 0) {

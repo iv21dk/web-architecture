@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 export class DataTemplateService {
 
   constructor(private http: HttpClient) {
-    this.getTemplatesFromServer();
+    //this.getTemplatesFromServer();
     this.getAuthorsFromServer();
   }
 
@@ -41,7 +41,7 @@ export class DataTemplateService {
     this.http.post('/api/data-templates', template)
       .subscribe(
         res => {
-          this.getTemplatesFromServer();
+          //this.getTemplatesFromServer();
           this.getAuthorsFromServer();
         },
         error => console.log(error) //TODO: handle error
@@ -52,7 +52,7 @@ export class DataTemplateService {
     this.http.put('/api/data-templates/' + template.id, template)
       .subscribe(
         res => {
-          this.getTemplatesFromServer();
+          //this.getTemplatesFromServer();
           this.getAuthorsFromServer();
         },
         error => console.log(error) //TODO: handle error

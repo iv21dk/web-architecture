@@ -1,8 +1,7 @@
 package com.ids.webarchitecture.model.mongo;
 
 import com.ids.webarchitecture.model.IdentifiableEntity;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
@@ -10,8 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 @Document(collection = "test")
-@Getter
-@Setter
+@Data
 public class Test extends IdentifiableEntity {
     private Date startDate = new Date();
     private Date endDate;
@@ -27,4 +25,8 @@ public class Test extends IdentifiableEntity {
     private TestMeasurements sqlMeasurements;
     private List<BackendTestData> backends = new ArrayList<>();
     private List<String> errors = new ArrayList();
+    /**
+     * Test duration in ms
+     */
+    private Integer duration;
 }

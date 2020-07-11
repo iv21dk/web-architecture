@@ -251,6 +251,8 @@ public class TestService {
 
         test.setEndDate(new Date());
 
+        test.setDuration((int) (test.getEndDate().getTime() - test.getStartDate().getTime()));
+
         setTestMeasurementsToTest(test);
 
         if (test.getMongoDbMeasurements() == null) {

@@ -20,4 +20,5 @@ public class TestDto extends IdentifiableDto {
     private TestMeasurementsDto mongoDbMeasurements;
     private TestMeasurementsDto sqlMeasurements;
     private List<BackendTestData> backends = new ArrayList<>();
+    private Integer duration;
 }

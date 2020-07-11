@@ -26,32 +26,20 @@ export class DataTemplatesComponent implements OnInit {
 
   constructor(private templateService: DataTemplateService, 
     private modalService: NgbModal) {
-
-      // this.templates$ = this.filter.valueChanges.pipe(
-      //   startWith(''),
-      //   map(text => this.search(text, pipe))
-      // );
     }
 
   ngOnInit(): void {
-    //this.templates$ = ;
-    //this.templates$ = 
-    //this.templates$ = this.filter.valueChanges.pipe(
-    //  this.templateService.getTemplatesFromServer(this.filter.value));
     this.filter.valueChanges.pipe(
       startWith(''),
       debounceTime(1000),
     ).subscribe(
-      text => this.templates$ = this.templateService.getTemplatesObservable(text));
+      text => this.templates$ = this.templateService.getTemplatesObservable(text)
+      );
   }
 
   getTemplates(): DataTemplateModel[] {
     return this.templateService.getTemplates();
   }
-
-  // getTemplatesFromServer(query: string): Observable<DataTemplateModel[]> {
-  //   return this.templateService.getTemplatesObservable(query);
-  // }
 
   create() {
     this.openDataTemplateModal(new DataTemplateModel());
@@ -86,15 +74,6 @@ export class DataTemplatesComponent implements OnInit {
     //     return direction === 'asc' ? res : -res;
     //   });
     // }
-  }
-
-  search(text: string, pipe: PipeTransform): DataTemplateModel[] {
-    return this.getTemplates().filter(template => {
-      const term = text.toLowerCase();
-      return template.name.toLowerCase().includes(term)
-          || template.text.toLowerCase().includes(term)
-          || template.author.name.toLowerCase().includes(term);
-    });
   }
 
 }
