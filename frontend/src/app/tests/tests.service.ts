@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { TestModel, TestStatus } from './test.model';
 import { DataTemplateService } from '../data-templates/data-template.service';
 import { DataTemplateModel } from '../data-template/data-template.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -37,7 +38,7 @@ export class TestService {
 
   startTest() {
   
-    //this.dataTemplateService.getTemplatesFromServer();
+    this.dataTemplateService.getAllTemplatesFromServer();
     this.dataTemplates = this.dataTemplateService.getTemplates();
 
     if(this.dataTemplates.length === 0) {
@@ -130,6 +131,10 @@ export class TestService {
         },
         error => console.log(error) //TODO: handle error
       );
+  }
+
+  public getTestsList(): Observable<TestModel[]> {
+    return this.http.get<TestModel[]>('/api/tests');
   }
 
   // private startTimer() {

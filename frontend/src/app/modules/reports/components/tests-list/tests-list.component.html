@@ -2,12 +2,58 @@
     <table class="table table-striped">
         <thead>
             <tr>
-              <th scope="col">#</th>
-              <th scope="col">Created</th>
-              <th scope="col">Requests count</th>
-              <th scope="col">Successfull</th>
-              <th scope="col">Errors</th>
+                <th scope="col" rowspan="2">Created</th>
+                <th scope="col" rowspan="2">Requests</th>
+                <!--<th scope="col">Successfull</th>
+                <th scope="col">Errors</th>-->
+                <th scope="col" rowspan="2">Duration, sec</th>
+                <!--<th scope="col">Backends</th>-->
+                <th scope="col" colspan="2">Existing data count</th>
+                <th scope="col" colspan="5">Measuremens MongoDB, ms</th>
+                <th scope="col" colspan="5">Measuremens SQL, ms</th>
+
             </tr>
-          </thead>  
+            <tr>
+                <th scope="col">mongoDB</th>
+                <th scope="col">SQL</th>
+
+                <th scope="col">create</th>
+                <th scope="col">update</th>
+                <th scope="col">delete</th>
+                <th scope="col">indexed search</th>
+                <th scope="col">not indexed search</th>
+
+                <th scope="col">create</th>
+                <th scope="col">update</th>
+                <th scope="col">delete</th>
+                <th scope="col">indexed search</th>
+                <th scope="col">not indexed search</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let test of tests$ | async; index as i">
+                <td scope="row">{{test.startDate}}</td>
+                <td scope="row">{{test.requestsCount}}</td>
+                <!--<td scope="row">{{test.successCount}}</td>
+                <td scope="row">{{test.failedCount}}</td>-->
+                <td scope="row">{{test.durationSec}}</td>
+                <!--<td scope="row">{{test.backendClusterSize}}</td>-->
+
+                <td scope="row">{{test.mongoInitialDataCount}}</td>
+                <td scope="row">{{test.sqlInitialDataCount}}</td>
+
+                <td scope="row">{{test.mongoDbMeasurements.avgCreateTimeMs}}</td>
+                <td scope="row">{{test.mongoDbMeasurements.avgUpdateTimeMs}}</td>
+                <td scope="row">{{test.mongoDbMeasurements.avgDeleteTimeMs}}</td>
+                <td scope="row">{{test.mongoDbMeasurements.avgFindByIndexedFieldTimeMs}}</td>
+                <td scope="row">{{test.mongoDbMeasurements.avgFindByNoIndexedFieldTimeMs}}</td>
+
+                <td scope="row">{{test.sqlMeasurements.avgCreateTimeMs}}</td>
+                <td scope="row">{{test.sqlMeasurements.avgUpdateTimeMs}}</td>
+                <td scope="row">{{test.sqlMeasurements.avgDeleteTimeMs}}</td>
+                <td scope="row">{{test.sqlMeasurements.avgFindByIndexedFieldTimeMs}}</td>
+                <td scope="row">{{test.sqlMeasurements.avgFindByNoIndexedFieldTimeMs}}</td>
+            </tr>
+        </tbody>  
     </table>
 </div>

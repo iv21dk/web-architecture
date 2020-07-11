@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { TestService } from '../../../../tests/tests.service';
+import { Observable } from 'rxjs';
+import { TestModel } from '../../../../tests/test.model';
 
 @Component({
   selector: 'app-tests-list',
@@ -7,9 +10,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TestsListComponent implements OnInit {
 
-  constructor() { }
+  constructor(private testService: TestService) { }
+
+  tests$: Observable<TestModel[]>
 
   ngOnInit(): void {
+    this.tests$ = this.testService.getTestsList();
   }
 
 }

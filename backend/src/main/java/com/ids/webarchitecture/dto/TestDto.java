@@ -11,14 +11,16 @@ import java.util.List;
 public class TestDto extends IdentifiableDto {
     private Date startDate;
     private Date endDate;
-    private Long mongoInitialDataCount;
-    private Long sqlInitialDataCount;
-    private Integer requestsCount;
-    private Short mongoDbClusterSize;
-    private Short sqlClusterSize;
-    private Short backendClusterSize;
-    private TestMeasurementsDto mongoDbMeasurements;
-    private TestMeasurementsDto sqlMeasurements;
+    private Long mongoInitialDataCount = 0L;
+    private Long sqlInitialDataCount = 0L;
+    private Integer requestsCount  = 0;
+    private Integer successCount  = 0;
+    private Integer failedCount  = 0;
+    private Short mongoDbClusterSize  = 0;
+    private Short sqlClusterSize  = 0;
+    private Short backendClusterSize  = 0;
+    private TestMeasurementsDto mongoDbMeasurements = new TestMeasurementsDto();
+    private TestMeasurementsDto sqlMeasurements = new TestMeasurementsDto();
     private List<BackendTestData> backends = new ArrayList<>();
-    private Integer duration;
+    private Integer durationSec = 0;
 }
