@@ -2,6 +2,9 @@
   height: 2.28rem;
   background-color: black;
   padding: 0 0.7rem;
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
 
 .logo {
@@ -39,5 +42,5 @@
 }
 
 .middle-content {
-  margin: 1rem;
+  margin: 3rem 1rem 1rem 1rem;
 }
