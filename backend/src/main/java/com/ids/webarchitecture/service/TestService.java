@@ -14,6 +14,7 @@ import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
@@ -43,6 +44,17 @@ public class TestService {
     // tests measurements where key is testId, value is list of measurements
     private Map <String, List<Pair<DataActionMeasurements, DataActionMeasurements>>> testMeasurements = new ConcurrentHashMap<>();
     private Map <String, List<String>> testErrors = new ConcurrentHashMap<>();
+    private Map <String, DataTemplateMongo> dataTemplates = new ConcurrentHashMap<>();
+
+    @PostConstruct
+    private void init() {
+        readDataTemplates();
+    }
+
+    private void readDataTemplates() {
+        this.dataTemplates = dataTemplateMongoRepository.findAll().stream()
+                .collect(Collectors.toMap(DataTemplateMongo::getId, i -> i));
+    }
 
     @Transactional
     public TestDto createTest() {
@@ -50,16 +62,18 @@ public class TestService {
             throw new LockedException("Test service already locked");
         }
 
+        readDataTemplates();
+
         Test test = new Test();
         test.setBackendClusterSize((short) 1); //TODO: read from ZooKeeper
         test.setMongoDbClusterSize((short) 1); //TODO: read from property
         test.setSqlClusterSize((short) 1); //TODO: read from property
 
-        List<BackendTestData> backends = Arrays.asList(new BackendTestData());
+        List<BackendTestData> backends = Collections.singletonList(new BackendTestData());
         test.setBackends(backends);
 
-        test.setMongoInitialDataCount(testMongoService.getAuthorsCount());
-        test.setSqlInitialDataCount(testSqlService.getAuthorsCount());
+        test.setMongoInitialDataCount(testMongoService.readAuthorsCount());
+        test.setSqlInitialDataCount(testSqlService.readAuthorsCount());
         test = testRepository.save(test);
 
         log.info("Test is created. Test id = {}", test.getId());
@@ -84,7 +98,7 @@ public class TestService {
             closeTest(test.getId());
             throw new LockedException("Test is expired");
         }
-        DataTemplateMongo dataTemplate = checkFound(dataTemplateMongoRepository.findById(dataTemplateId));
+        DataTemplateMongo dataTemplate = this.dataTemplates.get(dataTemplateId);
         if (dataTemplate.getAuthor() == null) {
             throw new RequestParameterException("Incorrect data template. Field 'author' should be defined");
         }
@@ -103,7 +117,6 @@ public class TestService {
             putTestError(testId, e.toString());
             throw e;
         }
-
     }
 
     private DataActionMeasurements executeAllAndMeasure(TestActionService actionService, DataTemplateMongo dataTemplate) {
@@ -112,13 +125,14 @@ public class TestService {
         int createElapsedTime = executeMeasured(() -> {
             actionService.createAuthorAndProduct(dataTemplate);
             actionService.createAuthorAndProduct(dataTemplate);
+            actionService.createAuthorAndProduct(dataTemplate);
             return null;
         });
-        measurements.setCreateTimeMs(createElapsedTime / 2);
+        measurements.setCreateTimeMs(createElapsedTime / 3);
 
         String subtext = getRandomChunckFromText(dataTemplate.getText());
 
-        if (actionService.getReadedAuthorsCount() == 0) {
+        if (actionService.getAuthorsCount() == 0) {
             return measurements;
         }
 
@@ -147,6 +161,12 @@ public class TestService {
                     return null;
                 }));
 
+        measurements.setRetrieveFullData(
+                executeMeasured(() -> {
+                    actionService.retrieveFullData(dataTemplate.getAuthor().getId());
+                    return null;
+                }));
+
         measurements.setDeleteTimeMs(
                 executeMeasured(() -> {
                     actionService.deleteById(authorId4.get());
@@ -166,7 +186,7 @@ public class TestService {
         long startMs = System.currentTimeMillis();
         T result = function.get();
         long endMs = System.currentTimeMillis();
-        return Pair.of(result, Integer.valueOf((int) (endMs - startMs)));
+        return Pair.of(result, (int) (endMs - startMs));
     }
 
     /**

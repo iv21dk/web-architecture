@@ -5,6 +5,7 @@ import com.ids.webarchitecture.model.hibernate.Product;
 import com.ids.webarchitecture.model.hibernate.ProductAuthor;
 import com.ids.webarchitecture.model.mongo.DataTemplateMongo;
 import com.ids.webarchitecture.model.mongo.ProductAuthorTemplateMongo;
+import com.ids.webarchitecture.projection.AuthorIdAndProductNames;
 import com.ids.webarchitecture.repository.ProductAuthorRepository;
 import com.ids.webarchitecture.repository.ProductRepository;
 import org.modelmapper.ModelMapper;
@@ -14,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -69,14 +69,11 @@ public class SqlTestService extends AbstractTestService {
     @Override
     @Transactional
     public boolean updateProductText(String authorId, String substring) {
-        //ProductAuthor author = checkFound(productAuthorRepository.findById(authorId));
         List<Product> products = productRepository.findByAuthorId(authorId);
         Random rand = new Random();
         int randomIndex = rand.nextInt(products.size());
         Product product = products.get(randomIndex);
-        StringBuilder sb = new StringBuilder(product.getText());
-        sb.append("\n").append(substring);
-        product.setText(sb.toString());
+        product.setText(product.getText() + "\n" + substring);
         productRepository.save(product);
         return true;
     }
@@ -90,7 +87,13 @@ public class SqlTestService extends AbstractTestService {
     @Override
     @Transactional(readOnly = true)
     public void findByIndexedField(String value) {
-        productAuthorRepository.findByAuthorTemplateId(value);
+        productAuthorRepository.findByAuthorTemplateId(value, AuthorIdAndProductNames.class);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public void retrieveFullData(String authorId) {
+        productAuthorRepository.findByIdFull(authorId);
     }
 
     @Override
@@ -112,7 +115,7 @@ public class SqlTestService extends AbstractTestService {
     }
 
     @Override
-    protected long getAuthorsCount() {
+    protected long readAuthorsCount() {
         return productAuthorRepository.count();
     }
 }

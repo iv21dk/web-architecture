@@ -21,7 +21,7 @@ public abstract class AbstractTestService implements TestActionService {
 
     abstract List<String> getAuthorIds();
 
-    abstract long getAuthorsCount();
+    abstract long readAuthorsCount();
 
     @PostConstruct
     protected void init() {
@@ -29,7 +29,7 @@ public abstract class AbstractTestService implements TestActionService {
     }
 
     @Override
-    public int getReadedAuthorsCount() {
+    public int getAuthorsCount() {
         return authorIds.size();
     }
 
@@ -53,7 +53,7 @@ public abstract class AbstractTestService implements TestActionService {
             log.info("Reading of author ids is skipped because service locked by test");
             return;
         }
-        if (authorIds.size() != getAuthorsCount()) {
+        if (authorIds.size() != readAuthorsCount()) {
             authorIds.clear();
             authorIds.addAll(getAuthorIds());
         }

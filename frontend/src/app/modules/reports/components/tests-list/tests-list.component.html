@@ -9,8 +9,8 @@
                 <th scope="col" rowspan="2">Duration, sec</th>
                 <!--<th scope="col">Backends</th>-->
                 <th scope="col" colspan="2">Existing data count</th>
-                <th scope="col" colspan="5">Measuremens MongoDB, ms</th>
-                <th scope="col" colspan="5">Measuremens SQL, ms</th>
+                <th scope="col" colspan="6">Measuremens MongoDB, ms</th>
+                <th scope="col" colspan="6">Measuremens SQL, ms</th>
 
             </tr>
             <tr>
@@ -22,12 +22,14 @@
                 <th scope="col">delete</th>
                 <th scope="col">indexed search</th>
                 <th scope="col">not indexed search</th>
+                <th scope="col">retrieve full data</th>
 
                 <th scope="col">create</th>
                 <th scope="col">update</th>
                 <th scope="col">delete</th>
                 <th scope="col">indexed search</th>
                 <th scope="col">not indexed search</th>
+                <th scope="col">retrieve full data</th>
             </tr>
         </thead>
         <tbody>
@@ -47,12 +49,14 @@
                 <td scope="row">{{test.mongoDbMeasurements.avgDeleteTimeMs}}</td>
                 <td scope="row">{{test.mongoDbMeasurements.avgFindByIndexedFieldTimeMs}}</td>
                 <td scope="row">{{test.mongoDbMeasurements.avgFindByNoIndexedFieldTimeMs}}</td>
+                <td scope="row">{{test.mongoDbMeasurements.avgRetrieveFullData}}</td>
 
                 <td scope="row">{{test.sqlMeasurements.avgCreateTimeMs}}</td>
                 <td scope="row">{{test.sqlMeasurements.avgUpdateTimeMs}}</td>
                 <td scope="row">{{test.sqlMeasurements.avgDeleteTimeMs}}</td>
                 <td scope="row">{{test.sqlMeasurements.avgFindByIndexedFieldTimeMs}}</td>
                 <td scope="row">{{test.sqlMeasurements.avgFindByNoIndexedFieldTimeMs}}</td>
+                <td scope="row">{{test.sqlMeasurements.avgRetrieveFullData}}</td>
             </tr>
         </tbody>  
     </table>

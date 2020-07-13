@@ -5,6 +5,7 @@ import com.ids.webarchitecture.model.mongo.DataTemplateMongo;
 import com.ids.webarchitecture.model.mongo.ProductAuthorMongo;
 import com.ids.webarchitecture.model.mongo.ProductAuthorTemplateMongo;
 import com.ids.webarchitecture.model.mongo.ProductMongo;
+import com.ids.webarchitecture.projection.AuthorIdAndProductNames;
 import com.ids.webarchitecture.repository.mongo.ProductAuthorMongoRepository;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -42,7 +42,7 @@ public class MongoTestService extends AbstractTestService {
         author.setAuthorTemplateId(authorTemplate.getId());
         author.setName(authorTemplate.getName() + "-" + UUID.randomUUID());
 
-        author.setProducts(Arrays.asList(getProductFromTemplate(dataTemplate)));
+        author.setProducts(Collections.singletonList(getProductFromTemplate(dataTemplate)));
 
         productAuthorMongoRepository.save(author);
     }
@@ -72,9 +72,7 @@ public class MongoTestService extends AbstractTestService {
         Random rand = new Random();
         int randomIndex = rand.nextInt(author.getProducts().size());
         ProductMongo product = author.getProducts().get(randomIndex);
-        StringBuilder sb = new StringBuilder(product.getText());
-        sb.append("\n").append(substring);
-        product.setText(sb.toString());
+        product.setText(product.getText() + "\n" + substring);
         productAuthorMongoRepository.save(author);
         return true;
     }
@@ -82,13 +80,18 @@ public class MongoTestService extends AbstractTestService {
     @Override
     @Transactional(readOnly = true)
     public void findByNoIndexedFieldLike(String substring) {
-        productAuthorMongoRepository.findByProductsTextLike(substring);
+        productAuthorMongoRepository.findByProductsTextLike(substring, AuthorIdAndProductNames.class);
     }
 
     @Override
     @Transactional(readOnly = true)
     public void findByIndexedField(String value) {
-        productAuthorMongoRepository.findByAuthorTemplateId(value);
+        productAuthorMongoRepository.findByAuthorTemplateId(value, AuthorIdAndProductNames.class);
+    }
+
+    @Override
+    public void retrieveFullData(String authorId) {
+        productAuthorMongoRepository.findById(authorId);
     }
 
     @Override
@@ -110,7 +113,7 @@ public class MongoTestService extends AbstractTestService {
     }
 
     @Override
-    protected long getAuthorsCount() {
+    protected long readAuthorsCount() {
         return productAuthorMongoRepository.count();
     }
 }

@@ -9,6 +9,7 @@ public class DataActionMeasurements {
     private Integer createTimeMs;
     private Integer findByIndexedFieldTimeMs;
     private Integer findByNoIndexedFieldTimeMs;
+    private Integer retrieveFullData;
     private Integer updateTimeMs;
     private Integer deleteTimeMs;
 }
