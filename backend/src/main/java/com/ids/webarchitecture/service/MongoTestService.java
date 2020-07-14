@@ -80,18 +80,18 @@ public class MongoTestService extends AbstractTestService {
     @Override
     @Transactional(readOnly = true)
     public void findByNoIndexedFieldLike(String substring) {
-        productAuthorMongoRepository.findByProductsTextLike(substring, AuthorIdAndProductNames.class);
+        checkFound(productAuthorMongoRepository.findByProductsTextLike(substring, AuthorIdAndProductNames.class));
     }
 
     @Override
     @Transactional(readOnly = true)
     public void findByIndexedField(String value) {
-        productAuthorMongoRepository.findByAuthorTemplateId(value, AuthorIdAndProductNames.class);
+        checkFound(productAuthorMongoRepository.findByAuthorTemplateId(value, AuthorIdAndProductNames.class));
     }
 
     @Override
     public void retrieveFullData(String authorId) {
-        productAuthorMongoRepository.findById(authorId);
+        checkFound(productAuthorMongoRepository.findById(authorId));
     }
 
     @Override

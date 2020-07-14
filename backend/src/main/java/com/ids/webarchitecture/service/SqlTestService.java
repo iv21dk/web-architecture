@@ -81,19 +81,19 @@ public class SqlTestService extends AbstractTestService {
     @Override
     @Transactional(readOnly = true)
     public void findByNoIndexedFieldLike(String substring) {
-        productRepository.findByTextLike(substring);
+        checkFound(productRepository.findByTextLike("%" + substring + "%"));
     }
 
     @Override
     @Transactional(readOnly = true)
     public void findByIndexedField(String value) {
-        productAuthorRepository.findByAuthorTemplateId(value, AuthorIdAndProductNames.class);
+        checkFound(productAuthorRepository.findByAuthorTemplateId(value, AuthorIdAndProductNames.class));
     }
 
     @Override
     @Transactional(readOnly = true)
     public void retrieveFullData(String authorId) {
-        productAuthorRepository.findByIdFull(authorId);
+        checkFound(productAuthorRepository.findByIdFull(authorId));
     }
 
     @Override

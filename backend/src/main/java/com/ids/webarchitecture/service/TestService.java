@@ -115,6 +115,7 @@ public class TestService {
             putTestMeasurements(testId, mongoMeasurements, sqlMeasurements);
         } catch (Exception e) {
             putTestError(testId, e.toString());
+            log.error("An error occurred on test execute", e);
             throw e;
         }
     }
@@ -140,6 +141,7 @@ public class TestService {
         Optional<String> authorId2 = actionService.getRandomAuthorId();
         Optional<String> authorId3 = actionService.getRandomAuthorId();
         Optional<String> authorId4 = actionService.getRandomAuthorId();
+        Optional<String> authorId5 = actionService.getRandomAuthorId();
 
         int updateElapsedTime = executeMeasured(() -> {
             actionService.addProductToAuthor(authorId1.get(), dataTemplate);
@@ -163,13 +165,13 @@ public class TestService {
 
         measurements.setRetrieveFullData(
                 executeMeasured(() -> {
-                    actionService.retrieveFullData(dataTemplate.getAuthor().getId());
+                    actionService.retrieveFullData(authorId4.get());
                     return null;
                 }));
 
         measurements.setDeleteTimeMs(
                 executeMeasured(() -> {
-                    actionService.deleteById(authorId4.get());
+                    actionService.deleteById(authorId5.get());
                     return null;
                 }));
 

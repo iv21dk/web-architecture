@@ -2,6 +2,7 @@ package com.ids.webarchitecture.utils;
 
 import com.ids.webarchitecture.exception.NotFoundException;
 
+import java.util.Collection;
 import java.util.Optional;
 
 public class ServiceUtils {
@@ -18,5 +19,12 @@ public class ServiceUtils {
             throw new NotFoundException(String.format("entity is not found"));
         }
         return object;
+    }
+
+    public static Collection checkFound(Collection collection) {
+        if (collection.isEmpty()) {
+            throw new NotFoundException(String.format("entities list is not found"));
+        }
+        return collection;
     }
 }

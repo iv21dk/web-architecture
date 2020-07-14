@@ -9,6 +9,8 @@ import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import static java.lang.String.format;
+
 public abstract class AbstractTestService implements TestActionService {
     Logger log = LoggerFactory.getLogger(AbstractTestService.class);
     public static final int READ_AUTHORS_DELAY_MS = 2 * 60 * 1000; // 2 min
