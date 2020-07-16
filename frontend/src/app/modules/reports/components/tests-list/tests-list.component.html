@@ -61,3 +61,19 @@
         </tbody>  
     </table>
 </div>
+<!-- <div>
+    <ngb-pagination [(collectionSize)]="contentSize" [(page)]="page" [maxSize]="5" [rotate]="true" [boundaryLinks]="true"></ngb-pagination>
+</div> -->
+
+<div class="d-flex justify-content-between p-2">
+    <ngb-pagination [collectionSize]="contentSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="refreshTests()">
+    </ngb-pagination>
+  
+    <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshTests()">
+      <option [ngValue]="10">10 items per page</option>
+      <option [ngValue]="25">25 items per page</option>
+      <option [ngValue]="100">100 items per page</option>
+    </select>
+  </div>
+
+

@@ -10,6 +10,8 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -309,5 +311,14 @@ public class TestService {
 
     public List<TestDto> getTests() {
         return testRepository.findAll().stream().map(this::testBoToDto).collect(Collectors.toList());
+    }
+
+    public List<TestDto> getTests(Integer page, Integer pageSize) {
+        return testRepository.findAll(PageRequest.of(page-1, pageSize)).getContent().stream()
+                .map(this::testBoToDto).collect(Collectors.toList());
+    }
+
+    public Long getTestsCount() {
+        return testRepository.count();
     }
 }

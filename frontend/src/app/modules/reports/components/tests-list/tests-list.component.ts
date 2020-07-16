@@ -13,9 +13,22 @@ export class TestsListComponent implements OnInit {
   constructor(private testService: TestService) { }
 
   tests$: Observable<TestModel[]>
+  page: number = 1;
+  pageSize: number = 10;
+  contentSize: number;
 
   ngOnInit(): void {
-    this.tests$ = this.testService.getTestsList();
+    this.testService.getTestsCount().subscribe(
+      count => this.contentSize = count 
+    );
+    this.refreshTests();   
+  }
+
+ refreshTests() {
+  this.tests$ = this.testService.getTestsListPageble(this.page, this.pageSize);  
+  // this.countries = COUNTRIES
+    //   .map((country, i) => ({id: i + 1, ...country}))
+    //   .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
   }
 
 }

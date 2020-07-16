@@ -137,6 +137,14 @@ export class TestService {
     return this.http.get<TestModel[]>('/api/tests');
   }
 
+  public getTestsListPageble(page: number, pageSize: number): Observable<TestModel[]> {
+    return this.http.get<TestModel[]>('/api/tests?page=' + page + '&page-size=' + pageSize);
+  }
+
+  public getTestsCount(): Observable<number> {
+    return this.http.get<number>('/api/tests/count');
+  }
+
   // private startTimer() {
   //   this.timerId = setInterval(()=>{
   //     this.timer++;
