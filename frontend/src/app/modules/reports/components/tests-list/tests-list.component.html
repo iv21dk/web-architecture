@@ -34,7 +34,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let test of tests$ | async; index as i">
-                <td scope="row">{{test.startDate}}</td>
+                <td scope="row">{{test.startDate | date:"MM/dd/yyyy"}}</td>
                 <td scope="row">{{test.requestsCount}}</td>
                 <!--<td scope="row">{{test.successCount}}</td>
                 <td scope="row">{{test.failedCount}}</td>-->

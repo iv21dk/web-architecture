@@ -29,4 +29,5 @@ public class Test extends IdentifiableEntity {
      * Test duration in ms
      */
     private Integer duration;
+    private TestStatus status;
 }

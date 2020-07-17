@@ -23,6 +23,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.ids.webarchitecture.utils.ServiceUtils.checkFound;
+import static java.lang.String.format;
 
 @Service
 public class TestService {
@@ -76,6 +77,7 @@ public class TestService {
 
         test.setMongoInitialDataCount(testMongoService.readAuthorsCount());
         test.setSqlInitialDataCount(testSqlService.readAuthorsCount());
+        test.setStatus(TestStatus.STARTED);
         test = testRepository.save(test);
 
         log.info("Test is created. Test id = {}", test.getId());
@@ -277,6 +279,7 @@ public class TestService {
         }
 
         test.setEndDate(new Date());
+        test.setStatus(TestStatus.COMPLETED);
 
         test.setDuration((int) (test.getEndDate().getTime() - test.getStartDate().getTime()));
 
@@ -294,6 +297,16 @@ public class TestService {
         }
         testRepository.save(test);
         log.info("Test is stopped. Test id = {}", testId);
+    }
+
+    public void cancelTest(String testId) {
+        Test test = checkFound(testRepository.findById(testId));
+        if (!testLockService.lockedByTest(testId) || !TestStatus.STARTED.equals(test.getStatus())) {
+            throw new RequestParameterException(format("The test isn't active. Test id=%s", testId));
+        }
+        testLockService.unlock(testId);
+        test.setStatus(TestStatus.CANCELED);
+        testRepository.save(test);
     }
 
     public TestDto getActiveTest() {
@@ -320,5 +333,9 @@ public class TestService {
 
     public Long getTestsCount() {
         return testRepository.count();
+    }
+
+    public TestDto getTest(String testId) {
+        return testBoToDto(checkFound(testRepository.findById(testId)));
     }
 }

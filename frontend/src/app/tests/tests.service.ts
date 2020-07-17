@@ -16,27 +16,23 @@ export class TestService {
 
   private TEST_DURATION_TIMEOUT_MS: number = 2 * 60 * 1000; // Server closes the test
   private TEST_CLOSED_REQUEST_STATUS: number = 423;
-  private PUT_TEST_DATA_DURATION_MS: number = 100;
+  private PUT_TEST_DATA_INTERVAL_MS: number = 300;
 
   private currentTest: TestModel;
   private testClosed: boolean = true;
   private dataTemplates: DataTemplateModel[];
   private timer: number = 0;
   //private timerId;
-  
-  getTestStatus(): TestStatus {
-    if (this.testClosed) {
-      return TestStatus.STOPPED;
-    } else {
-      return TestStatus.STARTED;
-    }
+
+  isTestClosed(): boolean {
+    return this.testClosed;
   }
 
   getCurentTest(): TestModel {
     return this.currentTest;
   }
 
-  startTest() {
+  startTest(): Observable<TestModel> {
   
     this.dataTemplateService.getAllTemplatesFromServer();
     this.dataTemplates = this.dataTemplateService.getTemplates();
@@ -45,19 +41,23 @@ export class TestService {
       alert("Please create data templates!");
       return;
     }
-    
-    this.http.post<TestModel>('/api/tests', undefined)
-      .subscribe(
-        res => {
-          this.currentTest = res;
-          this.testClosed = false;
-          console.log("Test is created. test id=" + res.id + 
-            ", curr time=" + (new Date).toString());
-          this.incrementTimer();
-          this.putTestDataRecursively(Date.now());
-        },
-        error => console.log(error) //TODO: handle error
-      );
+    var request: Observable<TestModel> = this.http.post<TestModel>('/api/tests', undefined);
+    request.subscribe(
+      res => {
+        this.currentTest = res;
+        this.testClosed = false;
+        console.log("Test is created. test id=" + res.id + 
+          ", curr time=" + (new Date).toString());
+        this.incrementTimer();
+        this.putTestDataRecursively(Date.now());
+      },
+      error => console.log(error) //TODO: handle error
+    )
+    return request;
+    // return this.http.post<TestModel>('/api/tests', undefined)
+    //   .subscribe(
+        
+    //   );
   }
 
   private putTestDataRecursively(startTime: number) {
@@ -70,16 +70,7 @@ export class TestService {
     setTimeout(() => {
       this.putTestData();
       this.putTestDataRecursively(startTime);
-    }, this.PUT_TEST_DATA_DURATION_MS);
-  }
-  
-  private startPutTestData() {
-     const start: number = Date.now();
-     let curr: number;
-     do {
-        setTimeout(() => this.putTestData(), this.PUT_TEST_DATA_DURATION_MS);
-        curr = Date.now();
-     } while (!this.testClosed && curr - start < this.TEST_DURATION_TIMEOUT_MS)
+    }, this.PUT_TEST_DATA_INTERVAL_MS);
   }
 
   private putTestData() {
@@ -88,16 +79,18 @@ export class TestService {
     this.http.put('/api/tests/' + this.currentTest.id + '/data/' + randomTemplate.id, undefined)
       .subscribe(
         res => {
-          this.currentTest.requestsCount += 1;
+          if (!this.testClosed) {
+            this.currentTest.requestsCount += 1;
+          }
         },
         error => {
           if (error.status === this.TEST_CLOSED_REQUEST_STATUS) {
             if (!this.testClosed) {
               this.testClosed = true;
-              //console.time("Test is closed. test id=" + this.currentTest.id);
               console.log("Test is closed. test id=" + this.currentTest.id +
-                 ", curr time=" + (new Date).toString());
+                ", curr time=" + (new Date).toString());
               //this.stopTimer();
+              this.getTestById(this.currentTest.id);
             }
           }
         }
@@ -109,10 +102,11 @@ export class TestService {
       alert("Test is not started!");
       return;
     }
-    this.http.put('/api/tests/' + this.currentTest.id + '/close', undefined)
+    this.http.put('/api/tests/' + this.currentTest.id + '/cancel', undefined)
       .subscribe(
         res => {
           this.testClosed = true;
+          this.getTestById(this.currentTest.id);
           //this.stopTimer();
         },
         error => console.log(error)
@@ -129,6 +123,14 @@ export class TestService {
             this.currentTest = res;
           }
         },
+        error => console.log(error) //TODO: handle error
+      );
+  }
+
+  private getTestById(testId: string) {
+    this.http.get<TestModel>('/api/tests/' + testId)
+      .subscribe(
+        res => this.currentTest = res,
         error => console.log(error) //TODO: handle error
       );
   }
@@ -164,11 +166,6 @@ export class TestService {
     }, 1000);
 
   }
-
-  // private stopTimer() {
-  //   clearInterval(this.timerId);
-  //   this.timer = 0;
-  // }
 
   getTimer(): number {
     return this.timer;

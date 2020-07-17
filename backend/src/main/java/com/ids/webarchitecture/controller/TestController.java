@@ -48,6 +48,12 @@ public class TestController {
         return testService.getActiveTest();
     }
 
+    @GetMapping("/api/tests/{test-id}")
+    @ResponseStatus(HttpStatus.OK)
+    public TestDto getTest(@PathVariable("test-id") String testId){
+        return testService.getTest(testId);
+    }
+
     @PutMapping("/api/tests/{test-id}/data/{data-template-id}")
     @ResponseStatus(HttpStatus.OK)
     public void putTestData(
@@ -56,10 +62,10 @@ public class TestController {
         testService.putTestData(testId, dataTemplateId);
     }
 
-    @PutMapping("/api/tests/{test-id}/close")
+    @PutMapping("/api/tests/{test-id}/cancel")
     @ResponseStatus(HttpStatus.OK)
-    public void closeTest(@PathVariable("test-id") String testId) {
-        testService.closeTest(testId);
+    public void cancelTest(@PathVariable("test-id") String testId) {
+        testService.cancelTest(testId);
     }
 
 }

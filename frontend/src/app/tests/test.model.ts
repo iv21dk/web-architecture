@@ -1,8 +1,9 @@
 import { IdentifiableModel } from '../model/identifiable.model';
 
 export enum TestStatus {
-    STOPPED = 'STOPPED',
-    STARTED = 'STARTED'
+    STARTED = 'STARTED',
+    COMPLETED = 'COMPLETED',
+    CANCELED = 'CANCELED'
 }
 
 export class TestMeasurements {
@@ -16,6 +17,7 @@ export class TestMeasurements {
 
 export class TestModel extends IdentifiableModel {
     startDate: Date;
+    endDate: Date;
     requestsCount: number;
     successCount: number;
     failedCount: number;
@@ -25,4 +27,5 @@ export class TestModel extends IdentifiableModel {
     sqlInitialDataCount: number;
     mongoDbMeasurements: TestMeasurements;
     sqlMeasurements: TestMeasurements;
+    status: TestStatus;
 }

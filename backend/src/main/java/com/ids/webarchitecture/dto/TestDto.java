@@ -1,6 +1,7 @@
 package com.ids.webarchitecture.dto;
 
 import com.ids.webarchitecture.model.mongo.BackendTestData;
+import com.ids.webarchitecture.model.mongo.TestStatus;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -23,4 +24,5 @@ public class TestDto extends IdentifiableDto {
     private TestMeasurementsDto sqlMeasurements = new TestMeasurementsDto();
     private List<BackendTestData> backends = new ArrayList<>();
     private Integer durationSec = 0;
+    private TestStatus status;
 }

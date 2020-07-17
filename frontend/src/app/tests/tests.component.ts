@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TestService } from './tests.service';
 import { TestModel, TestStatus } from './test.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-tests',
@@ -11,38 +12,36 @@ export class TestsComponent implements OnInit {
 
   constructor(private testService: TestService) { }
 
+  //currentTest$: Observable<TestModel>;
+
   ngOnInit(): void {
+    //this.currentTest$ = this.testService.getActiveTest();
   }
+
+  getCurrentTest(): TestModel {
+    return this.testService.getCurentTest();
+  }
+
+  isTestClosed(): boolean {
+    return this.testService.isTestClosed();
+  }
+  
 
   startTest() {
     this.testService.startTest();
   }
 
-  getCurrentTestId(): String {
-    let test: TestModel = this.testService.getCurentTest();
-    return test === undefined ? "" : test.id;
-  }
-
-  getCurrentTestStartTime(): String {
-    let test: TestModel = this.testService.getCurentTest();
-    return test === undefined ? undefined : (new Date(test.startDate)).toString();
-  }
-
-  getCurrentTestRequestsCount(): number {
-    let test: TestModel = this.testService.getCurentTest();
-    return test === undefined ? undefined : test.requestsCount;
-  }
-
-  getTestStatus(): TestStatus {
-    return this.testService.getTestStatus();
-  }
+  // getCurrentTestRequestsCount(): number {
+  //   let test: TestModel = this.testService.getCurentTest();
+  //   return test === undefined ? undefined : test.requestsCount;
+  // }
 
   stopTest() {
     this.testService.stopTest();
   }
 
-  getTimer() {
-    this.testService.getTimer();
+  getTimer(): number {
+    return this.testService.getTimer();
   }
 
 }
