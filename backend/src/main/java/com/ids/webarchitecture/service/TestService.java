@@ -323,16 +323,17 @@ public class TestService {
     }
 
     public List<TestDto> getTests() {
-        return testRepository.findAll().stream().map(this::testBoToDto).collect(Collectors.toList());
+        return testRepository.findAllByStatus(TestStatus.COMPLETED).stream().map(this::testBoToDto)
+                .collect(Collectors.toList());
     }
 
     public List<TestDto> getTests(Integer page, Integer pageSize) {
-        return testRepository.findAll(PageRequest.of(page-1, pageSize)).getContent().stream()
+        return testRepository.findAllByStatus(TestStatus.COMPLETED, PageRequest.of(page-1, pageSize)).stream()
                 .map(this::testBoToDto).collect(Collectors.toList());
     }
 
     public Long getTestsCount() {
-        return testRepository.count();
+        return testRepository.countByStatus(TestStatus.COMPLETED);
     }
 
     public TestDto getTest(String testId) {

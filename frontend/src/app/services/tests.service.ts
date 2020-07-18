@@ -12,6 +12,7 @@ export class TestService {
 
   constructor(private http: HttpClient, private dataTemplateService: DataTemplateService) { 
     this.getActiveTest();
+    this.readTestsList()
   }
 
   private TEST_DURATION_TIMEOUT_MS: number = 2 * 60 * 1000; // Server closes the test
@@ -23,6 +24,8 @@ export class TestService {
   private dataTemplates: DataTemplateModel[];
   private timer: number = 0;
 
+  //private testsList: TestModel[] = [];
+
   isTestClosed(): boolean {
     return this.testClosed;
   }
@@ -30,6 +33,10 @@ export class TestService {
   getCurentTest(): TestModel {
     return this.currentTest;
   }
+
+  // getTestsList(): TestModel[] {
+  //   return this.testsList;
+  // }
 
   startTest(): Observable<TestModel> {
   
@@ -128,12 +135,12 @@ export class TestService {
       );
   }
 
-  public getTestsList(): Observable<TestModel[]> {
-    return this.http.get<TestModel[]>('/api/tests');
-  }
-
   public getTestsListPageble(page: number, pageSize: number): Observable<TestModel[]> {
     return this.http.get<TestModel[]>('/api/tests?page=' + page + '&page-size=' + pageSize);
+  }
+
+  readTestsList(): Observable<TestModel[]> {
+    return this.http.get<TestModel[]>('/api/tests');
   }
 
   public getTestsCount(): Observable<number> {
