@@ -12,10 +12,7 @@ export class TestsComponent implements OnInit {
 
   constructor(private testService: TestService) { }
 
-  //currentTest$: Observable<TestModel>;
-
   ngOnInit(): void {
-    //this.currentTest$ = this.testService.getActiveTest();
   }
 
   getCurrentTest(): TestModel {
@@ -26,15 +23,9 @@ export class TestsComponent implements OnInit {
     return this.testService.isTestClosed();
   }
   
-
   startTest() {
     this.testService.startTest();
   }
-
-  // getCurrentTestRequestsCount(): number {
-  //   let test: TestModel = this.testService.getCurentTest();
-  //   return test === undefined ? undefined : test.requestsCount;
-  // }
 
   stopTest() {
     this.testService.stopTest();

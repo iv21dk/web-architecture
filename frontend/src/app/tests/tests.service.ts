@@ -22,7 +22,6 @@ export class TestService {
   private testClosed: boolean = true;
   private dataTemplates: DataTemplateModel[];
   private timer: number = 0;
-  //private timerId;
 
   isTestClosed(): boolean {
     return this.testClosed;
@@ -54,10 +53,6 @@ export class TestService {
       error => console.log(error) //TODO: handle error
     )
     return request;
-    // return this.http.post<TestModel>('/api/tests', undefined)
-    //   .subscribe(
-        
-    //   );
   }
 
   private putTestDataRecursively(startTime: number) {
@@ -89,7 +84,6 @@ export class TestService {
               this.testClosed = true;
               console.log("Test is closed. test id=" + this.currentTest.id +
                 ", curr time=" + (new Date).toString());
-              //this.stopTimer();
               this.getTestById(this.currentTest.id);
             }
           }
@@ -107,7 +101,6 @@ export class TestService {
         res => {
           this.testClosed = true;
           this.getTestById(this.currentTest.id);
-          //this.stopTimer();
         },
         error => console.log(error)
       );
@@ -146,13 +139,6 @@ export class TestService {
   public getTestsCount(): Observable<number> {
     return this.http.get<number>('/api/tests/count');
   }
-
-  // private startTimer() {
-  //   this.timerId = setInterval(()=>{
-  //     this.timer++;
-  //     //console.log(this.timer);
-  //   }, 1000);
-  // }
 
   private incrementTimer() {
     if (this.testClosed) {
