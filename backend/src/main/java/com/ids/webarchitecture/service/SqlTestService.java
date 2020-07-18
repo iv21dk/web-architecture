@@ -5,7 +5,6 @@ import com.ids.webarchitecture.model.hibernate.Product;
 import com.ids.webarchitecture.model.hibernate.ProductAuthor;
 import com.ids.webarchitecture.model.mongo.DataTemplateMongo;
 import com.ids.webarchitecture.model.mongo.ProductAuthorTemplateMongo;
-import com.ids.webarchitecture.projection.AuthorIdAndProductNames;
 import com.ids.webarchitecture.repository.ProductAuthorRepository;
 import com.ids.webarchitecture.repository.ProductRepository;
 import org.modelmapper.ModelMapper;
@@ -19,6 +18,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.ids.webarchitecture.utils.ServiceUtils.checkFound;
+import static org.springframework.util.Assert.notEmpty;
+import static org.springframework.util.Assert.notNull;
 
 @Service
 public class SqlTestService extends AbstractTestService {
@@ -30,11 +31,6 @@ public class SqlTestService extends AbstractTestService {
     private ProductRepository productRepository;
 
     private ModelMapper mapper = new ModelMapper();
-
-//    @PostConstruct
-//    private void init() {
-//
-//    }
 
     @Override
     @Transactional
@@ -81,19 +77,34 @@ public class SqlTestService extends AbstractTestService {
     @Override
     @Transactional(readOnly = true)
     public void findByNoIndexedFieldLike(String substring) {
-        checkFound(productRepository.findByTextLike("%" + substring + "%"));
+        List<Product> result = productRepository.findByTextLike("%" + substring + "%");
+        String action = "Find by no indexed field by value=" + substring + ". ";
+        notEmpty(result, action + "Empty result");
+        notNull(result.get(0).getText(), action + "Incorrect item");
     }
 
     @Override
     @Transactional(readOnly = true)
     public void findByIndexedField(String value) {
-        checkFound(productAuthorRepository.findByAuthorTemplateId(value, AuthorIdAndProductNames.class));
+        List<IdentifiableEntity> result = productAuthorRepository.findByAuthorTemplateId(
+                value, IdentifiableEntity.class);
+        String action = "Find by indexed field by value=" + value + ". ";
+        notEmpty(result, action + "Empty result");
+        notNull(result.get(0).getId(), action + "Incorrect item");
+//        notEmpty(result.get(0).getProducts(), action + "Empty products list.");
+//        notNull(result.get(0).getProducts().get(0).getName(), action + "Incorrect product text");
     }
 
     @Override
     @Transactional(readOnly = true)
     public void retrieveFullData(String authorId) {
-        checkFound(productAuthorRepository.findByIdFull(authorId));
+        ProductAuthor result = checkFound(productAuthorRepository.findByIdFull(authorId));
+        String action = "Retrieve full author data by id=" + authorId + ". ";
+        notNull(result.getAuthorTemplateId(), action + "Incorrect template id.");
+        notNull(result.getName(), action + "Incorrect name.");
+        notEmpty(result.getProducts(), action + "Empty products list.");
+        notNull(result.getProducts().get(0).getName(), action + "Incorrect product name");
+        notNull(result.getProducts().get(0).getText(), action + "Incorrect product text");
     }
 
     @Override

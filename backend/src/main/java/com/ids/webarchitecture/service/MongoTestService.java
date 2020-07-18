@@ -5,7 +5,6 @@ import com.ids.webarchitecture.model.mongo.DataTemplateMongo;
 import com.ids.webarchitecture.model.mongo.ProductAuthorMongo;
 import com.ids.webarchitecture.model.mongo.ProductAuthorTemplateMongo;
 import com.ids.webarchitecture.model.mongo.ProductMongo;
-import com.ids.webarchitecture.projection.AuthorIdAndProductNames;
 import com.ids.webarchitecture.repository.mongo.ProductAuthorMongoRepository;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -18,6 +17,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.ids.webarchitecture.utils.ServiceUtils.checkFound;
+import static org.springframework.util.Assert.notEmpty;
+import static org.springframework.util.Assert.notNull;
 
 @Service
 public class MongoTestService extends AbstractTestService {
@@ -27,11 +28,6 @@ public class MongoTestService extends AbstractTestService {
     private ProductAuthorMongoRepository productAuthorMongoRepository;
 
     private ModelMapper mapper = new ModelMapper();
-
-//    @PostConstruct
-//    private void init() {
-//        //authorIds =
-//    }
 
     @Override
     @Transactional
@@ -80,18 +76,36 @@ public class MongoTestService extends AbstractTestService {
     @Override
     @Transactional(readOnly = true)
     public void findByNoIndexedFieldLike(String substring) {
-        checkFound(productAuthorMongoRepository.findByProductsTextLike(substring, AuthorIdAndProductNames.class));
+        List<IdentifiableEntity> result = productAuthorMongoRepository.findByProductsTextLike(
+                substring, IdentifiableEntity.class);
+        String action = "Find by no indexed field by value=" + substring + ". ";
+        notEmpty(result, action + "Empty result");
+        notNull(result.get(0).getId(), action + "Incorrect result item.");
+//        notEmpty(result.get(0).getProducts(), action + "Empty products list");
+//        notNull(result.get(0).getProducts().get(0).getName(), action + "Incorrect product text");
     }
 
     @Override
     @Transactional(readOnly = true)
     public void findByIndexedField(String value) {
-        checkFound(productAuthorMongoRepository.findByAuthorTemplateId(value, AuthorIdAndProductNames.class));
+        List<IdentifiableEntity> result = productAuthorMongoRepository.findByAuthorTemplateId(
+                value, IdentifiableEntity.class);
+        String action = "Find by indexed field by value=" + value + ". ";
+        notEmpty(result, action + "Empty result.");
+        notNull(result.get(0).getId(), action + "Incorrect result item.");
+//        notEmpty(result.get(0).getProducts(), action + "Empty products list.");
+//        notNull(result.get(0).getProducts().get(0).getName(), action + "Incorrect product text");
     }
 
     @Override
     public void retrieveFullData(String authorId) {
-        checkFound(productAuthorMongoRepository.findById(authorId));
+        ProductAuthorMongo result = checkFound(productAuthorMongoRepository.findById(authorId));
+        String action = "Retrieve full author data by id=" + authorId + ". ";
+        notNull(result.getAuthorTemplateId(), action + "Incorrect template id.");
+        notNull(result.getName(), action + "Incorrect name.");
+        notEmpty(result.getProducts(), action + "Empty products list.");
+        notNull(result.getProducts().get(0).getName(), action + "Incorrect product name");
+        notNull(result.getProducts().get(0).getText(), action + "Incorrect product text");
     }
 
     @Override

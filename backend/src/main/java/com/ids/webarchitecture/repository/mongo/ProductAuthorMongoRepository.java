@@ -1,7 +1,6 @@
 package com.ids.webarchitecture.repository.mongo;
 
 import com.ids.webarchitecture.model.mongo.ProductAuthorMongo;
-import com.ids.webarchitecture.projection.AuthorIdAndProductNames;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;

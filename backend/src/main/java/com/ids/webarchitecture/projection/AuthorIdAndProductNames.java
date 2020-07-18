@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface AuthorIdAndProductNames {
     String getId();
-    List<String> getProductsName();
+    List<Named> getProducts();
 }
