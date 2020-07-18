@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { TestService } from '../../../../tests/tests.service';
+import { TestService } from '../../../tests/tests.service';
 import { Observable } from 'rxjs';
-import { TestModel } from '../../../../tests/test.model';
+import { TestModel } from '../../../tests/test.model';
 
 @Component({
   selector: 'app-tests-list',

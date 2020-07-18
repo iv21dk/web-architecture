@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { TestService } from './tests.service';
-import { TestModel, TestStatus } from './test.model';
+import { TestService } from '../../tests.service';
+import { TestModel, TestStatus } from '../../test.model';
 import { Observable } from 'rxjs';
 
 @Component({

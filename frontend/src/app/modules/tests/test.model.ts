@@ -1,4 +1,4 @@
-import { IdentifiableModel } from '../model/identifiable.model';
+import { IdentifiableModel } from '../../model/identifiable.model';
 
 export enum TestStatus {
     STARTED = 'STARTED',

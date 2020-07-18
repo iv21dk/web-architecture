@@ -6,6 +6,7 @@ import {ModalDialogService} from './modal-dialog.service';
   templateUrl: './modal-dialog.component.html',
   styleUrls: ['./modal-dialog.component.css']
 })
+//Not used now
 export class ModalDialogComponent implements OnInit, OnDestroy {
 
   @Input() id: string;
