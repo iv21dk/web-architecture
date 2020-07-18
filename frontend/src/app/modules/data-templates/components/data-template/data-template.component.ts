@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, TemplateRef, ViewContainerRef, AfterContentInit, ContentChild, ViewChild} from '@angular/core';
-import {DataTemplateService} from '../data-templates/data-template.service';
+import {DataTemplateService} from '../../../../services/data-template.service';
 import {AuthorModel} from './author.model';
 import {DataTemplateModel} from './data-template.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';

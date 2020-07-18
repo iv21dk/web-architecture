@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {BackendModel, NodeStatus} from './backend.model';
-import {BackendService} from "../backends-manager/backend.service";
+import {BackendService} from "../../../../services/backend.service";
 import {strict} from "assert";
 
 // export interface IJavaServer {

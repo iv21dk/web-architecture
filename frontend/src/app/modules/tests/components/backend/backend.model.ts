@@ -1,4 +1,4 @@
-import {BackendDto} from "../dto/backend.dto";
+import { BackendDto } from "./backend.dto";
 
 export enum NodeStatus {
   STOPPED = 'STOPPED',

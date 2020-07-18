@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {DataTemplateModel} from "../data-template/data-template.model";
-import {AuthorModel} from "../data-template/author.model";
+import {DataTemplateModel} from "../modules/data-templates/components/data-template/data-template.model";
+import {AuthorModel} from "../modules/data-templates/components/data-template/author.model";
 import { Observable } from 'rxjs';
 
 @Injectable({

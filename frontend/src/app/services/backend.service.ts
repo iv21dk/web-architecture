@@ -1,7 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {BackendModel, NodeStatus} from '../backend/backend.model';
-import {BackendDto} from "../dto/backend.dto";
+import {BackendModel, NodeStatus} from '../modules/tests/components/backend/backend.model';
+import {BackendDto} from "../modules/tests/components/backend/backend.dto";
 import {map} from "rxjs/operators";
 
 @Injectable({

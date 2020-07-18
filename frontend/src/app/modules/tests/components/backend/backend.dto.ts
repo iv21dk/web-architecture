@@ -1,4 +1,4 @@
-import { NodeStatus } from '../backend/backend.model';
+import { NodeStatus } from "./backend.model";
 
 export class BackendDto {
   host: string;

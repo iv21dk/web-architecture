@@ -3,8 +3,7 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FormsModule} from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
-import { BackendService } from './backends-manager/backend.service';
-import { DataTemplateService } from './modules/data-templates/components/data-templates/data-template.service';;
+import { DataTemplateService } from './services/data-template.service';;
 import { ModalDialogModule } from './modal-dialog/modal-dialog.module';
 import { ApiInterceptor } from "./interceptors/api-interceptor.service";
 import { AppConfig } from "./app.config";
@@ -13,6 +12,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReportsModule } from './modules/reports/reports.module';
 import { DataTemplatesModule } from './modules/data-templates/data-templates.module';
 import { TestsModule } from './modules/tests/tests.module';
+import { TestService } from './services/tests.service';
+import { BackendService } from './services/backend.service';
 
 export function initializeApp(appConfig: AppConfig) {
   return () => appConfig.load();
@@ -35,6 +36,7 @@ export function initializeApp(appConfig: AppConfig) {
   providers: [
     BackendService,
     DataTemplateService,
+    TestService,
     //DecimalPipe,
     {
       provide: HTTP_INTERCEPTORS,
