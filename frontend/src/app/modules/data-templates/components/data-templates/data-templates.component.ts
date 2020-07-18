@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChildren, QueryList, PipeTransform } from '@angular/core';
 import { DataTemplateModel } from '../data-template/data-template.model';
-import { DataTemplateService } from './data-template.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DataTemplateComponent } from '../data-template/data-template.component';
-import { SortEvent, NgbdSortableHeader } from '../table-sortable/sortable.directive';
+import { SortEvent, NgbdSortableHeader } from './sortable.directive';
 import { FormControl } from '@angular/forms';
 import { DecimalPipe } from '@angular/common';
 import { Observable } from 'rxjs';
 import { map, startWith, debounceTime } from 'rxjs/operators';
+import { DataTemplateService } from './data-template.service';
 
 const compare = (v1: string, v2: string) => v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 

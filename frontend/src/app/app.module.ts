@@ -4,21 +4,17 @@ import { FormsModule} from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { BackendService } from './backends-manager/backend.service';
-import { DataTemplatesComponent } from './data-templates/data-templates.component';
-import { DataTemplateService } from './data-templates/data-template.service';;
+import { DataTemplateService } from './modules/data-templates/components/data-templates/data-template.service';;
 import { ModalDialogModule } from './modal-dialog/modal-dialog.module';
-import { DataTemplateComponent } from './data-template/data-template.component';
 import { ApiInterceptor } from "./interceptors/api-interceptor.service";
 import { AppConfig } from "./app.config";
 import { BackendsManagerComponent } from './backends-manager/backends-manager.component';
 import { TestsComponent } from './tests/tests.component';
 import { BackendComponent } from './backend/backend.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { DataTemplatesModule } from './data-templates/data-templates.module';
-import { NgbdSortableHeader } from './table-sortable/sortable.directive';
 //import { DecimalPipe } from '@angular/common';
-import { ReportsComponent } from './modules/reports/components/reports/reports.component';
 import { ReportsModule } from './modules/reports/reports.module';
+import { DataTemplatesModule } from './modules/data-templates/data-templates.module';
 
 export function initializeApp(appConfig: AppConfig) {
   return () => appConfig.load();
@@ -29,10 +25,6 @@ export function initializeApp(appConfig: AppConfig) {
     AppComponent,
     BackendsManagerComponent,
     BackendComponent,
-    NgbdSortableHeader,
-    //DataTemplatesComponent,
-    //DataTemplateComponent,
-    //ModalDialogComponent
     TestsComponent
   ],
   imports: [
@@ -44,12 +36,6 @@ export function initializeApp(appConfig: AppConfig) {
     DataTemplatesModule,
     ReportsModule
     //TestsModule
-    //BrowserAnimationsModule,
-    //MatInputModule,
-    //MatTableModule,
-    //MatPaginatorModule,
-    //MatSortModule,
-    //MatProgressSpinnerModule
   ],
   providers: [
     BackendService,

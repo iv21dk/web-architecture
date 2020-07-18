@@ -1,4 +1,4 @@
-import {IdentifiableModel} from "../model/identifiable.model";
+import { IdentifiableModel } from "../../../../model/identifiable.model";
 
 export class AuthorModel extends IdentifiableModel {
   name: string;

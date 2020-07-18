@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { TestModel, TestStatus } from './test.model';
-import { DataTemplateService } from '../data-templates/data-template.service';
-import { DataTemplateModel } from '../data-template/data-template.model';
+import { TestModel } from './test.model';
+import { DataTemplateService } from '../modules/data-templates/components/data-templates/data-template.service';
 import { Observable } from 'rxjs';
+import { DataTemplateModel } from '../modules/data-templates/components/data-template/data-template.model';
 
 @Injectable({
     providedIn: 'root'
