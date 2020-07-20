@@ -14,14 +14,6 @@ export class TestsComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
-  getCurrentTest(): TestModel {
-    return this.testService.getCurentTest();
-  }
-
-  isTestClosed(): boolean {
-    return this.testService.isTestClosed();
-  }
   
   startTest() {
     this.testService.startTest();
@@ -29,10 +21,6 @@ export class TestsComponent implements OnInit {
 
   stopTest() {
     this.testService.stopTest();
-  }
-
-  getTimer(): number {
-    return this.testService.getTimer();
   }
 
 }

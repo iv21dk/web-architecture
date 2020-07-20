@@ -1,0 +1,17 @@
+<div id="current-test" >
+    <!-- <div>Current test: {{(currentTest$ | async).id}}</div> -->
+    <h5>Current test</h5>
+    <div *ngIf="getCurrentTest() !== null && getCurrentTest() !== undefined">
+      <div>Status: {{getCurrentTest().status}}</div>
+      <div>Start time: {{getCurrentTest().startDate | date:"MM/dd/yyyy h:mm:ssa"}}</div>
+      <div *ngIf="isTestClosed()">End time: {{getCurrentTest().endDate | date:"MM/dd/yyyy h:mm:ssa"}}</div>
+      <div *ngIf="isTestClosed()">Duration (sec): {{getCurrentTest().durationSec}}</div>
+      <div *ngIf="!isTestClosed()">Timer (sec): {{getTimer()}}</div>
+      <div>Requests: {{getCurrentTest().requestsCount}}</div>
+      <div *ngIf="isTestClosed()">Success: {{getCurrentTest().successCount}}</div>
+      <div *ngIf="isTestClosed()">Failed: {{getCurrentTest().failedCount}}</div>
+    </div>
+    <div *ngIf="getCurrentTest() === null || getCurrentTest() === undefined">
+      Please click 'Start test'
+    </div>
+  </div>

@@ -81,8 +81,8 @@ public class TestService {
         test = testRepository.save(test);
 
         log.info("Test is created. Test id = {}", test.getId());
-
         testLockService.lock(test.getId());
+
         return testBoToDto(test);
     }
 

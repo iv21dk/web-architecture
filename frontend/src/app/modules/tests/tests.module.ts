@@ -6,6 +6,8 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { FormsModule } from "@angular/forms";
 import { BackendsManagerComponent } from "./components/backends-manager/backends-manager.component";
 import { BackendComponent } from "./components/backend/backend.component";
+import { TestsSheduledComponent } from './components/tests-sheduled/tests-sheduled.component';
+import { CurrentTestComponent } from './components/current-test/current-test.component';
 
 @NgModule({
     imports: [
@@ -17,7 +19,9 @@ import { BackendComponent } from "./components/backend/backend.component";
     declarations: [
         TestsComponent, 
         BackendsManagerComponent, 
-        BackendComponent
+        BackendComponent, 
+        TestsSheduledComponent, 
+        CurrentTestComponent
     ],
     exports: [
         TestsComponent, 

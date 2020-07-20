@@ -1,0 +1,6 @@
+<div class="command-panel">
+    <button (click)="startTests()">Start tests repeated</button>
+    <button (click)="stopTests()">Stop tests repeated</button>
+    <label *ngIf="!started">repeat count<input [(ngModel)]="repeatCount" type="number"></label>
+    <div *ngIf="started">Test {{iteration}} from {{repeatCount}}</div>
+</div>
