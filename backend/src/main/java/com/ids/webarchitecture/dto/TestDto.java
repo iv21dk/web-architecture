@@ -3,12 +3,14 @@ package com.ids.webarchitecture.dto;
 import com.ids.webarchitecture.model.mongo.BackendTestData;
 import com.ids.webarchitecture.model.mongo.TestStatus;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Data
+@EqualsAndHashCode(callSuper=true)
 public class TestDto extends IdentifiableDto {
     private Date startDate;
     private Date endDate;

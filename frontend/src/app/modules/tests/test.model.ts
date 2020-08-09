@@ -1,18 +1,10 @@
 import { IdentifiableModel } from '../../model/identifiable.model';
+import { TestMeasurements } from './test-measurements.model';
 
 export enum TestStatus {
     STARTED = 'STARTED',
     COMPLETED = 'COMPLETED',
     CANCELED = 'CANCELED'
-}
-
-export class TestMeasurements {
-    avgCreateTimeMs: number;
-    avgFindByIndexedFieldTimeMs: number;
-    avgFindByNoIndexedFieldTimeMs: number;
-    avgRetrieveFullData: number;
-    avgUpdateTimeMs: number;
-    avgDeleteTimeMs: number;
 }
 
 export class TestModel extends IdentifiableModel {

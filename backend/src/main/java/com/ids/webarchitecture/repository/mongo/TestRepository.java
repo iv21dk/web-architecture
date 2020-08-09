@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface TestRepository extends MongoRepository<Test, String>, TestRepositoryCustom {
-    List<Test> findAllByStatus(TestStatus status);
-    List<Test> findAllByStatus(TestStatus status, Pageable pageable);
+    List<Test> findAllByStatusOrderByStartDate(TestStatus status);
+    List<Test> findAllByStatusOrderByStartDate(TestStatus status, Pageable pageable);
     Long countByStatus(TestStatus completed);
 }

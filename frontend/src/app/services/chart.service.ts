@@ -1,10 +1,16 @@
 import { Injectable } from "@angular/core";
 import { SimpleChartOptions } from "../model/simple-chart-options.model";
+import { ChartMeasurementsModel } from "../modules/reports/chart-measurements.model";
+import { HttpClient } from "@angular/common/http";
+import { Observable } from "rxjs";
 
 @Injectable({
     providedIn: 'root'
   })
 export class ChartService {
+
+constructor(private http: HttpClient){
+}
 
   createSimpleChartOptionsToMeasurementCompare(
       xAxisData: any[], data1: number[], data2: number[]): SimpleChartOptions {
@@ -45,5 +51,8 @@ export class ChartService {
       };
   }  
 
+  readChartMeasurements(): Observable<ChartMeasurementsModel[]> {
+    return this.http.get<ChartMeasurementsModel[]>('/api/charts/measurements');
+  }
 
 }
