@@ -8,12 +8,13 @@
 ## Introduction
 
 Web-architecture is application that allows to investigate and analyze behavior of different DBMS in different conditions. 
-As example, you can compare spent time to create/delete some entity in SQL and NoSQL databases. Also you can investigate how database performance depends to amounts of data.
+As example, you can compare spent time to create/delete some entity in SQL and NoSQL databases. Also you can investigate how database performance depends to volume of data.
 
 The application allows to investigate two DBMS:
 * Postgresql - one of most popular DBMS based on SQL tehnologies. 
-* MongoDB - one of most popular DBMS based on NoSQL tehnologies. 
-This list can be extended easily. 
+* MongoDB - one of most popular DBMS based on NoSQL tehnologies.   
+This list can be extended easily.   
+
 The main functionality of the application is start the test and check reports.
 
 ## Data templates
@@ -34,7 +35,7 @@ User can start test in the "Tests" tab. The duration of tests is 1 minute. Clien
 * Search items in data collection by part of long text.  
 * Retrieve full item data with related entities and collections.   
 
-This actions is executed for all supported DBMS (currently is Postgresql and MongoDB) and measured what time server spend for each action. All measurements is saved in the test. Data base volume is fixed in each test in starting one. 
+This actions is executed for all supported DBMS (currently is Postgresql and MongoDB) and measured what time server spend for each action. All measurements is saved in the test. Data base volume is fixed on each test starting. 
 Only one test can be started simultaneously. Test is stoped automatically in one minute after starting. But the user can forcibly cancel this.
 
 ## Reports
