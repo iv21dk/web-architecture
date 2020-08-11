@@ -1,14 +1,13 @@
 
 <div class="middle-content-margin">
   <div class="command-panel">
-    <button class="command-panel-button" (click)="create()">Create</button>
+    <button class="command-panel-button btn btn-outline-dark" (click)="create()">Create</button>
+    <form>
+      <div class="form-group form-inline">
+          Full text search: <input class="form-control ml-2" type="text" [formControl]="filter"/>
+      </div>
+    </form>
   </div>
-  
-  <form>
-    <div class="form-group form-inline">
-        Full text search: <input class="form-control ml-2" type="text" [formControl]="filter"/>
-    </div>
-  </form>
 </div>
 
 <div>
