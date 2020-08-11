@@ -1,20 +1,21 @@
 <div class="top-menu">
-  <div class="logo">Web architecture</div>
-  <div class="top-menu-item"
-       [class.selected]="isSelected('TESTS')"
-       (click)="selectSection('TESTS')">Tests</div>
-  <div class="top-menu-item"
-       [class.selected]="isSelected('REPORTS')"
-       (click)="selectSection('REPORTS')"
-  >Reports</div>
-  <div class="top-menu-item"
-       [class.selected]="isSelected('DATA_TEMPLATE')"
-       (click)="selectSection('DATA_TEMPLATE')">Data templates</div>
+     <div class="logo">Web architecture</div>
+     <div class="top-menu-item" [class.selected]="isSelected('TESTS')" (click)="selectSection('TESTS')">
+          Tests
+     </div>
+     <div class="top-menu-item" [class.selected]="isSelected('REPORTS')" (click)="selectSection('REPORTS')">
+          Reports
+     </div>
+     <div class="top-menu-item" [class.selected]="isSelected('DATA_TEMPLATE')" (click)="selectSection('DATA_TEMPLATE')">
+          Data templates
+     </div>
+     <div class="top-menu-item" [class.selected]="isSelected('ABOUT')" (click)="selectSection('ABOUT')">
+          About
+     </div>
 </div>
 <div class="middle-content">
-  <app-tests *ngIf="isSelected('TESTS')"></app-tests>
-  <app-data-templates *ngIf="isSelected('DATA_TEMPLATE')"></app-data-templates>
-  <app-reports *ngIf="isSelected('REPORTS')"></app-reports>
+     <app-tests *ngIf="isSelected('TESTS')"></app-tests>
+     <app-reports *ngIf="isSelected('REPORTS')"></app-reports>
+     <app-data-templates *ngIf="isSelected('DATA_TEMPLATE')"></app-data-templates>
+     <app-about *ngIf="isSelected('ABOUT')"></app-about>
 </div>
-
-

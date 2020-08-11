@@ -8,12 +8,12 @@ import { ModalDialogModule } from './modal-dialog/modal-dialog.module';
 import { ApiInterceptor } from "./interceptors/api-interceptor.service";
 import { AppConfig } from "./app.config";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-//import { DecimalPipe } from '@angular/common';
 import { ReportsModule } from './modules/reports/reports.module';
 import { DataTemplatesModule } from './modules/data-templates/data-templates.module';
 import { TestsModule } from './modules/tests/tests.module';
 import { TestService } from './services/tests.service';
 import { BackendService } from './services/backend.service';
+import { AboutModule } from './modules/about/about.module';
 
 export function initializeApp(appConfig: AppConfig) {
   return () => appConfig.load();
@@ -31,7 +31,8 @@ export function initializeApp(appConfig: AppConfig) {
     NgbModule,
     DataTemplatesModule,
     ReportsModule,
-    TestsModule
+    TestsModule,
+    AboutModule
   ],
   providers: [
     BackendService,
