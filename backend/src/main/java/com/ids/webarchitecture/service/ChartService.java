@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ChartService {
@@ -35,7 +36,7 @@ public class ChartService {
             tests.forEach(test -> {
                 ChartMeasurementsDto resultItem = new ChartMeasurementsDto();
                 resultItem.setInitialDataCount(test.getMongoInitialDataCount());
-                resultItem.setDisplayDataCount(test.getMongoInitialDataCount().toString());
+                resultItem.setDisplayDataCount(buildDisplayDataCount(test.getMongoInitialDataCount()));
                 resultItem.setMongoDbMeasurements(test.getMongoDbMeasurements());
                 resultItem.setSqlMeasurements(test.getSqlMeasurements());
                 result.add(resultItem);
@@ -45,15 +46,16 @@ public class ChartService {
 
         TestDto firstTest = tests.get(0);
         TestDto lastTest = tests.get(tests.size()-1);
-        Long minInitCount = Math.min(firstTest.getMongoInitialDataCount(), firstTest.getSqlInitialDataCount());
-        Long maxInitCount = Math.max(lastTest.getMongoInitialDataCount(), lastTest.getSqlInitialDataCount());
+        long minInitCount = Math.min(firstTest.getMongoInitialDataCount(), firstTest.getSqlInitialDataCount());
+        long maxInitCount = Math.max(lastTest.getMongoInitialDataCount(), lastTest.getSqlInitialDataCount());
 
-        Long oneStepByAxisX = (maxInitCount - minInitCount) / CHART_X_AXIS_ITEMS_COUNT;
+        float oneStepByAxisX = ((float)(maxInitCount - minInitCount)) / CHART_X_AXIS_ITEMS_COUNT;
         ChartStepData[] steps = new ChartStepData[CHART_X_AXIS_ITEMS_COUNT];
         
         tests.forEach(test -> {
             // group mongodb measurements
-            int index = (int) ((test.getMongoInitialDataCount() - minInitCount) / oneStepByAxisX) - 1;
+            int index = (int) ((test.getMongoInitialDataCount()) / oneStepByAxisX);
+            index = Math.min(index, CHART_X_AXIS_ITEMS_COUNT - 1);
             ChartStepData stepData = steps[index];
             if (stepData == null) {
                 stepData = new ChartStepData();
@@ -65,7 +67,8 @@ public class ChartService {
             }
 
             //group sql measurements
-            index = (int) ((test.getSqlInitialDataCount() - minInitCount) / oneStepByAxisX);
+            index = (int) ((test.getSqlInitialDataCount()) / oneStepByAxisX);
+            index = Math.min(index, CHART_X_AXIS_ITEMS_COUNT - 1);
             stepData = steps[index];
             if (stepData == null) {
                 stepData = new ChartStepData();
@@ -94,7 +97,7 @@ public class ChartService {
 
     private String buildDisplayDataCount(long dataCount) {
         float coefficient;
-        int round = 3;
+        int round = 1;
         String suffix;
         if (dataCount < 1000) {
             coefficient = 1;
@@ -108,8 +111,12 @@ public class ChartService {
             suffix = "M";
         }
 
-        BigDecimal dataCountBD = new BigDecimal(dataCount * coefficient);
-        return dataCountBD.setScale(round, RoundingMode.HALF_DOWN).toString() + suffix;
+        if (coefficient == 1) {
+            return Objects.toString(dataCount);
+        } else {
+            BigDecimal dataCountBD = new BigDecimal(dataCount * coefficient);
+            return dataCountBD.setScale(round, RoundingMode.HALF_DOWN).toString() + suffix;
+        }
     }
 
     private TestMeasurementsDto calculateAvgMeasurements(List<TestMeasurementsDto> measurements) {
