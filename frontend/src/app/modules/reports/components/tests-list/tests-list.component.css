@@ -1,3 +1,9 @@
+th {
+    font-weight: normal;
+    font-size: 0.8rem;
+    padding: 0.3rem 0.7rem;
+}
+
 /* thead {
     position: fixed;
     top: 0;

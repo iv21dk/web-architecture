@@ -6,21 +6,21 @@
     </button>
   </div>
   <div class="modal-body" >
-    <div>
+    <div class="form-group form-inline">
       <label>Author
-        <select [(ngModel)]="authorId">
+        <select class="form-control ml-2" [(ngModel)]="authorId">
           <option value="new">new</option>
           <option *ngFor="let item of getAuthors()" value="{{item.id}}">{{item.name}}</option>
         </select>
       </label>
-      <input *ngIf="authorId===AUTHOR_ID_NEW" type="text" [(ngModel)]="authorName">
+      <input class="form-control ml-2" *ngIf="authorId===AUTHOR_ID_NEW" type="text" [(ngModel)]="authorName">
     </div>
-    <div>
-      <label>Name<input type="text" [(ngModel)]="editTemplate.name"></label>
+    <div class="form-group form-inline">
+      <label>Name<input class="form-control ml-2" type="text" [(ngModel)]="editTemplate.name"></label>
     </div>
     <div>Text ({{editTemplate.text != null ? editTemplate.text.length : 0}})</div>
     <div>
-      <textarea [(ngModel)]="editTemplate.text"></textarea>
+      <textarea class="form-control ml-2" [(ngModel)]="editTemplate.text"></textarea>
     </div>
   </div>
   <div class="modal-footer">

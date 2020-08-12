@@ -1,6 +1,11 @@
 <div class="command-panel">
-    <button class="command-panel-button btn btn-outline-dark" (click)="startTests()">Start repeated tests</button>
-    <button class="command-panel-button btn btn-light" (click)="stopTests()">Stop repeated tests</button>
-    <label *ngIf="!started">repeat count<input [(ngModel)]="repeatCount" type="number"></label>
+    <button class="command-panel-button btn btn-outline-dark" 
+        (click)="startTests()">Start repeated tests</button>
+    <button class="command-panel-button btn btn-light" 
+        (click)="stopTests()">Stop repeated tests</button>
+
+    <div *ngIf="!started" class="form-group form-inline inline">
+        repeat count <input class="form-control ml-2" [(ngModel)]="repeatCount" type="number">
+    </div>
     <div *ngIf="started">Test {{iteration}} from {{repeatCount}}</div>
 </div>

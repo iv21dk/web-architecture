@@ -91,6 +91,15 @@ input.port{
   margin: 0rem 1rem 0rem 1rem;
 }
 
+.inline {
+  display: inline-block;
+}
+
+.search {
+  position: absolute;
+  right: 0;
+}
+
 /* .table-container {
   overflow: scroll;
   max-height: -webkit-fill-available;
