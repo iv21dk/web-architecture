@@ -6,13 +6,13 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
     imports: [
-        BrowserModule, 
-        FormsModule, 
+        BrowserModule,
+        FormsModule,
         ReactiveFormsModule,
         NgbModule],
     exports: [AboutComponent],
     declarations: [AboutComponent],
-    providers: [  ],
-  })
-  export class AboutModule {
-  }
+    providers: [],
+})
+export class AboutModule {
+}

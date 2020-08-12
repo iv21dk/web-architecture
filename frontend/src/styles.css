@@ -19,11 +19,11 @@ body {
 }
 
 .node-box:hover {
-  background-color: azure;
+  background-color: #dae0e5;
 }
 
 .node-box.selected {
-  border: 0.14rem solid green;
+  border: 0.14rem solid grey;
   box-shadow: 0 0 0.3rem cadetblue;
   margin: 0 0.5rem 0.5rem 0;
 }
