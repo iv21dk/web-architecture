@@ -42,6 +42,17 @@
         Only one test can be started simultaneously. Test is stoped automatically in one minute after starting. 
         But the user can forcibly cancel this.</p>
     <h2 id="reports">Reports</h2>
-    <p>User can investigate the statistics by completed tests using table data and charts.</p>
+    <p>User can investigate the statistics by completed tests using table data or charts.</p>
+    <h4 id="tests-list">Tests list</h4>
+    <p>User can see detailed data about any completed test. Descriptions of the table columns:</p>
+    <ul>
+        <li>Created - test creation and start date</li>
+        <li>Requests - requests count that was executed successfully</li>
+        <li>Duration - test duration in seconds</li>
+        <li>Database volume - records count of main collection of the database on the test starting (separate columns for each databases)</li>
+        <li>Measurements - average time in milliseconds which server spended to execute some action, as example create, delete object, search, retrieve full data by object id.</li>
+    </ul>
+    <h4 id="charts">Charts</h4>
+    <p>Charts allows visually analyze statistics by tests. There are separate charts for each measured action. Axis X is databases volume, axis Y is average time in milliseconds that server spended to execute the action.</p>
 
 </div>
