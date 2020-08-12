@@ -39,5 +39,16 @@ This actions is executed for all supported DBMS (currently is Postgresql and Mon
 Only one test can be started simultaneously. Test is stoped automatically in one minute after starting. But the user can forcibly cancel this.
 
 ## Reports
-User can investigate the statistics by completed tests using table data and charts. 
+User can investigate the statistics by completed tests using table data or charts.
+#### Tests list 
+User can see detailed data about any completed test. 
+Descriptions of the table columns:
+* Created - test creation and start date
+* Requests - requests count that  was executed successfully
+* Duration - test duration in seconds
+* Database volume - records count of main collection of the database on the test starting (separate columns for each databases)
+* Measurements - average time in milliseconds which server spended to execute some action, as example create, delete object, search, retrieve full data by object id. 
+
+#### Charts
+Charts allows visually analyze statistics by tests. There are separate charts for each measured action. Axis X is databases volume, axis Y is average time in milliseconds that server spended to execute the action.
 
