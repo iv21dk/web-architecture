@@ -12,7 +12,7 @@ check_status() {
   # -C : specifies the command name
   # -o : determines how columns must be displayed
   # h : hides the data header
-  s=`ps -C 'java -jar /opt/deploy/web-architecture-1.0.0-SNAPSHOT.jar --spring.config.location=file:///opt/deploy/application.properties' -o pid h`
+  s=`ps -C 'java -jar /opt/deploy/web-architecture.jar --spring.config.location=file:///opt/deploy/application.properties' -o pid h`
 
   # If somethig was returned by the ps command, this function returns the PID
   if [ $s ] ; then
@@ -44,7 +44,7 @@ start() {
   echo -n "Starting application: "
 
   # Redirects default and error output to a log file
-  java -jar /opt/deploy/web-architecture-1.0.0-SNAPSHOT.jar --spring.config.location=file:///opt/deploy/application.properties >> /opt/deploy/log.txt 2>&1 &
+  java -jar /opt/deploy/web-architecture.jar --spring.config.location=file:///opt/deploy/application.properties >> /opt/deploy/log.txt 2>&1 &
   echo "OK"
 }
 
