@@ -16,6 +16,7 @@ public class DataTemplateController {
     private DataTemplateService dataTemplateService;
 
     @GetMapping("/api/data-templates")
+    @ResponseStatus(HttpStatus.OK)
     public List<DataTemplateDto> getAllTemplates(
             @RequestParam(name = "query", required = false) String query) {
         return dataTemplateService.getAllTemplates(query);
@@ -29,11 +30,12 @@ public class DataTemplateController {
 
     @PutMapping("/api/data-templates/{template-id}")
     @ResponseStatus(HttpStatus.OK)
-    public void createDataTemplate(@PathVariable("template-id") String templateId, @RequestBody DataTemplateDto dataTemplateDto) {
+    public void updateDataTemplate(@PathVariable("template-id") String templateId, @RequestBody DataTemplateDto dataTemplateDto) {
         dataTemplateService.updateDataTemplate(templateId, dataTemplateDto);
     }
 
     @GetMapping("/api/data-templates/authors")
+    @ResponseStatus(HttpStatus.OK)
     public List<ProductAuthorDto> getAllAuthors() {
         return dataTemplateService.getAllAuthors();
     }

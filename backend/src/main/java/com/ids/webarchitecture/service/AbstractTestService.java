@@ -1,7 +1,6 @@
 package com.ids.webarchitecture.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -9,10 +8,8 @@ import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static java.lang.String.format;
-
+@Log4j2
 public abstract class AbstractTestService implements TestActionService {
-    Logger log = LoggerFactory.getLogger(AbstractTestService.class);
     public static final int READ_AUTHORS_DELAY_MS = 2 * 60 * 1000; // 2 min
     //public static final int READ_AUTHORS_DELAY_MS = 10 * 1000; // 10 sec for debug
 

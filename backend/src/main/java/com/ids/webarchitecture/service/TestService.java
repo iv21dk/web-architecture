@@ -87,7 +87,7 @@ public class TestService {
 
     private TestDto testBoToDto(Test test) {
         TestDto result = mapper.map(test, TestDto.class);
-        //use mapper config instead
+        //TODO: use mapper config instead
         result.setDurationSec(test.getDuration() != null ? test.getDuration() / 1000 : 0);
         return result;
     }

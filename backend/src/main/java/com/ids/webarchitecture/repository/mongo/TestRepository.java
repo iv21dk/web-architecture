@@ -11,5 +11,5 @@ import java.util.List;
 public interface TestRepository extends MongoRepository<Test, String>, TestRepositoryCustom {
     List<Test> findAllByStatusOrderByStartDate(TestStatus status);
     List<Test> findAllByStatusOrderByStartDate(TestStatus status, Pageable pageable);
-    Long countByStatus(TestStatus completed);
+    Long countByStatus(TestStatus status);
 }

@@ -2,8 +2,10 @@ package com.ids.webarchitecture.controller;
 
 import com.ids.webarchitecture.dto.BackendDto;
 import com.ids.webarchitecture.model.NodeStatus;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -13,7 +15,9 @@ import java.util.List;
 public class BackendsController {
 
     @GetMapping("/api/backends")
+    @ResponseStatus(HttpStatus.OK)
     public List<BackendDto> getBackends() {
+        //TODO:Implement using ZooKeeper. Currently is mock solution
         List result = new ArrayList<>();
         BackendDto dto1 = new BackendDto();
         dto1.setHost("localhost");
