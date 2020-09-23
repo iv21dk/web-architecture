@@ -126,7 +126,7 @@ public class SqlTestService extends AbstractTestService {
     }
 
     @Override
-    protected long readAuthorsCount() {
+    public long readAuthorsCount() {
         return productAuthorRepository.count();
     }
 }

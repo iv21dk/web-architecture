@@ -3,7 +3,6 @@ package com.ids.webarchitecture.service;
 import com.ids.webarchitecture.dto.ChartMeasurementsDto;
 import com.ids.webarchitecture.dto.TestDto;
 import com.ids.webarchitecture.dto.TestMeasurementsDto;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -13,7 +12,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ids.webarchitecture.service.ChartService.CHART_X_AXIS_ITEMS_COUNT;
+import static com.ids.webarchitecture.service.ChartServiceImpl.CHART_X_AXIS_ITEMS_COUNT;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -21,7 +20,7 @@ import static org.mockito.Mockito.when;
 public class ChartServiceTest {
 
     @InjectMocks
-    private ChartService chartService;
+    private ChartServiceImpl chartService;
 
     @Mock
     private TestService testService;

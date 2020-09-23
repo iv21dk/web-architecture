@@ -12,17 +12,17 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @Profile("test")
-@EnableTransactionManagement
+//@EnableTransactionManagement
 @PropertySource("classpath:/application.test.properties")
 @PropertySource(value = "classpath:/application.test.local.properties", ignoreResourceNotFound = true)
 @ComponentScan({
         "com.ids.webarchitecture.service",
-        "com.ids.webarchitecture.repository",
-        "com.ids.webarchitecture.repository.mongo"
+        //"com.ids.webarchitecture.repository",
+        //"com.ids.webarchitecture.repository.mongo"
 })
 //@EnableAutoConfiguration
-@EnableJpaRepositories(basePackages = "com.ids.webarchitecture.repository")
-@EnableMongoRepositories(basePackages = "com.ids.webarchitecture.repository.mongo")
+//@EnableJpaRepositories(basePackages = "com.ids.webarchitecture.repository")
+//@EnableMongoRepositories(basePackages = "com.ids.webarchitecture.repository.mongo")
 public class AppTestConfig {
 
 }

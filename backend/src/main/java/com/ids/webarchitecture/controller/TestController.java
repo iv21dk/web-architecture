@@ -1,6 +1,5 @@
 package com.ids.webarchitecture.controller;
 
-import com.ids.webarchitecture.dto.DataTemplateDto;
 import com.ids.webarchitecture.dto.TestDto;
 import com.ids.webarchitecture.exception.RequestParameterException;
 import com.ids.webarchitecture.service.TestService;

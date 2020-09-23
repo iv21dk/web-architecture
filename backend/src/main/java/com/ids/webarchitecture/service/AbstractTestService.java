@@ -1,5 +1,6 @@
 package com.ids.webarchitecture.service;
 
+import com.ids.webarchitecture.exception.AppLogicException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -20,8 +21,6 @@ public abstract class AbstractTestService implements TestActionService {
 
     abstract List<String> getAuthorIds();
 
-    abstract long readAuthorsCount();
-
     @PostConstruct
     protected void init() {
         authorIds.addAll(getAuthorIds());
@@ -32,13 +31,14 @@ public abstract class AbstractTestService implements TestActionService {
         return authorIds.size();
     }
 
-    public Optional<String> getRandomAuthorId() {
+    @Override
+    public String getRandomAuthorId() {
         if (authorIds == null || authorIds.isEmpty()) {
-            return Optional.empty();
+            throw new AppLogicException("Impossible to get random author id because list is empty");
         }
         Random rand = new Random();
         int randomIndex = rand.nextInt(authorIds.size());
-        return Optional.of(authorIds.get(randomIndex));
+        return authorIds.get(randomIndex);
     }
 
     @Override

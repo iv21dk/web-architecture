@@ -3,7 +3,6 @@ package com.ids.webarchitecture.service;
 import com.ids.webarchitecture.config.AppTestConfig;
 import com.ids.webarchitecture.dto.ChartMeasurementsDto;
 import com.ids.webarchitecture.dto.TestDto;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class ChartServiceIT {
     private TestService testService;
 
     @Test
-    @Ignore
+    //@Ignore
     public void test_getMeasurements() {
         List<TestDto> tests = new ArrayList<>();
         when(testService.getTests()).thenReturn(tests);

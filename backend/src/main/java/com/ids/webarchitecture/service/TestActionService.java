@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface TestActionService {
     int getAuthorsCount();
-    Optional<String> getRandomAuthorId();
+    String getRandomAuthorId();
     void createAuthorAndProduct(DataTemplateMongo dataTemplate);
     void addProductToAuthor(String authorId, DataTemplateMongo dataTemplate);
     boolean updateProductText(String authorId, String substring);
@@ -14,4 +14,5 @@ public interface TestActionService {
     void findByIndexedField(String value);
     void retrieveFullData(String authorId);
     void deleteById(String id);
+    long readAuthorsCount();
 }

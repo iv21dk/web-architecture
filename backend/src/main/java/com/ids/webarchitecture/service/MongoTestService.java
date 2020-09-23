@@ -127,7 +127,7 @@ public class MongoTestService extends AbstractTestService {
     }
 
     @Override
-    protected long readAuthorsCount() {
+    public long readAuthorsCount() {
         return productAuthorMongoRepository.count();
     }
 }
